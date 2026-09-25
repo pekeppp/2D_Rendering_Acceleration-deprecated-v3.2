@@ -1,0 +1,15 @@
+﻿DIR   .dsh-vision-router
+DIR   .git
+DIR   ARC_2DRA
+DIR   atlas
+DIR   backup
+DIR   danmaku
+DIR   doc
+DIR   firmware
+DIR   opencode_share_download
+DIR   port_analysis
+DIR   rtl
+DIR   simulator
+DIR   software
+DIR   tools
+       200  .gitignore

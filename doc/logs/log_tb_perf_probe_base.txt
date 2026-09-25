@@ -1,0 +1,175 @@
+﻿PROBE ==== T1 960x540 FILL (whole screen) ====
+PROBE OP T1_960x540_FILL op=1 960x540 | perf=585387 wall=585404 active=585387 idle_gap=17 hist_sum=585387 delta=0
+PROBE OPSUM T1_960x540_FILL | px_cons=518400 px_written=518400 words16B=64800 AW_top=64800 AW_wr=64800 Wbeats=64800 B=64800 rows=540
+PROBE OPRATE T1_960x540_FILL | cyc/px=1.129219 px/cyc=0.885568 | max_px_run=8 px_run_cyc=583200 flush_word=64800 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=1 burst_max=1 burst_avg=1.000000 | row_cyc_min=1083 avg=1083.000000 max=1083
+PROBE OPDATA T1_960x540_FILL | stall_fg_fifo=0 stall_fg_reload=0 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=131787 buf=64800 AW=64800 W=64800 B=259200
+PROBE TABLE T1_960x540_FILL | 585387 | 518400 | 1.129219 | 64800 | 64800
+PROBE HIST-BEGIN T1_960x540_FILL  active=585387 hist_sum=585387
+PROBE HIST T1_960x540_FILL | PIX_KEEP |   518400 |  88.56%
+PROBE HIST T1_960x540_FILL | FLUSH_WORD_COMMIT |    64800 |  11.07%
+PROBE HIST T1_960x540_FILL | ENG_POP_8WORDS |       15 |   0.00%
+PROBE HIST T1_960x540_FILL | ENG_DEC |        1 |   0.00%
+PROBE HIST T1_960x540_FILL | ENG_EXEC_INIT |        1 |   0.00%
+PROBE HIST T1_960x540_FILL | ENG_ROW_GAP |     1620 |   0.28%
+PROBE HIST T1_960x540_FILL | ENG_DRAIN |      540 |   0.09%
+PROBE HIST T1_960x540_FILL | ENG_WDWAIT |       10 |   0.00%
+PROBE HIST-END T1_960x540_FILL  sum_delta_vs_active=0
+PROBE SANITY T1_first_px @00004000 exp=f800 got=f800 OK
+PROBE SANITY T1_last_stored_px(0x7FFE) @00007ffe exp=f800 got=f800 OK
+PROBE ==== T2 960x540 COPY (whole screen) ====
+PROBE OP T2_960x540_COPY op=0 960x540 | perf=650275 wall=650292 active=650275 idle_gap=17 hist_sum=650275 delta=0
+PROBE OPSUM T2_960x540_COPY | px_cons=518400 px_written=518400 words16B=64800 AW_top=64800 AW_wr=64800 Wbeats=64800 B=64800 rows=540
+PROBE OPRATE T2_960x540_COPY | cyc/px=1.254389 px/cyc=0.797201 | max_px_run=8 px_run_cyc=648000 flush_word=64800 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=1 burst_max=1 burst_avg=1.000000 | row_cyc_min=1203 avg=1203.000000 max=1203
+PROBE OPDATA T2_960x540_COPY | stall_fg_fifo=0 stall_fg_reload=64800 stall_fg_nordbusy=57250 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=196675 buf=64800 AW=64800 W=64800 B=259200
+PROBE TABLE T2_960x540_COPY | 650275 | 518400 | 1.254389 | 64800 | 64800
+PROBE HIST-BEGIN T2_960x540_COPY  active=650275 hist_sum=650275
+PROBE HIST T2_960x540_COPY | PIX_KEEP |   518400 |  79.72%
+PROBE HIST T2_960x540_COPY | FLUSH_WORD_COMMIT |    64800 |   9.97%
+PROBE HIST T2_960x540_COPY | STALL_FG_NOPIXEL |    64800 |   9.97%
+PROBE HIST T2_960x540_COPY | ENG_POP_8WORDS |       15 |   0.00%
+PROBE HIST T2_960x540_COPY | ENG_DEC |        1 |   0.00%
+PROBE HIST T2_960x540_COPY | ENG_EXEC_INIT |        1 |   0.00%
+PROBE HIST T2_960x540_COPY | ENG_WAIT_ROW0 |       26 |   0.00%
+PROBE HIST T2_960x540_COPY | ENG_ROW_GAP |     1682 |   0.26%
+PROBE HIST T2_960x540_COPY | ENG_DRAIN |      540 |   0.08%
+PROBE HIST T2_960x540_COPY | ENG_WDWAIT |       10 |   0.00%
+PROBE HIST-END T2_960x540_COPY  sum_delta_vs_active=0
+PROBE ==== T3 32x32 FILL isolated (tight stride 64) ====
+PROBE OP T3_32x32_FILL op=1 32x32 | perf=1307 wall=1324 active=1307 idle_gap=17 hist_sum=1307 delta=0
+PROBE OPSUM T3_32x32_FILL | px_cons=1024 px_written=1024 words16B=128 AW_top=128 AW_wr=128 Wbeats=128 B=128 rows=32
+PROBE OPRATE T3_32x32_FILL | cyc/px=1.276367 px/cyc=0.783474 | max_px_run=8 px_run_cyc=1152 flush_word=128 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=1 burst_max=1 burst_avg=1.000000 | row_cyc_min=39 avg=39.000000 max=39
+PROBE OPDATA T3_32x32_FILL | stall_fg_fifo=0 stall_fg_reload=0 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=411 buf=128 AW=128 W=128 B=512
+PROBE TABLE T3_32x32_FILL | 1307 | 1024 | 1.276367 | 128 | 128
+PROBE HIST-BEGIN T3_32x32_FILL  active=1307 hist_sum=1307
+PROBE HIST T3_32x32_FILL | PIX_KEEP |     1024 |  78.35%
+PROBE HIST T3_32x32_FILL | FLUSH_WORD_COMMIT |      128 |   9.79%
+PROBE HIST T3_32x32_FILL | ENG_POP_8WORDS |       15 |   1.15%
+PROBE HIST T3_32x32_FILL | ENG_DEC |        1 |   0.08%
+PROBE HIST T3_32x32_FILL | ENG_EXEC_INIT |        1 |   0.08%
+PROBE HIST T3_32x32_FILL | ENG_ROW_GAP |       96 |   7.35%
+PROBE HIST T3_32x32_FILL | ENG_DRAIN |       32 |   2.45%
+PROBE HIST T3_32x32_FILL | ENG_WDWAIT |       10 |   0.77%
+PROBE HIST-END T3_32x32_FILL  sum_delta_vs_active=0
+PROBE SANITY T3_first_px @00006800 exp=07e0 got=07e0 OK
+PROBE SANITY T3_last_px @00006ffe exp=07e0 got=07e0 OK
+PROBE SANITY T3_outside_untouched pre=3130 post=3130 OK
+PROBE ==== T4 32x32 COPY isolated ====
+PROBE OP T4_32x32_COPY op=0 32x32 | perf=1460 wall=1478 active=1460 idle_gap=18 hist_sum=1460 delta=0
+PROBE OPSUM T4_32x32_COPY | px_cons=1024 px_written=1024 words16B=128 AW_top=128 AW_wr=128 Wbeats=128 B=128 rows=32
+PROBE OPRATE T4_32x32_COPY | cyc/px=1.425781 px/cyc=0.701370 | max_px_run=8 px_run_cyc=1280 flush_word=128 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=1 burst_max=1 burst_avg=1.000000 | row_cyc_min=43 avg=43.000000 max=43
+PROBE OPDATA T4_32x32_COPY | stall_fg_fifo=0 stall_fg_reload=128 stall_fg_nordbusy=37 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=564 buf=128 AW=128 W=128 B=512
+PROBE TABLE T4_32x32_COPY | 1460 | 1024 | 1.425781 | 128 | 128
+PROBE HIST-BEGIN T4_32x32_COPY  active=1460 hist_sum=1460
+PROBE HIST T4_32x32_COPY | PIX_KEEP |     1024 |  70.14%
+PROBE HIST T4_32x32_COPY | FLUSH_WORD_COMMIT |      128 |   8.77%
+PROBE HIST T4_32x32_COPY | STALL_FG_NOPIXEL |      128 |   8.77%
+PROBE HIST T4_32x32_COPY | ENG_POP_8WORDS |       15 |   1.03%
+PROBE HIST T4_32x32_COPY | ENG_DEC |        1 |   0.07%
+PROBE HIST T4_32x32_COPY | ENG_EXEC_INIT |        1 |   0.07%
+PROBE HIST T4_32x32_COPY | ENG_WAIT_ROW0 |       26 |   1.78%
+PROBE HIST T4_32x32_COPY | ENG_ROW_GAP |       95 |   6.51%
+PROBE HIST T4_32x32_COPY | ENG_DRAIN |       32 |   2.19%
+PROBE HIST T4_32x32_COPY | ENG_WDWAIT |       10 |   0.68%
+PROBE HIST-END T4_32x32_COPY  sum_delta_vs_active=0
+PROBE SANITY T4_copy_row1_px1 @00006842 exp=f801 got=f801 OK
+PROBE ==== T5 32x32 ALPHA isolated ====
+PROBE OP T5_32x32_ALPHA op=2 32x32 | perf=1464 wall=1482 active=1464 idle_gap=18 hist_sum=1464 delta=0
+PROBE OPSUM T5_32x32_ALPHA | px_cons=1024 px_written=1024 words16B=128 AW_top=128 AW_wr=128 Wbeats=128 B=128 rows=32
+PROBE OPRATE T5_32x32_ALPHA | cyc/px=1.429688 px/cyc=0.699454 | max_px_run=8 px_run_cyc=1280 flush_word=128 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=1 burst_max=1 burst_avg=1.000000 | row_cyc_min=43 avg=43.000000 max=43
+PROBE OPDATA T5_32x32_ALPHA | stall_fg_fifo=0 stall_fg_reload=128 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=568 buf=128 AW=128 W=128 B=512
+PROBE TABLE T5_32x32_ALPHA | 1464 | 1024 | 1.429688 | 128 | 128
+PROBE HIST-BEGIN T5_32x32_ALPHA  active=1464 hist_sum=1464
+PROBE HIST T5_32x32_ALPHA | PIX_KEEP |     1024 |  69.95%
+PROBE HIST T5_32x32_ALPHA | FLUSH_WORD_COMMIT |      128 |   8.74%
+PROBE HIST T5_32x32_ALPHA | STALL_FG_BG_NOPIXEL |      128 |   8.74%
+PROBE HIST T5_32x32_ALPHA | ENG_POP_8WORDS |       15 |   1.02%
+PROBE HIST T5_32x32_ALPHA | ENG_DEC |        1 |   0.07%
+PROBE HIST T5_32x32_ALPHA | ENG_EXEC_INIT |        1 |   0.07%
+PROBE HIST T5_32x32_ALPHA | ENG_WAIT_ROW0 |       30 |   2.05%
+PROBE HIST T5_32x32_ALPHA | ENG_ROW_GAP |       95 |   6.49%
+PROBE HIST T5_32x32_ALPHA | ENG_DRAIN |       32 |   2.19%
+PROBE HIST T5_32x32_ALPHA | ENG_WDWAIT |       10 |   0.68%
+PROBE HIST-END T5_32x32_ALPHA  sum_delta_vs_active=0
+PROBE ==== T6 32x32 KEY isolated ====
+PROBE OP T6_32x32_KEY op=3 32x32 | perf=1460 wall=1478 active=1460 idle_gap=18 hist_sum=1460 delta=0
+PROBE OPSUM T6_32x32_KEY | px_cons=1024 px_written=713 words16B=124 AW_top=124 AW_wr=124 Wbeats=124 B=124 rows=32
+PROBE OPRATE T6_32x32_KEY | cyc/px=2.047686 px/cyc=0.488356 | max_px_run=8 px_run_cyc=1280 flush_word=124 flush_hole=4 flush_wdful=0 | wd_full_cyc=0 wd_peak=1 burst_max=1 burst_avg=1.000000 | row_cyc_min=43 avg=43.000000 max=43
+PROBE OPDATA T6_32x32_KEY | stall_fg_fifo=0 stall_fg_reload=128 stall_fg_nordbusy=37 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=592 buf=124 AW=124 W=124 B=496
+PROBE TABLE T6_32x32_KEY | 1460 | 713 | 2.047686 | 124 | 124
+PROBE HIST-BEGIN T6_32x32_KEY  active=1460 hist_sum=1460
+PROBE HIST T6_32x32_KEY | PIX_KEEP |      713 |  48.84%
+PROBE HIST T6_32x32_KEY | PIX_SKIP_KEY |      311 |  21.30%
+PROBE HIST T6_32x32_KEY | FLUSH_WORD_COMMIT |      124 |   8.49%
+PROBE HIST T6_32x32_KEY | FLUSH_HOLE_ALLKEY |        4 |   0.27%
+PROBE HIST T6_32x32_KEY | STALL_FG_NOPIXEL |      128 |   8.77%
+PROBE HIST T6_32x32_KEY | ENG_POP_8WORDS |       15 |   1.03%
+PROBE HIST T6_32x32_KEY | ENG_DEC |        1 |   0.07%
+PROBE HIST T6_32x32_KEY | ENG_EXEC_INIT |        1 |   0.07%
+PROBE HIST T6_32x32_KEY | ENG_WAIT_ROW0 |       26 |   1.78%
+PROBE HIST T6_32x32_KEY | ENG_ROW_GAP |       95 |   6.51%
+PROBE HIST T6_32x32_KEY | ENG_DRAIN |       32 |   2.19%
+PROBE HIST T6_32x32_KEY | ENG_WDWAIT |       10 |   0.68%
+PROBE HIST-END T6_32x32_KEY  sum_delta_vs_active=0
+PROBE KEYCHK words=124 (expect 124: 128-4 all-key words) px_written=713 px_skipped=311 (expect 311: 280 key + 31 accidental 0xF81F at cc=31)
+PROBE ==== T7 32x32 FILL isolated @ framebuffer stride 1920 ====
+PROBE OP T7_32x32_FILL_FBstride op=1 32x32 | perf=1307 wall=1324 active=1307 idle_gap=17 hist_sum=1307 delta=0
+PROBE OPSUM T7_32x32_FILL_FBstride | px_cons=1024 px_written=1024 words16B=128 AW_top=128 AW_wr=128 Wbeats=128 B=128 rows=32
+PROBE OPRATE T7_32x32_FILL_FBstride | cyc/px=1.276367 px/cyc=0.783474 | max_px_run=8 px_run_cyc=1152 flush_word=128 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=1 burst_max=1 burst_avg=1.000000 | row_cyc_min=39 avg=39.000000 max=39
+PROBE OPDATA T7_32x32_FILL_FBstride | stall_fg_fifo=0 stall_fg_reload=0 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=411 buf=128 AW=128 W=128 B=512
+PROBE TABLE T7_32x32_FILL_FBstride | 1307 | 1024 | 1.276367 | 128 | 128
+PROBE HIST-BEGIN T7_32x32_FILL_FBstride  active=1307 hist_sum=1307
+PROBE HIST T7_32x32_FILL_FBstride | PIX_KEEP |     1024 |  78.35%
+PROBE HIST T7_32x32_FILL_FBstride | FLUSH_WORD_COMMIT |      128 |   9.79%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_POP_8WORDS |       15 |   1.15%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_DEC |        1 |   0.08%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_EXEC_INIT |        1 |   0.08%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_ROW_GAP |       96 |   7.35%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_DRAIN |       32 |   2.45%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_WDWAIT |       10 |   0.77%
+PROBE HIST-END T7_32x32_FILL_FBstride  sum_delta_vs_active=0
+PROBE ==== T8 64x back-to-back 32x32 FILL (tight) ====
+PROBE B2B T8_B2B64_32x32_FILL op=1 32x32 x64 | wall=83728 active(hist_sum)=83648 sumPERF=1307 idle_gap=80 eng_window=83711 inter_gap=63
+PROBE B2BSUM T8_B2B64_32x32_FILL | px_written_total=65536 px_per_blk=1024.000000 words=8192 AW_top=8192 AW/blk=128.000000
+PROBE TABLE_B2B T8_B2B64_32x32_FILL | 1307 | 1024 | 1.276367 | 128 | 128
+PROBE HIST-BEGIN T8_B2B64_32x32_FILL  active=83648 hist_sum=83648
+PROBE HIST T8_B2B64_32x32_FILL | PIX_KEEP |    65536 |  78.35%
+PROBE HIST T8_B2B64_32x32_FILL | FLUSH_WORD_COMMIT |     8192 |   9.79%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_POP_8WORDS |      960 |   1.15%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_DEC |       64 |   0.08%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_EXEC_INIT |       64 |   0.08%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_ROW_GAP |     6144 |   7.35%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_DRAIN |     2048 |   2.45%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_WDWAIT |      640 |   0.77%
+PROBE HIST-END T8_B2B64_32x32_FILL  sum_delta_vs_active=0
+PROBE ==== T9 32x back-to-back 32x32 FILL @ FB stride ====
+PROBE B2B T9_B2B32_32x32_FILL_FB op=1 32x32 x32 | wall=41872 active(hist_sum)=41824 sumPERF=1307 idle_gap=48 eng_window=41855 inter_gap=31
+PROBE B2BSUM T9_B2B32_32x32_FILL_FB | px_written_total=32768 px_per_blk=1024.000000 words=4096 AW_top=4096 AW/blk=128.000000
+PROBE TABLE_B2B T9_B2B32_32x32_FILL_FB | 1307 | 1024 | 1.276367 | 128 | 128
+PROBE HIST-BEGIN T9_B2B32_32x32_FILL_FB  active=41824 hist_sum=41824
+PROBE HIST T9_B2B32_32x32_FILL_FB | PIX_KEEP |    32768 |  78.35%
+PROBE HIST T9_B2B32_32x32_FILL_FB | FLUSH_WORD_COMMIT |     4096 |   9.79%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_POP_8WORDS |      480 |   1.15%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_DEC |       32 |   0.08%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_EXEC_INIT |       32 |   0.08%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_ROW_GAP |     3072 |   7.35%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_DRAIN |     1024 |   2.45%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_WDWAIT |      320 |   0.77%
+PROBE HIST-END T9_B2B32_32x32_FILL_FB  sum_delta_vs_active=0
+PROBE ==== T10 16x back-to-back 32x32 ALPHA (tight) ====
+PROBE B2B T10_B2B16_32x32_ALPHA op=2 32x32 x16 | wall=23456 active(hist_sum)=23424 sumPERF=1464 idle_gap=32 eng_window=23439 inter_gap=15
+PROBE B2BSUM T10_B2B16_32x32_ALPHA | px_written_total=16384 px_per_blk=1024.000000 words=2048 AW_top=2048 AW/blk=128.000000
+PROBE TABLE_B2B T10_B2B16_32x32_ALPHA | 1464 | 1024 | 1.429688 | 128 | 128
+PROBE HIST-BEGIN T10_B2B16_32x32_ALPHA  active=23424 hist_sum=23424
+PROBE HIST T10_B2B16_32x32_ALPHA | PIX_KEEP |    16384 |  69.95%
+PROBE HIST T10_B2B16_32x32_ALPHA | FLUSH_WORD_COMMIT |     2048 |   8.74%
+PROBE HIST T10_B2B16_32x32_ALPHA | STALL_FG_BG_NOPIXEL |     2048 |   8.74%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_POP_8WORDS |      240 |   1.02%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_DEC |       16 |   0.07%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_EXEC_INIT |       16 |   0.07%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_WAIT_ROW0 |      480 |   2.05%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_ROW_GAP |     1520 |   6.49%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_DRAIN |      512 |   2.19%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_WDWAIT |      160 |   0.68%
+PROBE HIST-END T10_B2B16_32x32_ALPHA  sum_delta_vs_active=0
+PROBE ==== DONE ====
+rtl/tb/tb_perf_probe.v:647: $finish called at 13918666000 (1ps)

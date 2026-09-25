@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FPGA 2D 渲染加速器 · 串口上位机（Web Serial）</title>
+<style>
+  /* ===================== 全局 / 暗色主题 ===================== */
+  :root{
+    --bg:#0e1116; --bg2:#141922; --card:#171d27; --card2:#1d2431;
+    --line:#2a3444; --line2:#3a4658;
+    --fg:#e7ecf3; --fg2:#aab6c6; --muted:#7f8ea3;
+    --acc:#4f8cff; --acc2:#2f6fe0;
+    --ok:#34d399; --warn:#fbbf24; --err:#f87171; --rx:#7dd3fc; --tx:#c4b5fd;
+    --mono: ui-monospace, SFMono-Regular, Consolas, "Cascadia Mono", "Courier New", monospace;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:linear-gradient(180deg,#0e1116 0%, #10151d 100%);
+    color:var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    font-size:14px; line-height:1.45;
+    min-height:100vh;
+  }
+  h1,h2,h3{ margin:0; font-weight:650; }
+  code,.mono{ font-family:var(--mono); }
+
+  /* ===================== 顶栏 ===================== */
+  .topbar{
+    display:flex; flex-wrap:wrap; align-items:center; gap:14px;
+    padding:12px 18px; background:rgba(20,25,34,.92);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; margin-right:auto; min-width:260px; }
+  .brand h1{ font-size:17px; letter-spacing:.2px; }
+  .brand .sub{ font-size:11.5px; color:var(--muted); }
+
+  .conn{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .field{ display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--fg2); }
+  select,input[type=text],input[type=number]{
+    background:#0c1017; color:var(--fg); border:1px solid var(--line2);
+    border-radius:8px; padding:8px 10px; font-size:14px; font-family:inherit;
+  }
+  select:focus,input:focus,button:focus-visible{ outline:2px solid var(--acc); outline-offset:1px; }
+  select{ min-width:118px; }
+
+  button{
+    font-family:inherit; font-size:14px; color:var(--fg); cursor:pointer;
+    background:var(--card2); border:1px solid var(--line2); border-radius:9px;
+    padding:9px 14px; transition:background .12s,border-color .12s,transform .06s;
+  }
+  button:hover:not(:disabled){ background:#26314a; border-color:#4a5a75; }
+  button:active:not(:disabled){ transform:translateY(1px); }
+  button:disabled{ opacity:.45; cursor:not-allowed; }
+  button.primary{ background:var(--acc2); border-color:#4f8cff; font-weight:600; }
+  button.primary:hover:not(:disabled){ background:#3d80f5; }
+  button.danger{ background:#4a2230; border-color:#8a3b4f; }
+  button.danger:hover:not(:disabled){ background:#5d2a3c; }
+  button.lg{ min-height:44px; }
+
+  /* 状态灯 */
+  .status{ display:flex; align-items:center; gap:8px; min-width:210px;
+           background:#0c1017; border:1px solid var(--line2); border-radius:9px; padding:8px 12px; }
+  .dot{ width:11px; height:11px; border-radius:50%; background:#5b6879; flex:0 0 auto;
+        box-shadow:0 0 0 3px rgba(91,104,121,.16); }
+  .dot.on{ background:var(--ok); box-shadow:0 0 0 3px rgba(52,211,153,.2); }
+  .dot.err{ background:var(--err); box-shadow:0 0 0 3px rgba(248,113,113,.2); }
+  .dot.wait{ background:var(--warn); box-shadow:0 0 0 3px rgba(251,191,36,.2); }
+  .status .txt{ font-size:13px; font-weight:600; }
+  .status .msg{ font-size:11.5px; color:var(--muted); max-width:340px; }
+
+  /* ===================== 提示条 ===================== */
+  .notice{
+    margin:12px 18px 0; padding:11px 14px; border-radius:10px;
+    background:rgba(251,191,36,.09); border:1px solid rgba(251,191,36,.45);
+    color:#ffe6a8; font-size:13px;
+  }
+  .notice b{ color:#ffd166; }
+  .notice.hidden{ display:none; }
+
+  /* ===================== 主栅格 ===================== */
+  main{
+    display:grid; grid-template-columns:minmax(0,1.06fr) minmax(0,1fr);
+    gap:14px; padding:14px 18px 22px; align-items:start;
+  }
+  .col{ display:flex; flex-direction:column; gap:14px; min-width:0; }
+
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .card > h2{
+    font-size:13px; padding:10px 14px; background:var(--bg2);
+    border-bottom:1px solid var(--line); color:var(--fg);
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .card > h2 .hint{ font-weight:400; font-size:11.5px; color:var(--muted); }
+  .card .body{ padding:13px 14px; }
+
+  /* ===================== N 精确设置 ===================== */
+  .nrow{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .nbig{ display:flex; align-items:baseline; gap:8px; min-width:170px; }
+  .nbig .val{ font-family:var(--mono); font-size:34px; font-weight:700; color:var(--acc);
+              line-height:1; letter-spacing:.5px; }
+  .nbig .unit{ font-size:12px; color:var(--muted); }
+  .sliderwrap{ flex:1 1 300px; min-width:240px; }
+  input[type=range]{ width:100%; height:30px; background:transparent; -webkit-appearance:none; appearance:none; }
+  input[type=range]::-webkit-slider-runnable-track{ height:8px; border-radius:6px;
+    background:linear-gradient(90deg,#2f6fe0 0%, #4f8cff var(--fill,7%), #232c3a var(--fill,7%), #232c3a 100%); }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none;
+    width:24px; height:24px; margin-top:-8px; border-radius:50%;
+    background:#fff; border:3px solid var(--acc); cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.5); }
+  input[type=range]:focus-visible::-webkit-slider-thumb{ outline:2px solid #fff; }
+  .scaleticks{ display:flex; justify-content:space-between; font-size:11px; color:var(--muted);
+               font-family:var(--mono); margin-top:-2px; }
+  .nctl{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .nctl .num{ width:104px; text-align:center; font-family:var(--mono); font-size:16px; }
+  .nctl .sep{ width:1px; height:26px; background:var(--line); margin:0 2px; }
+  .nstatus{ margin-top:10px; font-size:11.5px; color:var(--muted); }
+  .nstatus .code{ color:var(--fg2); }
+
+  /* ===================== 预设按钮 ===================== */
+  .group{ margin-bottom:13px; }
+  .group:last-child{ margin-bottom:0; }
+  .group-h{ font-size:12px; color:var(--fg2); margin-bottom:7px; display:flex; gap:8px; align-items:baseline; }
+  .group-h .hint{ font-size:11px; color:var(--muted); }
+  .btns{ display:grid; gap:9px; }
+  .cols-2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .cols-3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .cols-4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .pbtn{ display:flex; flex-direction:column; align-items:flex-start; gap:3px;
+         padding:9px 11px; min-height:56px; text-align:left; line-height:1.25; }
+  .pbtn .t{ font-size:13.5px; font-weight:600; white-space:nowrap; }
+  .pbtn .s{ font-size:11px; color:var(--muted); font-family:var(--mono); }
+  .pbtn.nowrap .s{ white-space:nowrap; }
+  .pbtn:hover:not(:disabled) .s{ color:#a9b8cc; }
+  .pbtn.hot{ border-color:var(--acc); box-shadow:0 0 0 1px rgba(79,140,255,.45) inset; }
+
+  /* ===================== 日志 ===================== */
+  .logbar{ display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+           padding:8px 12px; background:#12171f; border-bottom:1px solid var(--line); font-size:12px; color:var(--fg2); }
+  .logbar label{ display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .logbar .spacer{ margin-left:auto; }
+  .logbar button{ padding:6px 11px; font-size:12.5px; }
+  .logbody{
+    height:326px; min-height:150px; resize:vertical; overflow:auto;
+    padding:9px 11px; background:#0b0f15; font-family:var(--mono); font-size:12.5px; line-height:1.55;
+  }
+  .ll{ display:flex; gap:8px; white-space:pre-wrap; word-break:break-word; }
+  .ll .ts{ color:#5f6d80; flex:0 0 auto; }
+  .ll .dir{ flex:0 0 auto; font-weight:700; }
+  .ll.rx .dir{ color:var(--rx); } .ll.rx .txt{ color:#dbe6f3; }
+  .ll.tx .dir{ color:var(--tx); } .ll.tx .txt{ color:#a99cf0; }
+  .ll.sys .dir{ color:var(--warn); } .ll.sys .txt{ color:#e8c777; }
+  .ll.err .dir{ color:var(--err); } .ll.err .txt{ color:#ffb4b4; }
+  .ll.partial .txt::before{ content:"⋯ "; color:var(--muted); }
+  .logempty{ color:#4d5a6b; font-family:inherit; font-size:12.5px; }
+  .logfoot{ padding:6px 12px; font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); background:#12171f; }
+
+  /* ===================== 原始发送 ===================== */
+  .sendrow{ display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
+  .sendrow input[type=text]{ flex:1 1 220px; min-width:160px; font-family:var(--mono); }
+  .sendrow button{ min-height:40px; }
+  .opts{ display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-top:10px;
+         font-size:12px; color:var(--fg2); }
+  .opts label{ display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  input[type=checkbox]{ width:16px; height:16px; accent-color:var(--acc); cursor:pointer; }
+  .quick{ display:flex; gap:7px; flex-wrap:wrap; margin-top:10px; }
+  .quick button{ padding:5px 9px; font-size:12px; font-family:var(--mono); }
+
+  /* ===================== 命令表 ===================== */
+  table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  th,td{ text-align:left; padding:6px 10px; border-bottom:1px solid #232c3a; vertical-align:top; }
+  th{ background:#12171f; color:var(--fg2); font-size:11.5px; font-weight:600; position:sticky; top:0; }
+  td.k{ width:112px; font-family:var(--mono); color:#ffd166; white-space:nowrap; }
+  td.c{ width:150px; font-family:var(--mono); color:var(--muted); white-space:nowrap; }
+  tbody tr:hover{ background:#1b2230; }
+  /* 命令表不设内部滚动条：整表（含 =N）必须一次性全部可见 */
+  .tablewrap{ overflow:visible; }
+  .notes{ padding:10px 14px; border-top:1px solid var(--line); background:#12171f;
+          font-size:11.5px; color:var(--muted); }
+  .notes b{ color:var(--fg2); }
+  kbd{ background:#232c3a; border:1px solid var(--line2); border-bottom-width:2px;
+       border-radius:5px; padding:1px 6px; font-family:var(--mono); font-size:11.5px; color:#dbe6f3; }
+
+  @media (max-width:980px){
+    main{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ 顶栏 -->
+<div class="topbar">
+  <div class="brand">
+    <h1>FPGA 2D 渲染加速器 · 串口上位机</h1>
+    <div class="sub">Web Serial 免安装 · 单文件离线可用 · 单字符命令即时生效（无需回车）</div>
+  </div>
+
+  <div class="conn">
+    <div class="field">
+      <label for="baud">波特率</label>
+      <select id="baudSel" title="固件按 BSP 自行设定波特率，默认 115200">
+        <option value="9600">9600</option>
+        <option value="19200">19200</option>
+        <option value="38400">38400</option>
+        <option value="57600">57600</option>
+        <option value="115200" selected>115200（默认）</option>
+        <option value="230400">230400</option>
+      </select>
+    </div>
+    <button id="btnConnect" class="primary lg">连接</button>
+    <button id="btnDisconnect" class="lg" disabled>断开</button>
+    <div class="status">
+      <span id="dot" class="dot"></span>
+      <div>
+        <div class="txt" id="statusText">未连接</div>
+        <div class="msg" id="statusMsg">点击「连接」选择串口设备</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ 兼容性提示 -->
+<div id="notice" class="notice hidden">
+  <b id="noticeTitle">⚠ 当前环境不支持 Web Serial（navigator.serial 不存在），串口功能不可用。</b><br>
+  <span id="noticeBody">Web Serial 只在 Chrome / Edge <b>桌面版</b>可用，且需要<b>安全上下文</b>（用 file:// 直接打开本文件，或放到本地服务 localhost:8000 下访问）。
+  本页其余部分（界面预览、命令表）不受影响。</span>
+</div>
+
+<main>
+  <!-- ========================================================== 左列 -->
+  <div class="col">
+
+    <!-- ---------- N 精确设置 ---------- -->
+    <section class="card">
+      <h2>N 精确设置 <span class="hint">滑块 25–6000，步进 25 · 只有「应用」才真正写串口</span></h2>
+      <div class="body">
+        <div class="nrow">
+          <div class="nbig">
+            <span class="val" id="nBig">25</span>
+            <span class="unit">N（精灵/图元数）</span>
+          </div>
+          <div class="sliderwrap">
+            <input type="range" id="nRange" min="25" max="6000" step="25" value="25" aria-label="N 滑块">
+            <div class="scaleticks">
+              <span>25</span><span>1500</span><span>3000</span><span>4500</span><span>6000</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nctl">
+          <button id="btnNMinus" class="pbtn nowrap" style="min-height:40px;padding:6px 12px">
+            <span class="t">N −25</span><span class="s">发送 “-”</span>
+          </button>
+          <input type="number" id="nNum" class="num" min="25" max="6000" step="25" value="25" aria-label="N 数值">
+          <button id="btnNPlus" class="pbtn nowrap" style="min-height:40px;padding:6px 12px">
+            <span class="t">N +25</span><span class="s">发送 “+”</span>
+          </button>
+          <div class="sep"></div>
+          <button id="btnNApply" class="primary lg">应用 =N</button>
+        </div>
+
+        <div class="nstatus">
+          待发送：<span class="code" id="nPending">=25</span> ·
+          最近一次：<span class="code" id="nLast">—（尚未发送）</span> ·
+          固件回包形如 <span class="code">EV N=25</span>（固件钳位 25–6000）
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 预设命令 ---------- -->
+    <section class="card">
+      <h2>预设命令按钮 <span class="hint">点一下即发送，灰色小字为实际发送的字符与作用</span></h2>
+      <div class="body">
+
+        <div class="group">
+          <div class="group-h">场景 <span class="hint">发送 1 个字符，立即切换，无需回车</span></div>
+          <div class="btns cols-3">
+            <button class="pbtn" data-cmd="1"><span class="t">场景 1 · FILL</span><span class="s">发送 “1” · 不透明色块</span></button>
+            <button class="pbtn" data-cmd="2"><span class="t">场景 2 · ALPHA</span><span class="s">发送 “2” · 半透明混合</span></button>
+            <button class="pbtn" data-cmd="3"><span class="t">场景 3 · KEY</span><span class="s">发送 “3” · 色键精灵</span></button>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-h">渲染路径 <span class="hint">同屏对比 = 左半硬件 / 右半纯 CPU</span></div>
+          <div class="btns cols-3">
+            <button class="pbtn" data-cmd="s"><span class="t">路径 s · 同屏对比</span><span class="s">发送 “s” · SPLIT</span></button>
+            <button class="pbtn" data-cmd="c"><span class="t">路径 c · 纯 CPU</span><span class="s">发送 “c” · 仅软件渲染</span></button>
+            <button class="pbtn" data-cmd="h"><span class="t">路径 h · 纯硬件</span><span class="s">发送 “h” · 仅加速器</span></button>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-h">数量 N / 透明度 α <span class="hint">N 超出上限时固件回绕到下限</span></div>
+          <div class="btns cols-4">
+            <button class="pbtn" data-cmd="n"><span class="t">N +25</span><span class="s">发送 “n”</span></button>
+            <button class="pbtn" data-cmd="-"><span class="t">N −25</span><span class="s">发送 “-”</span></button>
+            <button class="pbtn" data-cmd="a"><span class="t">α −32</span><span class="s">发送 “a” · 更透明</span></button>
+            <button class="pbtn" data-cmd="A"><span class="t">α +32</span><span class="s">发送 “A” · 更不透明</span></button>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-h">物块尺寸 <span class="hint">k = 方块与图集精灵一起在 16x16 → 32x32 → 64x64 → 16x16 上循环，回包 <span class="mono">EV size=…</span></span></div>
+          <div class="btns">
+            <button class="pbtn" data-cmd="k" title="发送单字符命令 k：方块与精灵边长按 16x16 → 32x32 → 64x64 → 16x16 循环；固件按新尺寸重建图集、重新初始化场景并重铺两侧，回包形如 EV size=64">
+              <span class="t">物块尺寸 16→32→64 · 发送 “k”</span>
+              <span class="s">k · 方块/精灵边长 16x16 → 32x32 → 64x64（回包 EV size=16 / 32 / 64）</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-h">开关与动作 <span class="hint">e / t / l 为开关，回包含 =0 或 =1</span></div>
+          <div class="btns cols-4">
+            <button class="pbtn" data-cmd="e"><span class="t">清屏模式 e</span><span class="s">发送 “e” · 每趟整片重铺</span></button>
+            <button class="pbtn" data-cmd="t"><span class="t">帧率模式 t</span><span class="s">发送 “t” · 按帧 ⇄ 按时间</span></button>
+            <button class="pbtn" data-cmd="l" title="发送单字符命令 l：显示列表（DDR 描述符表）路径开关。默认 OFF = 每块一次 CPU 下发；打开后由硬件取指器从 DDR 展开描述符，信息条出现 L 标记。切换是“待生效”的：按键立刻回 EV dl on/off pending，在下一个帧边界（本帧那张表已被取指器消费完）才真正生效并回 EV dl on / EV dl off —— 所以列表模式开着时也能随时按 l 关掉，不用重启。出现 DL_ERR 会自动退回逐条路径并打印 EV DL_ERR"><span class="t">列表路径 l</span><span class="s">发送 “l” · DDR 描述符表 ⇄ 逐条下发（默认关，帧边界生效）</span></button>
+            <button class="pbtn" data-cmd="r"><span class="t">重置场景</span><span class="s">发送 “r” · 换种子</span></button>
+            <button class="pbtn" data-cmd="?"><span class="t">打印帮助</span><span class="s">发送 “?” · 固件帮助</span></button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ========================================================== 右列 -->
+  <div class="col">
+
+    <!-- ---------- 日志 ---------- -->
+    <section class="card">
+      <h2>日志面板 <span class="hint">时间戳 HH:MM:SS.mmm · 行缓冲</span>
+        <span class="spacer" style="margin-left:auto"></span>
+      </h2>
+      <div class="logbar">
+        <label><input type="checkbox" id="autoScroll" checked> 自动滚动</label>
+        <label><input type="checkbox" id="showTx" checked> 显示发送</label>
+        <span class="spacer"></span>
+        <span id="rxCount">RX 0 字节</span>
+        <button id="btnClear">清空</button>
+        <button id="btnSave">保存为 txt</button>
+      </div>
+      <div class="logbody" id="logBody" aria-live="polite"><div class="logempty" id="logEmpty">（等待串口数据…未连接时这里为空）</div></div>
+      <div class="logfoot" id="logFoot">就绪 · 尚未连接串口</div>
+    </section>
+
+    <!-- ---------- 原始发送 ---------- -->
+    <section class="card">
+      <h2>原始发送 <span class="hint">回车 = 发送 · Esc = 清空输入框</span></h2>
+      <div class="body">
+        <div class="sendrow">
+          <input type="text" id="rawInput" placeholder="例如：=1375  或  ?" autocomplete="off" spellcheck="false">
+          <button id="btnSend" class="primary">发送</button>
+        </div>
+        <div class="opts">
+          <label><input type="checkbox" id="appendNl" checked> 自动追加换行（发送 <span class="mono">\n</span>）</label>
+          <span>提示：单字符命令（1/2/3/s/c/h/n/-/a/A/e/t/k/l/r/?）不加换行也立即生效。</span>
+        </div>
+        <div class="quick">
+          <button data-quick="=100&#10;">=100</button>
+          <button data-quick="=500&#10;">=500</button>
+          <button data-quick="=1000&#10;">=1000</button>
+          <button data-quick="=1375&#10;">=1375</button>
+          <button data-quick="=6000&#10;">=6000</button>
+          <button data-quick="?">?</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 命令对照表 ---------- -->
+    <section class="card">
+      <h2>命令对照表 <span class="hint">与固件 FinalDemo 串口处理一致</span></h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>键 / 命令</th><th>功能</th><th>实际发送</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1</td><td>场景 FILL：不透明色块</td><td class="c">1</td></tr>
+            <tr><td class="k">2</td><td>场景 ALPHA：半透明混合</td><td class="c">2</td></tr>
+            <tr><td class="k">3</td><td>场景 KEY：color-key 精灵</td><td class="c">3</td></tr>
+            <tr><td class="k">s</td><td>渲染路径：同屏对比（SPLIT）</td><td class="c">s</td></tr>
+            <tr><td class="k">c</td><td>渲染路径：纯 CPU</td><td class="c">c</td></tr>
+            <tr><td class="k">h</td><td>渲染路径：纯硬件加速</td><td class="c">h</td></tr>
+            <tr><td class="k">n 或 +</td><td>N 增加 25</td><td class="c">n</td></tr>
+            <tr><td class="k">-</td><td>N 减少 25</td><td class="c">-</td></tr>
+            <tr><td class="k">a</td><td>透明度 alpha 减 32</td><td class="c">a</td></tr>
+            <tr><td class="k">A</td><td>透明度 alpha 加 32</td><td class="c">A</td></tr>
+            <tr><td class="k">e</td><td>每趟整片重铺（清屏模式）开关</td><td class="c">e</td></tr>
+            <tr><td class="k">t</td><td>帧率模式（按帧 ⇄ 按时间）开关</td><td class="c">t</td></tr>
+            <tr><td class="k">k</td><td><b>物块尺寸</b>：方块与图集精灵一起在 <b>16x16 → 32x32 → 64x64 → 16x16</b> 上循环（固件重建图集与 4x4 掩码、重新初始化场景并重铺两侧），回 <span class="mono">EV size=16/32/64</span></td><td class="c">k</td></tr>
+            <tr><td class="k">l</td><td><b>显示列表路径</b>：<b>DDR 描述符表</b>（硬件取指器展开）⇄ 每块一次 CPU 下发。<b>默认关</b>；按键回 <span class="mono">EV dl on/off pending</span>，在<b>下一个帧边界</b>真正生效（回 <span class="mono">EV dl on</span> / <span class="mono">EV dl off</span>），打开后信息条出现 <span class="mono">L</span> 标记。<b>列表模式开着时按 l 也能立刻关掉</b>（不必等表跑完、不用重启）；出 <span class="mono">DL_ERR</span> 会自动退回并停用（回 <span class="mono">EV DL_ERR …</span>）</td><td class="c">l</td></tr>
+            <tr><td class="k">r</td><td>重置场景（换种子）</td><td class="c">r</td></tr>
+            <tr><td class="k">?</td><td>打印固件帮助</td><td class="c">?</td></tr>
+            <tr><td class="k">=N ↵</td><td><b>精确设置 N</b>，固件钳位 25–6000，回 <span class="mono">EV N=&lt;值&gt;</span></td><td class="c">=1375\n</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="notes">
+        <b>无需回车：</b>上表中除 <span class="mono">=N</span> 之外的各行都是<b>单字符命令</b>，按下即执行。<br>
+        <b>=N 是行命令：</b>必须以 <span class="mono">\n</span>（换行 0x0A）结束，例如发送 <span class="mono">=1375\n</span> → 固件回 <span class="mono">EV N=1375</span>。<br>
+        <b>物块尺寸：</b><kbd>k</kbd> 在 <b>16x16 → 32x32 → 64x64 → 16x16</b> 上循环（方块与 ALPHA/KEY 的图集精灵一起变），固件按新尺寸重建图集（含 4x4 透明块掩码）、重新初始化场景并重铺两侧，回包 <span class="mono">EV size=16</span> / <span class="mono">EV size=32</span> / <span class="mono">EV size=64</span>；屏幕信息条左侧的 <span class="mono">SZ=</span> 字段同步显示当前值。三种尺寸下每像素的固定开销被更大的方块摊薄 ⇒ 64x64 的 Mpx/s 最高（可对着 1Hz 成本行 <span class="mono">EV cmd path done … cyc/sprite</span> 读）。<br>
+        <b>列表路径：</b><kbd>l</kbd> 在 <b>DDR 描述符表</b>（硬件取指器展开，省掉每块 9 次外设事务）与原来的<b>逐条下发</b>之间切换，<b>默认是逐条下发</b>（列表路径坏掉也不会让演示看起来死了）。切换是<b>待生效</b>的：按键立刻回 <span class="mono">EV dl on pending</span> / <span class="mono">EV dl off pending</span>，在<b>下一个帧边界</b>（本帧那张表已被取指器消费完、像素已写提交）才真正生效，生效时回 <span class="mono">EV dl on</span> / <span class="mono">EV dl off</span>（打开时另有一行 <span class="mono">DL_VERSION=… geom=… lists=…</span> 与一行清屏引擎累计计数 <span class="mono">clr fb=… to=… err=…</span>，用于确认"整片重铺是否又回到了引擎关键路径上"）；生效后信息条出现 <span class="mono">L</span> 标记，另有一次性读数 <span class="mono">EV dl 1st list: STATUS=… consumed=… perf=…</span>。<b>列表模式开着时按 <kbd>l</kbd> 也能立刻关掉</b>（旧版会因为"有表在飞"而拒绝、只能重启）；待生效期间再按一次 = 撤销（回 <span class="mono">EV dl … pending cancelled</span>）。一旦 <span class="mono">DL_ERR</span> 置位会打印 <span class="mono">EV DL_ERR code=… idx=… fault=…</span> 并自动退回逐条路径，再按 <kbd>l</kbd> 可重新启用；bitstream 早于 v2.11（<span class="mono">DL_VERSION</span> 读回 0）时回 <span class="mono">EV dl not supported …</span> 并保持关闭。<br>
+        <b>回包：</b>开机打印一次启动横幅；命令被接受时打印 <span class="mono">EV ...</span>（如 <span class="mono">EV scene=1</span>、<span class="mono">EV path=2 HW only</span>、<span class="mono">EV N=1375</span>、<span class="mono">EV size=64</span>）。<br>
+        <b>波特率：</b>固件按 BSP 自行设定（默认 115200 8N1）。日志出现乱码说明波特率不匹配，改回 115200 重连。
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+   * 0. 元素引用与小工具
+   * ============================================================ */
+  var $ = function (id) { return document.getElementById(id); };
+
+  var el = {
+    baudSel: $('baudSel'), btnConnect: $('btnConnect'), btnDisconnect: $('btnDisconnect'),
+    dot: $('dot'), statusText: $('statusText'), statusMsg: $('statusMsg'),
+    notice: $('notice'), noticeTitle: $('noticeTitle'), noticeBody: $('noticeBody'),
+    nBig: $('nBig'), nRange: $('nRange'), nNum: $('nNum'), btnNApply: $('btnNApply'),
+    btnNMinus: $('btnNMinus'), btnNPlus: $('btnNPlus'), nPending: $('nPending'), nLast: $('nLast'),
+    logBody: $('logBody'), logFoot: $('logFoot'), autoScroll: $('autoScroll'), showTx: $('showTx'),
+    rxCount: $('rxCount'), btnClear: $('btnClear'), btnSave: $('btnSave'),
+    rawInput: $('rawInput'), btnSend: $('btnSend'), appendNl: $('appendNl')
+  };
+
+  var N_MIN = 25, N_MAX = 6000, N_STEP = 25;   /* 与固件 FinalDemo.c 的 N_MIN/N_MAX/N_STEP 一致 */
+  var SUPPORTED = (typeof navigator !== 'undefined') && !!navigator.serial;
+  var SECURE = (typeof window !== 'undefined') && (window.isSecureContext !== false);
+
+  function pad(n, w) { var s = String(n); while (s.length < w) { s = '0' + s; } return s; }
+  function stamp() {
+    var d = new Date();
+    return pad(d.getHours(), 2) + ':' + pad(d.getMinutes(), 2) + ':' + pad(d.getSeconds(), 2) +
+           '.' + pad(d.getMilliseconds(), 3);
+  }
+  function clampN(v) {
+    v = Math.round(Number(v));
+    if (!isFinite(v)) { v = N_MIN; }
+    if (v < N_MIN) { v = N_MIN; }
+    if (v > N_MAX) { v = N_MAX; }
+    return v;
+  }
+
+  /* ============================================================
+   * 1. 日志面板
+   * ============================================================ */
+  var rawLines = [];       /* 保存 txt 用的纯文本行 */
+  var rxBytes = 0;
+  var MAX_LINES = 4000;
+
+  /* 把不可打印字符画出来，避免日志被控制字符搞乱 */
+  function visible(s) {
+    var out = '', i, c, ch;
+    for (i = 0; i < s.length; i++) {
+      ch = s.charAt(i); c = s.charCodeAt(i);
+      if (ch === '\t') { out += '    '; }
+      else if (c < 0x20 || c === 0x7f) { out += '\u27E8' + c.toString(16).toUpperCase() + '\u27E9'; }
+      else { out += ch; }
+    }
+    return out;
+  }
+
+  function append(kind, text, partial) {
+    var ph = $('logEmpty');
+    if (ph && ph.parentNode) { ph.parentNode.removeChild(ph); }
+
+    var line = document.createElement('div');
+    line.className = 'll ' + kind + (partial ? ' partial' : '');
+
+    var ts = document.createElement('span');
+    ts.className = 'ts'; ts.textContent = stamp();
+
+    var dir = document.createElement('span');
+    dir.className = 'dir';
+    dir.textContent = kind === 'rx' ? 'RX' : (kind === 'tx' ? 'TX' : (kind === 'err' ? 'ERR' : 'SYS'));
+
+    var txt = document.createElement('span');
+    txt.className = 'txt';
+    txt.textContent = visible(text) + (partial ? ' \u22EF' : '');
+
+    line.appendChild(ts); line.appendChild(dir); line.appendChild(txt);
+    el.logBody.appendChild(line);
+
+    var dirTag = kind === 'rx' ? 'RX' : (kind === 'tx' ? 'TX' : (kind === 'err' ? 'ERR' : 'SYS'));
+    rawLines.push('[' + ts.textContent + '] ' + dirTag + ' ' + (partial ? visible(text) + ' …' : visible(text)));
+    if (rawLines.length > MAX_LINES) { rawLines.shift(); }
+
+    while (el.logBody.childNodes.length > MAX_LINES) {
+      el.logBody.removeChild(el.logBody.firstChild);
+    }
+    if (el.autoScroll.checked) { el.logBody.scrollTop = el.logBody.scrollHeight; }
+  }
+
+  function sysLog(t) { append('sys', t); }
+  function errLog(t) { append('err', t); }
+
+  function setFoot(t) { el.logFoot.textContent = t; }
+
+  /* ============================================================
+   * 2. 行缓冲：把收到的分片拼回完整行
+   * ============================================================ */
+  var pending = '';       /* 尚未成行的残余 */
+  var flushTimer = null;
+
+  function emitLine(s, partial) {
+    if (s.length === 0) { return; }
+    append('rx', s, partial);
+  }
+
+  function feed(text) {
+    rxBytes += text.length;
+    el.rxCount.textContent = 'RX ' + rxBytes + ' 字节';
+
+    pending += text;
+    var out = '', i = 0, ch;
+    while (i < pending.length) {
+      ch = pending.charAt(i);
+      if (ch === '\n') { emitLine(out, false); out = ''; i++; }
+      else if (ch === '\r') {
+        /* 末尾的 \r 可能是被切开的一对 CRLF，留到下一片再判 */
+        if (i === pending.length - 1) { break; }
+        emitLine(out, false); out = '';
+        i += (pending.charAt(i + 1) === '\n') ? 2 : 1;
+      } else { out += ch; i++; }
+    }
+    pending = out + pending.slice(i);   /* 保留下一个待判字符 */
+
+    if (flushTimer) { clearTimeout(flushTimer); }
+    flushTimer = setTimeout(function () {
+      flushTimer = null;
+      if (pending.length) {
+        var p = pending.replace(/\r+$/, '');
+        pending = '';
+        if (p.length) { emitLine(p, true); }   /* 长时间没有换行 → 当半行显示 */
+      }
+    }, 400);
+  }
+
+  /* ============================================================
+   * 3. Web Serial 状态机
+   * ============================================================ */
+  var port = null, reader = null, writer = null;
+  var keepReading = false, readableClosed = null, writeChain = Promise.resolve();
+
+  function setStatus(kind, text, msg) {
+    el.dot.className = 'dot' + (kind === 'ok' ? ' on' : (kind === 'err' ? ' err' : (kind === 'wait' ? ' wait' : '')));
+    el.statusText.textContent = text;
+    el.statusMsg.textContent = msg || '';
+  }
+
+  function baud() { return parseInt(el.baudSel.value, 10) || 115200; }
+
+  function uiConnected(on) {
+    el.btnConnect.disabled = on || !SUPPORTED;
+    el.btnDisconnect.disabled = !on;
+    el.baudSel.disabled = on;
+  }
+
+  async function connect() {
+    if (!SUPPORTED) {
+      setStatus('err', '错误', '当前环境不支持 Web Serial');
+      errLog('当前环境不支持 Web Serial（navigator.serial 不存在），无法连接。');
+      return;
+    }
+    if (port) { return; }
+
+    setStatus('wait', '连接中…', '请在弹窗中选择串口设备');
+    sysLog('正在打开串口选择框…');
+    var p;
+    try {
+      p = await navigator.serial.requestPort();
+    } catch (e) {
+      if (e && e.name === 'NotFoundError') {
+        setStatus('', '未连接', '已取消选择串口');
+        sysLog('已取消选择串口。');
+      } else {
+        setStatus('err', '错误', (e && e.message) || String(e));
+        errLog('选择串口失败：' + ((e && e.message) || e));
+      }
+      return;
+    }
+
+    try {
+      await p.open({ baudRate: baud(), dataBits: 8, stopBits: 1, parity: 'none', flowControl: 'none', bufferSize: 8192 });
+    } catch (e) {
+      setStatus('err', '错误', (e && e.message) || String(e));
+      errLog('打开串口失败：' + ((e && e.message) || e) + '（设备可能被其它程序占用）');
+      return;
+    }
+
+    port = p;
+    uiConnected(true);
+    setStatus('ok', '已连接', '波特率 ' + baud() + ' · 8N1');
+    sysLog('已连接：波特率 ' + baud() + '，8 数据位 / 无校验 / 1 停止位。');
+
+    try {
+      writer = port.writable.getWriter();
+    } catch (e) {
+      errLog('获取写入通道失败：' + ((e && e.message) || e));
+    }
+
+    keepReading = true;
+    readLoop().catch(function (e) {                 /* 兜底，别让异常只进控制台 */
+      errLog('读取循环异常：' + ((e && e.message) || e));
+    });     /* 不 await：后台常驻读循环 */
+  }
+
+  async function readLoop() {
+    var dec = new TextDecoderStream();
+    var closed;
+    try {
+      closed = port.readable.pipeTo(dec.writable).catch(function () { /* 断开时的 AbortError 属正常 */ });
+    } catch (e) {
+      errLog('读取通道不可用：' + ((e && e.message) || e));
+      await teardown('读取通道不可用', true);
+      return;
+    }
+    readableClosed = closed;
+
+    var r = dec.readable.getReader();
+    reader = r;
+    try {
+      while (keepReading) {
+        var res = await r.read();
+        if (res.done) { break; }
+        if (res.value) { feed(res.value); }
+      }
+    } catch (e) {
+      if (keepReading) { errLog('读取中断：' + ((e && e.message) || e)); }
+    } finally {
+      try { r.releaseLock(); } catch (e2) { /* 已释放 */ }
+      reader = null;
+    }
+    try { await closed; } catch (e3) { /* 已捕获 */ }
+    if (keepReading) { await teardown('串口读取结束，设备可能已被拔出', true); }
+  }
+
+  async function teardown(reason, isErr) {
+    keepReading = false;
+    var p = port;
+    port = null;
+
+    try { if (reader) { var r = reader; reader = null; await r.cancel(); } } catch (e) { /* ignore */ }
+    try { if (readableClosed) { await readableClosed; } } catch (e) { /* ignore */ }
+    readableClosed = null;
+    try { if (writer) { var w = writer; writer = null; w.releaseLock(); } } catch (e) { /* ignore */ }
+    try { if (p) { await p.close(); } } catch (e) { /* 设备已拔出时 close 会抛错，忽略 */ }
+
+    if (flushTimer) { clearTimeout(flushTimer); flushTimer = null; }
+    if (pending.length) { var pp = pending.replace(/\r+$/, ''); pending = ''; if (pp.length) { emitLine(pp, true); } }
+
+    uiConnected(false);
+    if (isErr) {
+      setStatus('err', '错误', reason || '连接已断开');
+      errLog('连接断开：' + (reason || '未知原因') + ' —— 修复后可重新点击「连接」，无需刷新页面。');
+    } else {
+      setStatus('', '未连接', '已手动断开，可重新连接');
+      sysLog('已断开串口。');
+    }
+    setFoot(reason ? ('已断开 · ' + reason) : '已断开');
+  }
+
+  function disconnect() {
+    if (!port && !reader && !writer) { setStatus('', '未连接', '当前没有连接'); return; }
+    teardown('用户手动断开', false);
+  }
+
+  /* ---------- 发送 ---------- */
+  function writeStr(str) {
+    if (!port || !writer) {
+      errLog('未连接：命令 ' + JSON.stringify(str) + ' 未发送（请先点击「连接」）。');
+      setStatus('err', '错误', '尚未连接串口，命令未发送');
+      return Promise.resolve(false);
+    }
+    var bytes = new TextEncoder().encode(str);
+    writeChain = writeChain.then(function () {
+      if (!writer) { throw new Error('端口已关闭'); }
+      return writer.write(bytes);
+    }).then(function () {
+      if (el.showTx.checked) { append('tx', str); }
+      setFoot('已发送 ' + bytes.length + ' 字节');
+      return true;
+    }).catch(function (e) {
+      errLog('发送失败：' + ((e && e.message) || e));
+      teardown('发送失败：' + ((e && e.message) || e), true);
+      return false;
+    });
+    return writeChain;
+  }
+
+  /* 单字符命令：立即生效，不加换行 */
+  function sendChar(c) { return writeStr(c); }
+
+  /* ============================================================
+   * 4. 预设按钮
+   * ============================================================ */
+  Array.prototype.forEach.call(document.querySelectorAll('.pbtn[data-cmd]'), function (b) {
+    b.addEventListener('click', function () {
+      var c = b.getAttribute('data-cmd');
+      b.classList.add('hot');
+      setTimeout(function () { b.classList.remove('hot'); }, 220);
+      sendChar(c);
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-quick]'), function (b) {
+    b.addEventListener('click', function () {
+      writeStr(b.getAttribute('data-quick'));
+    });
+  });
+
+  /* ============================================================
+   * 5. N 滑块 / 数字框（输入只预览，应用才发送）
+   * ============================================================ */
+  function paintRange() {
+    var v = parseInt(el.nRange.value, 10);
+    var pct = ((v - N_MIN) / (N_MAX - N_MIN)) * 100;
+    el.nRange.style.setProperty('--fill', pct.toFixed(2) + '%');
+  }
+  function setN(v) {
+    v = clampN(v);
+    el.nRange.value = String(v);
+    el.nNum.value = String(v);
+    el.nBig.textContent = String(v);
+    el.nPending.textContent = '=' + v;
+    paintRange();
+  }
+  function curN() { return clampN(el.nRange.value); }
+
+  el.nRange.addEventListener('input', function () { setN(el.nRange.value); });      /* 只预览，不写串口 */
+  el.nRange.addEventListener('change', function () { setN(el.nRange.value); });     /* 松手仍不写串口 */
+  el.nNum.addEventListener('input', function () { setN(el.nNum.value); });
+  el.nNum.addEventListener('change', function () { setN(el.nNum.value); });
+  el.nNum.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter') { ev.preventDefault(); el.btnNApply.click(); }
+  });
+
+  el.btnNApply.addEventListener('click', function () {
+    var v = curN();
+    writeStr('=' + v + '\n').then(function (ok) {
+      if (ok) {
+        el.nLast.textContent = '=' + v + '（等待 EV N=' + v + '）';
+        setFoot('已发送 =' + v + ' + 换行');
+      }
+    });
+  });
+  el.btnNMinus.addEventListener('click', function () { sendChar('-'); });
+  el.btnNPlus.addEventListener('click', function () { sendChar('+'); });
+
+  /* ============================================================
+   * 6. 原始发送
+   * ============================================================ */
+  function doSend() {
+    var t = el.rawInput.value;
+    if (t.length === 0) { setFoot('输入为空，未发送'); return; }
+    writeStr(el.appendNl.checked ? (t + '\n') : t);
+  }
+  el.btnSend.addEventListener('click', doSend);
+  el.rawInput.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter') { ev.preventDefault(); doSend(); }
+    else if (ev.key === 'Escape') { ev.preventDefault(); el.rawInput.value = ''; setFoot('已清空输入框'); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && document.activeElement !== el.rawInput) { el.rawInput.value = ''; }
+  });
+
+  /* ============================================================
+   * 7. 日志工具按钮
+   * ============================================================ */
+  el.btnClear.addEventListener('click', function () {
+    el.logBody.textContent = '';
+    rawLines.length = 0; rxBytes = 0;
+    el.rxCount.textContent = 'RX 0 字节';
+    sysLog('日志已清空。');
+    setFoot('日志已清空');
+  });
+
+  el.btnSave.addEventListener('click', function () {
+    var d = new Date();
+    var name = 'serial_log_' + d.getFullYear() + pad(d.getMonth() + 1, 2) + pad(d.getDate(), 2) + '_' +
+               pad(d.getHours(), 2) + pad(d.getMinutes(), 2) + pad(d.getSeconds(), 2) + '.txt';
+    var head = '# FPGA 2D 加速器 串口日志\n# 导出时间: ' + d.toString() + '\n# 行数: ' + rawLines.length + '\n\n';
+    var blob = new Blob(['\uFEFF' + head + rawLines.join('\r\n') + '\r\n'], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    setFoot('已导出 ' + name + '（' + rawLines.length + ' 行）');
+  });
+
+  el.btnConnect.addEventListener('click', function () { connect(); });
+  el.btnDisconnect.addEventListener('click', function () { disconnect(); });
+
+  /* ============================================================
+   * 8. 设备热插拔
+   * ============================================================ */
+  if (SUPPORTED) {
+    try {
+      navigator.serial.addEventListener('disconnect', function (ev) {
+        var p = ev.target || ev.port || null;
+        if (!port || p === port) { teardown('串口设备已被拔出', true); }
+        else { sysLog('另一个串口设备已拔出。'); }
+      });
+      navigator.serial.addEventListener('connect', function () {
+        sysLog('检测到串口设备已插入，可点击「连接」。');
+      });
+    } catch (e) { /* 老版本 Chrome 无 addEventListener，忽略 */ }
+  }
+
+  /* 兜底：不让异常只出现在 F12 控制台里 */
+  window.addEventListener('error', function (ev) {
+    try { errLog('页面异常：' + (ev.message || '未知错误')); } catch (e) { /* 不能再抛 */ }
+  });
+  window.addEventListener('unhandledrejection', function (ev) {
+    try {
+      var r = ev.reason;
+      errLog('未处理的 Promise 异常：' + ((r && r.message) || r));
+    } catch (e) { /* 不能再抛 */ }
+  });
+
+  /* ============================================================
+   * 9. 初始化
+   * ============================================================ */
+  function init() {
+    /* 滑块/数字框的范围与固件协议保持单一来源 */
+    el.nRange.min = N_MIN; el.nRange.max = N_MAX; el.nRange.step = N_STEP;
+    el.nNum.min = N_MIN;   el.nNum.max = N_MAX;   el.nNum.step = N_STEP;
+    setN(N_MIN);                       /* 固件开机默认 N=25（N_MIN） */
+    el.nLast.textContent = '—（尚未发送）';
+
+    if (!SUPPORTED || !SECURE) {
+      /* 特性检测失败：给出中文提示，界面降级但绝不抛异常 */
+      if (!SUPPORTED) {
+        el.noticeTitle.textContent = '⚠ 当前环境不支持 Web Serial（navigator.serial 不存在），串口功能不可用。';
+        el.noticeBody.innerHTML = 'Web Serial 只在 Chrome / Edge <b>桌面版</b>可用，且需要<b>安全上下文</b>' +
+          '（用 file:// 直接打开本文件，或放到本地服务 localhost:8000 下访问）。本页其余部分（界面预览、命令表）不受影响。';
+        sysLog('检测到 navigator.serial 不存在：Web Serial 只在 Chrome / Edge 桌面版可用，且需要安全上下文（file:// 或本地 localhost 服务）。');
+      } else {
+        el.noticeTitle.textContent = '⚠ 当前页面不是安全上下文（isSecureContext = false），Web Serial 被禁用。';
+        el.noticeBody.innerHTML = '请改用 file:// 直接打开本文件，或放到本地服务 localhost:8000 下访问。';
+        sysLog('当前页面不是安全上下文：Web Serial 不可用，请用 file:// 或 localhost 服务打开。');
+      }
+      el.notice.classList.remove('hidden');
+      el.btnConnect.disabled = true;
+      setStatus('err', '错误', '此浏览器不支持 Web Serial');
+      sysLog('界面预览与命令对照表仍可查看；串口相关按钮已禁用，页面未报错。');
+      setFoot('未连接 · 当前环境不支持 Web Serial');
+    } else {
+      el.notice.classList.add('hidden');
+      el.btnConnect.disabled = false;
+      setStatus('', '未连接', '点击「连接」选择串口设备');
+      sysLog('就绪：点击右上角「连接」选择串口（默认 115200 8N1）。');
+      setFoot('就绪 · 等待连接串口');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

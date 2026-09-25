@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AdDemo · FPGA 2D 加速器（纯硬件渲染）串口上位机</title>
+<style>
+  /* ===================== 全局 / 暗色主题 ===================== */
+  :root{
+    --bg:#0e1116; --bg2:#141922; --card:#171d27; --card2:#1d2431;
+    --line:#2a3444; --line2:#3a4658;
+    --fg:#e7ecf3; --fg2:#aab6c6; --muted:#7f8ea3;
+    --acc:#4f8cff; --acc2:#2f6fe0;
+    --ok:#34d399; --warn:#fbbf24; --err:#f87171; --rx:#7dd3fc; --tx:#c4b5fd;
+    --mono: ui-monospace, SFMono-Regular, Consolas, "Cascadia Mono", "Courier New", monospace;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:linear-gradient(180deg,#0e1116 0%, #10151d 100%);
+    color:var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    font-size:14px; line-height:1.45;
+    min-height:100vh;
+  }
+  h1,h2,h3{ margin:0; font-weight:650; }
+  code,.mono{ font-family:var(--mono); }
+
+  /* ===================== 顶栏 ===================== */
+  .topbar{
+    display:flex; flex-wrap:wrap; align-items:center; gap:14px;
+    padding:12px 18px; background:rgba(20,25,34,.92);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; margin-right:auto; min-width:260px; }
+  .brand h1{ font-size:17px; letter-spacing:.2px; }
+  .brand .sub{ font-size:11.5px; color:var(--muted); }
+
+  .conn{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .field{ display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--fg2); }
+  select,input[type=text],input[type=number]{
+    background:#0c1017; color:var(--fg); border:1px solid var(--line2);
+    border-radius:8px; padding:8px 10px; font-size:14px; font-family:inherit;
+  }
+  select:focus,input:focus,button:focus-visible{ outline:2px solid var(--acc); outline-offset:1px; }
+  select{ min-width:118px; }
+
+  button{
+    font-family:inherit; font-size:14px; color:var(--fg); cursor:pointer;
+    background:var(--card2); border:1px solid var(--line2); border-radius:9px;
+    padding:9px 14px; transition:background .12s,border-color .12s,transform .06s;
+  }
+  button:hover:not(:disabled){ background:#26314a; border-color:#4a5a75; }
+  button:active:not(:disabled){ transform:translateY(1px); }
+  button:disabled{ opacity:.45; cursor:not-allowed; }
+  button.primary{ background:var(--acc2); border-color:#4f8cff; font-weight:600; }
+  button.primary:hover:not(:disabled){ background:#3d80f5; }
+  button.danger{ background:#4a2230; border-color:#8a3b4f; }
+  button.danger:hover:not(:disabled){ background:#5d2a3c; }
+  button.lg{ min-height:44px; }
+
+  /* 状态灯 */
+  .status{ display:flex; align-items:center; gap:8px; min-width:210px;
+           background:#0c1017; border:1px solid var(--line2); border-radius:9px; padding:8px 12px; }
+  .dot{ width:11px; height:11px; border-radius:50%; background:#5b6879; flex:0 0 auto;
+        box-shadow:0 0 0 3px rgba(91,104,121,.16); }
+  .dot.on{ background:var(--ok); box-shadow:0 0 0 3px rgba(52,211,153,.2); }
+  .dot.err{ background:var(--err); box-shadow:0 0 0 3px rgba(248,113,113,.2); }
+  .dot.wait{ background:var(--warn); box-shadow:0 0 0 3px rgba(251,191,36,.2); }
+  .status .txt{ font-size:13px; font-weight:600; }
+  .status .msg{ font-size:11.5px; color:var(--muted); max-width:340px; }
+
+  /* ===================== 提示条 ===================== */
+  .notice{
+    margin:12px 18px 0; padding:11px 14px; border-radius:10px;
+    background:rgba(251,191,36,.09); border:1px solid rgba(251,191,36,.45);
+    color:#ffe6a8; font-size:13px;
+  }
+  .notice b{ color:#ffd166; }
+  .notice.hidden{ display:none; }
+
+  /* ===================== 主栅格 ===================== */
+  main{
+    display:grid; grid-template-columns:minmax(0,1.06fr) minmax(0,1fr);
+    gap:14px; padding:14px 18px 22px; align-items:start;
+  }
+  .col{ display:flex; flex-direction:column; gap:14px; min-width:0; }
+
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .card > h2{
+    font-size:13px; padding:10px 14px; background:var(--bg2);
+    border-bottom:1px solid var(--line); color:var(--fg);
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .card > h2 .hint{ font-weight:400; font-size:11.5px; color:var(--muted); }
+  .card .body{ padding:13px 14px; }
+
+  /* ===================== N 精确设置 ===================== */
+  .nrow{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .nbig{ display:flex; align-items:baseline; gap:8px; min-width:170px; }
+  .nbig .val{ font-family:var(--mono); font-size:34px; font-weight:700; color:var(--acc);
+              line-height:1; letter-spacing:.5px; }
+  .nbig .unit{ font-size:12px; color:var(--muted); }
+  .sliderwrap{ flex:1 1 300px; min-width:240px; }
+  input[type=range]{ width:100%; height:30px; background:transparent; -webkit-appearance:none; appearance:none; }
+  input[type=range]::-webkit-slider-runnable-track{ height:8px; border-radius:6px;
+    background:linear-gradient(90deg,#2f6fe0 0%, #4f8cff var(--fill,7%), #232c3a var(--fill,7%), #232c3a 100%); }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none;
+    width:24px; height:24px; margin-top:-8px; border-radius:50%;
+    background:#fff; border:3px solid var(--acc); cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.5); }
+  input[type=range]:focus-visible::-webkit-slider-thumb{ outline:2px solid #fff; }
+  .scaleticks{ display:flex; justify-content:space-between; font-size:11px; color:var(--muted);
+               font-family:var(--mono); margin-top:-2px; }
+  .nctl{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .nctl .num{ width:104px; text-align:center; font-family:var(--mono); font-size:16px; }
+  .nctl .sep{ width:1px; height:26px; background:var(--line); margin:0 2px; }
+  .nstatus{ margin-top:10px; font-size:11.5px; color:var(--muted); }
+  .nstatus .code{ color:var(--fg2); }
+
+  /* ===================== 预设按钮 ===================== */
+  .group{ margin-bottom:13px; }
+  .group:last-child{ margin-bottom:0; }
+  .group-h{ font-size:12px; color:var(--fg2); margin-bottom:7px; display:flex; gap:8px; align-items:baseline; }
+  .group-h .hint{ font-size:11px; color:var(--muted); }
+  .btns{ display:grid; gap:9px; }
+  .cols-2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .cols-3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .cols-4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .pbtn{ display:flex; flex-direction:column; align-items:flex-start; gap:3px;
+         padding:9px 11px; min-height:56px; text-align:left; line-height:1.25; }
+  .pbtn .t{ font-size:13.5px; font-weight:600; white-space:nowrap; }
+  .pbtn .s{ font-size:11px; color:var(--muted); font-family:var(--mono); }
+  .pbtn.nowrap .s{ white-space:nowrap; }
+  .pbtn:hover:not(:disabled) .s{ color:#a9b8cc; }
+  .pbtn.hot{ border-color:var(--acc); box-shadow:0 0 0 1px rgba(79,140,255,.45) inset; }
+
+  /* ===================== 日志 ===================== */
+  .logbar{ display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+           padding:8px 12px; background:#12171f; border-bottom:1px solid var(--line); font-size:12px; color:var(--fg2); }
+  .logbar label{ display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .logbar .spacer{ margin-left:auto; }
+  .logbar button{ padding:6px 11px; font-size:12.5px; }
+  .logbody{
+    height:326px; min-height:150px; resize:vertical; overflow:auto;
+    padding:9px 11px; background:#0b0f15; font-family:var(--mono); font-size:12.5px; line-height:1.55;
+  }
+  .ll{ display:flex; gap:8px; white-space:pre-wrap; word-break:break-word; }
+  .ll .ts{ color:#5f6d80; flex:0 0 auto; }
+  .ll .dir{ flex:0 0 auto; font-weight:700; }
+  .ll.rx .dir{ color:var(--rx); } .ll.rx .txt{ color:#dbe6f3; }
+  .ll.tx .dir{ color:var(--tx); } .ll.tx .txt{ color:#a99cf0; }
+  .ll.sys .dir{ color:var(--warn); } .ll.sys .txt{ color:#e8c777; }
+  .ll.err .dir{ color:var(--err); } .ll.err .txt{ color:#ffb4b4; }
+  .ll.partial .txt::before{ content:"⋯ "; color:var(--muted); }
+  .logempty{ color:#4d5a6b; font-family:inherit; font-size:12.5px; }
+  .logfoot{ padding:6px 12px; font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); background:#12171f; }
+
+  /* ===================== 原始发送 ===================== */
+  .sendrow{ display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
+  .sendrow input[type=text]{ flex:1 1 220px; min-width:160px; font-family:var(--mono); }
+  .sendrow button{ min-height:40px; }
+  .opts{ display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-top:10px;
+         font-size:12px; color:var(--fg2); }
+  .opts label{ display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  input[type=checkbox]{ width:16px; height:16px; accent-color:var(--acc); cursor:pointer; }
+  .quick{ display:flex; gap:7px; flex-wrap:wrap; margin-top:10px; }
+  .quick button{ padding:5px 9px; font-size:12px; font-family:var(--mono); }
+
+  /* ===================== 命令表 ===================== */
+  table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  th,td{ text-align:left; padding:6px 10px; border-bottom:1px solid #232c3a; vertical-align:top; }
+  th{ background:#12171f; color:var(--fg2); font-size:11.5px; font-weight:600; position:sticky; top:0; }
+  td.k{ width:112px; font-family:var(--mono); color:#ffd166; white-space:nowrap; }
+  td.c{ width:150px; font-family:var(--mono); color:var(--muted); white-space:nowrap; }
+  tbody tr:hover{ background:#1b2230; }
+  /* 命令表不设内部滚动条：整表（含 =N）必须一次性全部可见 */
+  .tablewrap{ overflow:visible; }
+  .notes{ padding:10px 14px; border-top:1px solid var(--line); background:#12171f;
+          font-size:11.5px; color:var(--muted); }
+  .notes b{ color:var(--fg2); }
+  kbd{ background:#232c3a; border:1px solid var(--line2); border-bottom-width:2px;
+       border-radius:5px; padding:1px 6px; font-family:var(--mono); font-size:11.5px; color:#dbe6f3; }
+
+  @media (max-width:980px){
+    main{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ 顶栏 -->
+<div class="topbar">
+  <div class="brand">
+    <h1>AdDemo · 2D 加速器纯硬件渲染上位机</h1>
+    <div class="sub">Web Serial 免安装 · 单文件离线可用 · 单字符命令即时生效（无需回车） · 固件 AdDemo.c（屏幕上一个 CPU 像素都没有）</div>
+  </div>
+
+  <div class="conn">
+    <div class="field">
+      <label for="baud">波特率</label>
+      <select id="baudSel" title="固件按 BSP 自行设定波特率，默认 115200">
+        <option value="9600">9600</option>
+        <option value="19200">19200</option>
+        <option value="38400">38400</option>
+        <option value="57600">57600</option>
+        <option value="115200" selected>115200（默认）</option>
+        <option value="230400">230400</option>
+      </select>
+    </div>
+    <button id="btnConnect" class="primary lg">连接</button>
+    <button id="btnDisconnect" class="lg" disabled>断开</button>
+    <div class="status">
+      <span id="dot" class="dot"></span>
+      <div>
+        <div class="txt" id="statusText">未连接</div>
+        <div class="msg" id="statusMsg">点击「连接」选择串口设备</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ 兼容性提示 -->
+<div id="notice" class="notice hidden">
+  <b id="noticeTitle">⚠ 当前环境不支持 Web Serial（navigator.serial 不存在），串口功能不可用。</b><br>
+  <span id="noticeBody">Web Serial 只在 Chrome / Edge <b>桌面版</b>可用，且需要<b>安全上下文</b>（用 file:// 直接打开本文件，或放到本地服务 localhost:8000 下访问）。
+  本页其余部分（界面预览、命令表）不受影响。</span>
+</div>
+
+<main>
+  <!-- ========================================================== 左列 -->
+  <div class="col">
+
+    <!-- ---------- N 精确设置 ---------- -->
+    <section class="card">
+      <h2>N 精确设置 <span class="hint">滑块 16–6000（步进 16）· 数字框可填任意精确值 · 只有「应用」才真正写串口</span></h2>
+      <div class="body">
+        <div class="nrow">
+          <div class="nbig">
+            <span class="val" id="nBig">320</span>
+            <span class="unit">N（每帧精灵数）</span>
+          </div>
+          <div class="sliderwrap">
+            <input type="range" id="nRange" min="16" max="6000" step="16" value="320" aria-label="N 滑块">
+            <div class="scaleticks">
+              <span>16</span><span>1500</span><span>3000</span><span>4500</span><span>6000</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nctl">
+          <button id="btnNMinus" class="pbtn nowrap" style="min-height:40px;padding:6px 12px">
+            <span class="t">N −32</span><span class="s">发送 “-”</span>
+          </button>
+          <input type="number" id="nNum" class="num" min="16" max="6000" step="16" value="320" aria-label="N 数值">
+          <button id="btnNPlus" class="pbtn nowrap" style="min-height:40px;padding:6px 12px">
+            <span class="t">N +32</span><span class="s">发送 “+”</span>
+          </button>
+          <div class="sep"></div>
+          <button id="btnNApply" class="primary lg">应用 =N</button>
+        </div>
+
+        <div class="nstatus">
+          待发送：<span class="code" id="nPending">=320</span> ·
+          最近一次：<span class="code" id="nLast">—（尚未发送）</span> ·
+          固件回包形如 <span class="code">EV N=320</span>（固件钳位 16–6000；'+'/'-' 只钳不绕）
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 预设命令 ---------- -->
+    <section class="card">
+      <h2>预设命令按钮 <span class="hint">点一下即发送，灰色小字为实际发送的字符与作用</span></h2>
+      <div class="body">
+
+        <div class="group">
+          <div class="group-h">场景（固件 AdDemo，全部由加速器绘制） <span class="hint">发送 1 个字符，立即切换，无需回车</span></div>
+          <div class="btns cols-3">
+            <button class="pbtn" data-cmd="1" title="场景 1 GLOW：ARGB4444 辉光粒子 + 加算混合 + 每精灵 alpha（走 ATTR 属性侧口）"><span class="t">1 · GLOW 辉光粒子</span><span class="s">发送 “1” · 加算混合的发光粒子场</span></button>
+            <button class="pbtn" data-cmd="2" title="场景 2 FADE：扫描输出颜色 LUT 全屏淡到黑再淡回来（零 DDR 带宽）"><span class="t">2 · FADE 淡入淡出</span><span class="s">发送 “2” · LUT 全屏 fade</span></button>
+            <button class="pbtn" data-cmd="3" title="场景 3 CLIP：scissor 把 playfield 锁在中央矩形，HUD 侧栏画在矩形外"><span class="t">3 · CLIP 裁剪</span><span class="s">发送 “3” · scissor + HUD 侧栏</span></button>
+          </div>
+          <div class="btns cols-2" style="margin-top:8px">
+            <button class="pbtn" data-cmd="4" title="场景 4 LAYER：整幅背景 COPY + 大量加算辉光 + 周期性白闪"><span class="t">4 · LAYER 分层</span><span class="s">发送 “4” · 背景大图 + 辉光 + 白闪</span></button>
+            <button class="pbtn" data-cmd="5" title="场景 5 THRU：把精灵数顶到帧预算边缘，屏幕直读 FPS / N / Mpx/s / 引擎占用"><span class="t">5 · THRU 吞吐</span><span class="s">发送 “5” · 压测 + 自动爬坡</span></button>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-h">数量 N <span class="hint">步进 32，钳位 16–6000（'+'/'n' 到顶不再回绕）</span></div>
+          <div class="btns cols-4">
+            <button class="pbtn" data-cmd="n"><span class="t">N +32</span><span class="s">发送 “n”</span></button>
+            <button class="pbtn" data-cmd="-"><span class="t">N −32</span><span class="s">发送 “-”</span></button>
+            <button class="pbtn" data-cmd="+"><span class="t">N +32（加号）</span><span class="s">发送 “+” · 与 n 等效</span></button>
+            <button class="pbtn" data-cmd="q" title="场景 5 的自动爬坡：每秒按屏幕上的 FPS 调 N，掉到 52fps 以下退一大步、稳在 58fps 以上进一步"><span class="t">自动爬坡 q</span><span class="s">发送 “q” · 场景 5 自动调 N</span></button>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-h">精灵尺寸 / 主 alpha <span class="hint">k = 精灵边长在 16 → 32 → 64 → 16 上循环，图集与场景一起重建，回包 <span class="mono">EV size=…</span></span></div>
+          <div class="btns cols-3">
+            <button class="pbtn" data-cmd="k" title="发送单字符命令 k：精灵边长按 16x16 → 32x32 → 64x64 → 16x16 循环；固件按新尺寸重建三张图集、重新初始化场景并补铺三块缓冲，回包形如 EV size=64">
+              <span class="t">精灵尺寸 16→32→64 · 发送 “k”</span>
+              <span class="s">k · 回包 EV size=16 / 32 / 64（信息条 SZ= 同步）</span>
+            </button>
+            <button class="pbtn" data-cmd="a"><span class="t">主 alpha −32</span><span class="s">发送 “a” · 更透明</span></button>
+            <button class="pbtn" data-cmd="A"><span class="t">主 alpha +32</span><span class="s">发送 “A” · 更亮</span></button>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="group-h">效果 / 开关（A/B 用） <span class="hint">f / x / y / q 为开关，回包含 =0 或 =1</span></div>
+          <div class="btns cols-4">
+            <button class="pbtn" data-cmd="f" title="LUT 全屏特效总开关：关掉之后 fade 与白闪都停用，LUT 回到旁路（= 今天的行为）"><span class="t">LUT 特效 f</span><span class="s">发送 “f” · fade + 白闪 开/关</span></button>
+            <button class="pbtn" data-cmd="b" title="立刻触发一次白闪（220ms 衰减）"><span class="t">闪一下 b</span><span class="s">发送 “b” · 手动白闪</span></button>
+            <button class="pbtn" data-cmd="x" title="scissor 开关（只在场景 3 生效）：关掉后 playfield 的精灵与整屏扫掠条会立刻糊到 HUD 侧栏上 —— 最直观的裁剪 A/B"><span class="t">scissor x</span><span class="s">发送 “x” · 裁剪 开/关（场景 3 A/B）</span></button>
+            <button class="pbtn" data-cmd="y" title="属性侧口开关：关掉后一条 ATTR_PORT 都不写，硬件看到空 FIFO ⇒ 默认 blend0/RGB565/ga255，辉光降级成普通半透明"><span class="t">属性侧口 y</span><span class="s">发送 “y” · ATTR on/off（A/B）</span></button>
+            <button class="pbtn" data-cmd="t"><span class="t">帧率模式 t</span><span class="s">发送 “t” · 按帧 ⇄ 按时间推进</span></button>
+            <button class="pbtn" data-cmd="r"><span class="t">重置场景</span><span class="s">发送 “r” · 换种子</span></button>
+            <button class="pbtn" data-cmd="?"><span class="t">打印帮助</span><span class="s">发送 “?” · 固件帮助</span></button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ========================================================== 右列 -->
+  <div class="col">
+
+    <!-- ---------- 日志 ---------- -->
+    <section class="card">
+      <h2>日志面板 <span class="hint">时间戳 HH:MM:SS.mmm · 行缓冲</span>
+        <span class="spacer" style="margin-left:auto"></span>
+      </h2>
+      <div class="logbar">
+        <label><input type="checkbox" id="autoScroll" checked> 自动滚动</label>
+        <label><input type="checkbox" id="showTx" checked> 显示发送</label>
+        <span class="spacer"></span>
+        <span id="rxCount">RX 0 字节</span>
+        <button id="btnClear">清空</button>
+        <button id="btnSave">保存为 txt</button>
+      </div>
+      <div class="logbody" id="logBody" aria-live="polite"><div class="logempty" id="logEmpty">（等待串口数据…未连接时这里为空）</div></div>
+      <div class="logfoot" id="logFoot">就绪 · 尚未连接串口</div>
+    </section>
+
+    <!-- ---------- 原始发送 ---------- -->
+    <section class="card">
+      <h2>原始发送 <span class="hint">回车 = 发送 · Esc = 清空输入框</span></h2>
+      <div class="body">
+        <div class="sendrow">
+          <input type="text" id="rawInput" placeholder="例如：=1500  或  ?" autocomplete="off" spellcheck="false">
+          <button id="btnSend" class="primary">发送</button>
+        </div>
+        <div class="opts">
+          <label><input type="checkbox" id="appendNl" checked> 自动追加换行（发送 <span class="mono">\n</span>）</label>
+          <span>提示：单字符命令（1-5/n/+/-/a/A/k/t/f/b/x/y/q/r/?）不加换行也立即生效。</span>
+        </div>
+        <div class="quick">
+          <button data-quick="=256&#10;">=256</button>
+          <button data-quick="=512&#10;">=512</button>
+          <button data-quick="=1024&#10;">=1024</button>
+          <button data-quick="=2048&#10;">=2048</button>
+          <button data-quick="=6000&#10;">=6000</button>
+          <button data-quick="?">?</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 命令对照表 ---------- -->
+    <section class="card">
+      <h2>命令对照表 <span class="hint">与固件 AdDemo.c 串口处理逐条一致</span></h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>键 / 命令</th><th>功能</th><th>实际发送</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1</td><td>场景 <b>GLOW</b>：ARGB4444 辉光粒子 + <b>加算混合</b> + 每精灵 alpha（每个精灵一个 ATTR 属性字）</td><td class="c">1</td></tr>
+            <tr><td class="k">2</td><td>场景 <b>FADE</b>：扫描输出颜色 LUT 全屏淡到黑再淡回来（零 DDR 带宽）</td><td class="c">2</td></tr>
+            <tr><td class="k">3</td><td>场景 <b>CLIP</b>：scissor 把 playfield 锁在中央矩形 [200,760)x[112,488)，HUD 侧栏画在矩形外</td><td class="c">3</td></tr>
+            <tr><td class="k">4</td><td>场景 <b>LAYER</b>：整幅背景 COPY（大图搬移）+ 大量加算辉光 + 每 3s 白闪</td><td class="c">4</td></tr>
+            <tr><td class="k">5</td><td>场景 <b>THRU</b>：吞吐压测（默认打开自动爬坡，把 N 顶到帧预算边缘）</td><td class="c">5</td></tr>
+            <tr><td class="k">n 或 +</td><td>N 增加 <b>32</b>（到 6000 只钳不绕），回 <span class="mono">EV N=…</span></td><td class="c">n</td></tr>
+            <tr><td class="k">-</td><td>N 减少 <b>32</b>（到 16 只钳不绕），回 <span class="mono">EV N=…</span></td><td class="c">-</td></tr>
+            <tr><td class="k">a</td><td>主 alpha 减 32（乘到每精灵 alpha 上）</td><td class="c">a</td></tr>
+            <tr><td class="k">A</td><td>主 alpha 加 32</td><td class="c">A</td></tr>
+            <tr><td class="k">k</td><td><b>精灵尺寸</b>：<b>16x16 → 32x32 → 64x64 → 16x16</b> 循环；固件重建三张图集（RGB565 圆盘 / ARGB4444 辉光 / 8x8 字形）、重新初始化场景并补铺三块缓冲，回 <span class="mono">EV size=16/32/64</span>，信息条 <span class="mono">SZ=</span> 同步</td><td class="c">k</td></tr>
+            <tr><td class="k">t</td><td>推进模式：按墙钟（25 步/秒）⇄ 每发布一帧推进一步</td><td class="c">t</td></tr>
+            <tr><td class="k">f</td><td><b>LUT 全屏特效总开关</b>（fade + 白闪）。关掉 ⇒ LUT 旁路 = 今天的行为</td><td class="c">f</td></tr>
+            <tr><td class="k">b</td><td>立刻来一次白闪（220ms 衰减）</td><td class="c">b</td></tr>
+            <tr><td class="k">x</td><td><b>scissor 开关</b>（只在场景 3 生效）。关掉后 playfield 与整屏扫掠条会糊到 HUD 侧栏上 —— 裁剪的 A/B</td><td class="c">x</td></tr>
+            <tr><td class="k">y</td><td><b>属性侧口开关</b>。关掉后固件<b>一个 ATTR 字都不写</b>，硬件看到空 FIFO ⇒ 默认 blend0/RGB565/ga255，辉光降级成普通半透明 —— 属性流的 A/B</td><td class="c">y</td></tr>
+            <tr><td class="k">q</td><td>场景 5 自动爬坡开关（按屏幕上的 FPS 每秒调一次 N）</td><td class="c">q</td></tr>
+            <tr><td class="k">r</td><td>重置场景（换种子）</td><td class="c">r</td></tr>
+            <tr><td class="k">?</td><td>打印固件帮助</td><td class="c">?</td></tr>
+            <tr><td class="k">=N ↵</td><td><b>精确设置 N</b>，固件钳位 <b>16–6000</b>，回 <span class="mono">EV N=&lt;值&gt;</span></td><td class="c">=1500\n</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="notes">
+        <b>无需回车：</b>上表中除 <span class="mono">=N</span> 之外的各行都是<b>单字符命令</b>，按下即执行。<br>
+        <b>=N 是行命令：</b>必须以 <span class="mono">\n</span>（换行 0x0A）结束，例如发送 <span class="mono">=1500\n</span> → 固件回 <span class="mono">EV N=1500</span>（超出 16–6000 只钳不拒）。<br>
+        <b>AdDemo 与 FinalDemo 的区别：</b>AdDemo <b>没有任何 CPU 像素渲染</b> —— 屏幕上的每一个像素（含 y&lt;16 那一条信息条的字形）都由加速器的 FILL/COPY/ALPHA/KEY 指令写出来；CPU 只做"组命令流 + 调度清屏引擎 + 帧边界发布 + 串口/UI"。<br>
+        <b>信息条读数（屏上 y&lt;16 那条，全部由引擎画的）：</b><span class="mono">FPS=</span> 已发布帧率（翻转被扫描输出确认生效的次数/秒）· <span class="mono">N=</span> 每帧精灵数 · <span class="mono">SZ=</span> 精灵边长 · <span class="mono">MPX=</span> 等效像素吞吐 = <span class="mono">N*SZ*SZ*FPS/1e6</span> · <span class="mono">B=</span> 引擎占用率（主循环采样 BLT_STATUS 得到）· 场景名 · <span class="mono">A=</span> 主 alpha · 标记 <span class="mono">FR</span>(按帧推进) <span class="mono">F</span>(LUT 特效) <span class="mono">X</span>(scissor) <span class="mono">Y</span>(属性侧口) <span class="mono">Q</span>(自动爬坡)。最坏串 61 字符 = 488px，黑底铺到 584px，右标签从 904px 起，互不重叠。<br>
+        <b>成本行：</b>固件每秒最多打一行 <span class="mono">EV cmd path done: n=… cycles=… cyc/sprite=…</span>（本趟起点 → 引擎空闲的墙钟 core 拍数），与 FinalDemo 同口径同格式。<br>
+        <b>属性侧口协议（固件侧纪律）：</b>每个精灵先写 <span class="mono">ATTR_PORT(0x8C)</span> 一个 32bit 属性字，再写命令的 8 个字；引擎每条命令弹一个属性字，<b>所以要么每条命令都写、要么一条都不写</b>（混合写必然错位）。FIFO 为空 = 默认 <span class="mono">blend 0 / RGB565 / global_alpha 255</span>（等价字 <span class="mono">0x00003FC0</span>）。位域：<span class="mono">[3:0]</span> 混合模式（0 默认 / 1 alpha / 2 加算 / 3 乘）、<span class="mono">[5:4]</span> 源格式（0 RGB565 / 1 ARGB1555 / 2 ARGB4444）、<span class="mono">[13:6]</span> global_alpha（255=无）、<span class="mono">[31:24]</span> flags（bit0 跳过 alpha 测试 / bit1 强制不透明）。<br>
+        <b>需要下一版 bitstream：</b>scissor(<span class="mono">0x90~0xA0</span>)、扫描输出 LUT(<span class="mono">0xA4~0xB0</span>)、属性侧口(<span class="mono">0x8C</span>) 都是本次冻结接口新增的寄存器。开机时固件会写回读校验它们：读不回来就打印 <span class="mono">feat WARN: …</span> 并自动降级（辉光退回 RGB565 普通混合、裁剪与 LUT 特效停用），演示不会因为"新 RTL 还没 P&amp;R"而挂掉。<br>
+        <b>回包：</b>开机打印一次启动横幅（含地址表、按键表、属性字默认值、信息条最坏宽度自检）；命令被接受时打印 <span class="mono">EV …</span>（如 <span class="mono">EV scene=0 (GLOW)</span>、<span class="mono">EV N=1500</span>、<span class="mono">EV size=64</span>、<span class="mono">EV scissor=0</span>、<span class="mono">EV attr=0</span>）。<br>
+        <b>波特率：</b>固件按 BSP 自行设定（默认 115200 8N1）。日志出现乱码说明波特率不匹配，改回 115200 重连。
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+   * 0. 元素引用与小工具
+   * ============================================================ */
+  var $ = function (id) { return document.getElementById(id); };
+
+  var el = {
+    baudSel: $('baudSel'), btnConnect: $('btnConnect'), btnDisconnect: $('btnDisconnect'),
+    dot: $('dot'), statusText: $('statusText'), statusMsg: $('statusMsg'),
+    notice: $('notice'), noticeTitle: $('noticeTitle'), noticeBody: $('noticeBody'),
+    nBig: $('nBig'), nRange: $('nRange'), nNum: $('nNum'), btnNApply: $('btnNApply'),
+    btnNMinus: $('btnNMinus'), btnNPlus: $('btnNPlus'), nPending: $('nPending'), nLast: $('nLast'),
+    logBody: $('logBody'), logFoot: $('logFoot'), autoScroll: $('autoScroll'), showTx: $('showTx'),
+    rxCount: $('rxCount'), btnClear: $('btnClear'), btnSave: $('btnSave'),
+    rawInput: $('rawInput'), btnSend: $('btnSend'), appendNl: $('appendNl')
+  };
+
+  var N_MIN = 16, N_MAX = 6000, N_STEP = 32;   /* 与固件 AdDemo.c 的 N_MIN/N_MAX/N_STEP 一致（'+'/'-' 每步 32） */
+  var N_SLIDER_STEP = 16;                      /* 滑块更细：保证 320 这类默认值精确落在格点上 */
+  var SUPPORTED = (typeof navigator !== 'undefined') && !!navigator.serial;
+  var SECURE = (typeof window !== 'undefined') && (window.isSecureContext !== false);
+
+  function pad(n, w) { var s = String(n); while (s.length < w) { s = '0' + s; } return s; }
+  function stamp() {
+    var d = new Date();
+    return pad(d.getHours(), 2) + ':' + pad(d.getMinutes(), 2) + ':' + pad(d.getSeconds(), 2) +
+           '.' + pad(d.getMilliseconds(), 3);
+  }
+  function clampN(v) {
+    v = Math.round(Number(v));
+    if (!isFinite(v)) { v = N_MIN; }
+    if (v < N_MIN) { v = N_MIN; }
+    if (v > N_MAX) { v = N_MAX; }
+    return v;
+  }
+
+  /* ============================================================
+   * 1. 日志面板
+   * ============================================================ */
+  var rawLines = [];       /* 保存 txt 用的纯文本行 */
+  var rxBytes = 0;
+  var MAX_LINES = 4000;
+
+  /* 把不可打印字符画出来，避免日志被控制字符搞乱 */
+  function visible(s) {
+    var out = '', i, c, ch;
+    for (i = 0; i < s.length; i++) {
+      ch = s.charAt(i); c = s.charCodeAt(i);
+      if (ch === '\t') { out += '    '; }
+      else if (c < 0x20 || c === 0x7f) { out += '\u27E8' + c.toString(16).toUpperCase() + '\u27E9'; }
+      else { out += ch; }
+    }
+    return out;
+  }
+
+  function append(kind, text, partial) {
+    var ph = $('logEmpty');
+    if (ph && ph.parentNode) { ph.parentNode.removeChild(ph); }
+
+    var line = document.createElement('div');
+    line.className = 'll ' + kind + (partial ? ' partial' : '');
+
+    var ts = document.createElement('span');
+    ts.className = 'ts'; ts.textContent = stamp();
+
+    var dir = document.createElement('span');
+    dir.className = 'dir';
+    dir.textContent = kind === 'rx' ? 'RX' : (kind === 'tx' ? 'TX' : (kind === 'err' ? 'ERR' : 'SYS'));
+
+    var txt = document.createElement('span');
+    txt.className = 'txt';
+    txt.textContent = visible(text) + (partial ? ' \u22EF' : '');
+
+    line.appendChild(ts); line.appendChild(dir); line.appendChild(txt);
+    el.logBody.appendChild(line);
+
+    var dirTag = kind === 'rx' ? 'RX' : (kind === 'tx' ? 'TX' : (kind === 'err' ? 'ERR' : 'SYS'));
+    rawLines.push('[' + ts.textContent + '] ' + dirTag + ' ' + (partial ? visible(text) + ' …' : visible(text)));
+    if (rawLines.length > MAX_LINES) { rawLines.shift(); }
+
+    while (el.logBody.childNodes.length > MAX_LINES) {
+      el.logBody.removeChild(el.logBody.firstChild);
+    }
+    if (el.autoScroll.checked) { el.logBody.scrollTop = el.logBody.scrollHeight; }
+  }
+
+  function sysLog(t) { append('sys', t); }
+  function errLog(t) { append('err', t); }
+
+  function setFoot(t) { el.logFoot.textContent = t; }
+
+  /* ============================================================
+   * 2. 行缓冲：把收到的分片拼回完整行
+   * ============================================================ */
+  var pending = '';       /* 尚未成行的残余 */
+  var flushTimer = null;
+
+  function emitLine(s, partial) {
+    if (s.length === 0) { return; }
+    append('rx', s, partial);
+  }
+
+  function feed(text) {
+    rxBytes += text.length;
+    el.rxCount.textContent = 'RX ' + rxBytes + ' 字节';
+
+    pending += text;
+    var out = '', i = 0, ch;
+    while (i < pending.length) {
+      ch = pending.charAt(i);
+      if (ch === '\n') { emitLine(out, false); out = ''; i++; }
+      else if (ch === '\r') {
+        /* 末尾的 \r 可能是被切开的一对 CRLF，留到下一片再判 */
+        if (i === pending.length - 1) { break; }
+        emitLine(out, false); out = '';
+        i += (pending.charAt(i + 1) === '\n') ? 2 : 1;
+      } else { out += ch; i++; }
+    }
+    pending = out + pending.slice(i);   /* 保留下一个待判字符 */
+
+    if (flushTimer) { clearTimeout(flushTimer); }
+    flushTimer = setTimeout(function () {
+      flushTimer = null;
+      if (pending.length) {
+        var p = pending.replace(/\r+$/, '');
+        pending = '';
+        if (p.length) { emitLine(p, true); }   /* 长时间没有换行 → 当半行显示 */
+      }
+    }, 400);
+  }
+
+  /* ============================================================
+   * 3. Web Serial 状态机
+   * ============================================================ */
+  var port = null, reader = null, writer = null;
+  var keepReading = false, readableClosed = null, writeChain = Promise.resolve();
+
+  function setStatus(kind, text, msg) {
+    el.dot.className = 'dot' + (kind === 'ok' ? ' on' : (kind === 'err' ? ' err' : (kind === 'wait' ? ' wait' : '')));
+    el.statusText.textContent = text;
+    el.statusMsg.textContent = msg || '';
+  }
+
+  function baud() { return parseInt(el.baudSel.value, 10) || 115200; }
+
+  function uiConnected(on) {
+    el.btnConnect.disabled = on || !SUPPORTED;
+    el.btnDisconnect.disabled = !on;
+    el.baudSel.disabled = on;
+  }
+
+  async function connect() {
+    if (!SUPPORTED) {
+      setStatus('err', '错误', '当前环境不支持 Web Serial');
+      errLog('当前环境不支持 Web Serial（navigator.serial 不存在），无法连接。');
+      return;
+    }
+    if (port) { return; }
+
+    setStatus('wait', '连接中…', '请在弹窗中选择串口设备');
+    sysLog('正在打开串口选择框…');
+    var p;
+    try {
+      p = await navigator.serial.requestPort();
+    } catch (e) {
+      if (e && e.name === 'NotFoundError') {
+        setStatus('', '未连接', '已取消选择串口');
+        sysLog('已取消选择串口。');
+      } else {
+        setStatus('err', '错误', (e && e.message) || String(e));
+        errLog('选择串口失败：' + ((e && e.message) || e));
+      }
+      return;
+    }
+
+    try {
+      await p.open({ baudRate: baud(), dataBits: 8, stopBits: 1, parity: 'none', flowControl: 'none', bufferSize: 8192 });
+    } catch (e) {
+      setStatus('err', '错误', (e && e.message) || String(e));
+      errLog('打开串口失败：' + ((e && e.message) || e) + '（设备可能被其它程序占用）');
+      return;
+    }
+
+    port = p;
+    uiConnected(true);
+    setStatus('ok', '已连接', '波特率 ' + baud() + ' · 8N1');
+    sysLog('已连接：波特率 ' + baud() + '，8 数据位 / 无校验 / 1 停止位。');
+
+    try {
+      writer = port.writable.getWriter();
+    } catch (e) {
+      errLog('获取写入通道失败：' + ((e && e.message) || e));
+    }
+
+    keepReading = true;
+    readLoop().catch(function (e) {                 /* 兜底，别让异常只进控制台 */
+      errLog('读取循环异常：' + ((e && e.message) || e));
+    });     /* 不 await：后台常驻读循环 */
+  }
+
+  async function readLoop() {
+    var dec = new TextDecoderStream();
+    var closed;
+    try {
+      closed = port.readable.pipeTo(dec.writable).catch(function () { /* 断开时的 AbortError 属正常 */ });
+    } catch (e) {
+      errLog('读取通道不可用：' + ((e && e.message) || e));
+      await teardown('读取通道不可用', true);
+      return;
+    }
+    readableClosed = closed;
+
+    var r = dec.readable.getReader();
+    reader = r;
+    try {
+      while (keepReading) {
+        var res = await r.read();
+        if (res.done) { break; }
+        if (res.value) { feed(res.value); }
+      }
+    } catch (e) {
+      if (keepReading) { errLog('读取中断：' + ((e && e.message) || e)); }
+    } finally {
+      try { r.releaseLock(); } catch (e2) { /* 已释放 */ }
+      reader = null;
+    }
+    try { await closed; } catch (e3) { /* 已捕获 */ }
+    if (keepReading) { await teardown('串口读取结束，设备可能已被拔出', true); }
+  }
+
+  async function teardown(reason, isErr) {
+    keepReading = false;
+    var p = port;
+    port = null;
+
+    try { if (reader) { var r = reader; reader = null; await r.cancel(); } } catch (e) { /* ignore */ }
+    try { if (readableClosed) { await readableClosed; } } catch (e) { /* ignore */ }
+    readableClosed = null;
+    try { if (writer) { var w = writer; writer = null; w.releaseLock(); } } catch (e) { /* ignore */ }
+    try { if (p) { await p.close(); } } catch (e) { /* 设备已拔出时 close 会抛错，忽略 */ }
+
+    if (flushTimer) { clearTimeout(flushTimer); flushTimer = null; }
+    if (pending.length) { var pp = pending.replace(/\r+$/, ''); pending = ''; if (pp.length) { emitLine(pp, true); } }
+
+    uiConnected(false);
+    if (isErr) {
+      setStatus('err', '错误', reason || '连接已断开');
+      errLog('连接断开：' + (reason || '未知原因') + ' —— 修复后可重新点击「连接」，无需刷新页面。');
+    } else {
+      setStatus('', '未连接', '已手动断开，可重新连接');
+      sysLog('已断开串口。');
+    }
+    setFoot(reason ? ('已断开 · ' + reason) : '已断开');
+  }
+
+  function disconnect() {
+    if (!port && !reader && !writer) { setStatus('', '未连接', '当前没有连接'); return; }
+    teardown('用户手动断开', false);
+  }
+
+  /* ---------- 发送 ---------- */
+  function writeStr(str) {
+    if (!port || !writer) {
+      errLog('未连接：命令 ' + JSON.stringify(str) + ' 未发送（请先点击「连接」）。');
+      setStatus('err', '错误', '尚未连接串口，命令未发送');
+      return Promise.resolve(false);
+    }
+    var bytes = new TextEncoder().encode(str);
+    writeChain = writeChain.then(function () {
+      if (!writer) { throw new Error('端口已关闭'); }
+      return writer.write(bytes);
+    }).then(function () {
+      if (el.showTx.checked) { append('tx', str); }
+      setFoot('已发送 ' + bytes.length + ' 字节');
+      return true;
+    }).catch(function (e) {
+      errLog('发送失败：' + ((e && e.message) || e));
+      teardown('发送失败：' + ((e && e.message) || e), true);
+      return false;
+    });
+    return writeChain;
+  }
+
+  /* 单字符命令：立即生效，不加换行 */
+  function sendChar(c) { return writeStr(c); }
+
+  /* ============================================================
+   * 4. 预设按钮
+   * ============================================================ */
+  Array.prototype.forEach.call(document.querySelectorAll('.pbtn[data-cmd]'), function (b) {
+    b.addEventListener('click', function () {
+      var c = b.getAttribute('data-cmd');
+      b.classList.add('hot');
+      setTimeout(function () { b.classList.remove('hot'); }, 220);
+      sendChar(c);
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-quick]'), function (b) {
+    b.addEventListener('click', function () {
+      writeStr(b.getAttribute('data-quick'));
+    });
+  });
+
+  /* ============================================================
+   * 5. N 滑块 / 数字框（输入只预览，应用才发送）
+   * ============================================================ */
+  function paintRange() {
+    var v = parseInt(el.nRange.value, 10);
+    var pct = ((v - N_MIN) / (N_MAX - N_MIN)) * 100;
+    el.nRange.style.setProperty('--fill', pct.toFixed(2) + '%');
+  }
+  function setN(v) {
+    v = clampN(v);
+    el.nRange.value = String(v);
+    el.nNum.value = String(v);
+    el.nBig.textContent = String(v);
+    el.nPending.textContent = '=' + v;
+    paintRange();
+  }
+  /* ★ 读的是**数字框**而不是滑块：滑块有自己的格点（会把 1500 吸到最近的 16 的倍数），
+   *   而固件接受 16..6000 之间任意整数 ⇒ 手输的精确值必须原样发出去。
+   *   拖动滑块时 setN() 会把数字框一起更新，所以两条路径始终一致。 */
+  function curN() { return clampN(el.nNum.value); }
+
+  el.nRange.addEventListener('input', function () { setN(el.nRange.value); });      /* 只预览，不写串口 */
+  el.nRange.addEventListener('change', function () { setN(el.nRange.value); });     /* 松手仍不写串口 */
+  el.nNum.addEventListener('input', function () { setN(el.nNum.value); });
+  el.nNum.addEventListener('change', function () { setN(el.nNum.value); });
+  el.nNum.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter') { ev.preventDefault(); el.btnNApply.click(); }
+  });
+
+  el.btnNApply.addEventListener('click', function () {
+    var v = curN();
+    writeStr('=' + v + '\n').then(function (ok) {
+      if (ok) {
+        el.nLast.textContent = '=' + v + '（等待 EV N=' + v + '）';
+        setFoot('已发送 =' + v + ' + 换行');
+      }
+    });
+  });
+  el.btnNMinus.addEventListener('click', function () { sendChar('-'); });
+  el.btnNPlus.addEventListener('click', function () { sendChar('+'); });
+
+  /* ============================================================
+   * 6. 原始发送
+   * ============================================================ */
+  function doSend() {
+    var t = el.rawInput.value;
+    if (t.length === 0) { setFoot('输入为空，未发送'); return; }
+    writeStr(el.appendNl.checked ? (t + '\n') : t);
+  }
+  el.btnSend.addEventListener('click', doSend);
+  el.rawInput.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter') { ev.preventDefault(); doSend(); }
+    else if (ev.key === 'Escape') { ev.preventDefault(); el.rawInput.value = ''; setFoot('已清空输入框'); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && document.activeElement !== el.rawInput) { el.rawInput.value = ''; }
+  });
+
+  /* ============================================================
+   * 7. 日志工具按钮
+   * ============================================================ */
+  el.btnClear.addEventListener('click', function () {
+    el.logBody.textContent = '';
+    rawLines.length = 0; rxBytes = 0;
+    el.rxCount.textContent = 'RX 0 字节';
+    sysLog('日志已清空。');
+    setFoot('日志已清空');
+  });
+
+  el.btnSave.addEventListener('click', function () {
+    var d = new Date();
+    var name = 'serial_log_' + d.getFullYear() + pad(d.getMonth() + 1, 2) + pad(d.getDate(), 2) + '_' +
+               pad(d.getHours(), 2) + pad(d.getMinutes(), 2) + pad(d.getSeconds(), 2) + '.txt';
+    var head = '# FPGA 2D 加速器 串口日志\n# 导出时间: ' + d.toString() + '\n# 行数: ' + rawLines.length + '\n\n';
+    var blob = new Blob(['\uFEFF' + head + rawLines.join('\r\n') + '\r\n'], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    setFoot('已导出 ' + name + '（' + rawLines.length + ' 行）');
+  });
+
+  el.btnConnect.addEventListener('click', function () { connect(); });
+  el.btnDisconnect.addEventListener('click', function () { disconnect(); });
+
+  /* ============================================================
+   * 8. 设备热插拔
+   * ============================================================ */
+  if (SUPPORTED) {
+    try {
+      navigator.serial.addEventListener('disconnect', function (ev) {
+        var p = ev.target || ev.port || null;
+        if (!port || p === port) { teardown('串口设备已被拔出', true); }
+        else { sysLog('另一个串口设备已拔出。'); }
+      });
+      navigator.serial.addEventListener('connect', function () {
+        sysLog('检测到串口设备已插入，可点击「连接」。');
+      });
+    } catch (e) { /* 老版本 Chrome 无 addEventListener，忽略 */ }
+  }
+
+  /* 兜底：不让异常只出现在 F12 控制台里 */
+  window.addEventListener('error', function (ev) {
+    try { errLog('页面异常：' + (ev.message || '未知错误')); } catch (e) { /* 不能再抛 */ }
+  });
+  window.addEventListener('unhandledrejection', function (ev) {
+    try {
+      var r = ev.reason;
+      errLog('未处理的 Promise 异常：' + ((r && r.message) || r));
+    } catch (e) { /* 不能再抛 */ }
+  });
+
+  /* ============================================================
+   * 9. 初始化
+   * ============================================================ */
+  function init() {
+    /* 滑块/数字框的范围与固件协议保持单一来源 */
+    el.nRange.min = N_MIN; el.nRange.max = N_MAX; el.nRange.step = N_SLIDER_STEP;
+    el.nNum.min = N_MIN;   el.nNum.max = N_MAX;   el.nNum.step = N_SLIDER_STEP;
+    setN(320);                         /* 固件 AdDemo 开机默认 N=320（场景 1 GLOW） */
+    el.nLast.textContent = '—（尚未发送）';
+
+    if (!SUPPORTED || !SECURE) {
+      /* 特性检测失败：给出中文提示，界面降级但绝不抛异常 */
+      if (!SUPPORTED) {
+        el.noticeTitle.textContent = '⚠ 当前环境不支持 Web Serial（navigator.serial 不存在），串口功能不可用。';
+        el.noticeBody.innerHTML = 'Web Serial 只在 Chrome / Edge <b>桌面版</b>可用，且需要<b>安全上下文</b>' +
+          '（用 file:// 直接打开本文件，或放到本地服务 localhost:8000 下访问）。本页其余部分（界面预览、命令表）不受影响。';
+        sysLog('检测到 navigator.serial 不存在：Web Serial 只在 Chrome / Edge 桌面版可用，且需要安全上下文（file:// 或本地 localhost 服务）。');
+      } else {
+        el.noticeTitle.textContent = '⚠ 当前页面不是安全上下文（isSecureContext = false），Web Serial 被禁用。';
+        el.noticeBody.innerHTML = '请改用 file:// 直接打开本文件，或放到本地服务 localhost:8000 下访问。';
+        sysLog('当前页面不是安全上下文：Web Serial 不可用，请用 file:// 或 localhost 服务打开。');
+      }
+      el.notice.classList.remove('hidden');
+      el.btnConnect.disabled = true;
+      setStatus('err', '错误', '此浏览器不支持 Web Serial');
+      sysLog('界面预览与命令对照表仍可查看；串口相关按钮已禁用，页面未报错。');
+      setFoot('未连接 · 当前环境不支持 Web Serial');
+    } else {
+      el.notice.classList.add('hidden');
+      el.btnConnect.disabled = false;
+      setStatus('', '未连接', '点击「连接」选择串口设备');
+      sysLog('就绪：点击右上角「连接」选择串口（默认 115200 8N1）。');
+      setFoot('就绪 · 等待连接串口');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

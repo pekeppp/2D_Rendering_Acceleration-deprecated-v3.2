@@ -1,0 +1,19 @@
+$date today $end
+$timescale 1 ns $end
+$scope module top $end
+$var wire 1 0 cal_done $end
+$var wire 1 1 ddr_rstn $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+x0
+x1
+$end
+#0 $dumpon
+10
+11
+#1023
+10
+11
+$end

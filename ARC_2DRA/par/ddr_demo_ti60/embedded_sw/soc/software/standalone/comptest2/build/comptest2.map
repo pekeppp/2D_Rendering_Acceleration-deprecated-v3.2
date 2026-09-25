@@ -1,0 +1,833 @@
+Archive member included to satisfy reference by file (symbol)
+
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o)
+                              build/obj_files/syscalls.o (errno)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-impure.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o) (_impure_ptr)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-init.o)
+                              build/obj_files/start.o (__libc_init_array)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o) (_free_r)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o) (__malloc_av_)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mlock.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o) (__malloc_lock)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-impure.o) (__sf)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fwalk.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o) (_fwalk_sglue)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o) (__sread)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-closer.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o) (_close_r)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lseekr.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o) (_lseek_r)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-readr.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o) (_read_r)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-sbrkr.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o) (_sbrk_r)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-writer.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o) (_write_r)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o) (__retarget_lock_init_recursive)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-memset.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o) (memset)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fclose.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o) (_fclose_r)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fflush.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fclose.o) (__sflush_r)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+                              build/obj_files/comptest2.o (__udivdi3)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o) (__clz_tab)
+C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libnosys.a(sbrk.o)
+                              C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-sbrkr.o) (_sbrk)
+
+Discarded input sections
+
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .group         0x00000000        0xc build/obj_files/comptest2.o
+ .text          0x00000000        0x0 build/obj_files/comptest2.o
+ .data          0x00000000        0x0 build/obj_files/comptest2.o
+ .bss           0x00000000        0x0 build/obj_files/comptest2.o
+ .text.os_puts  0x00000000       0x1c build/obj_files/comptest2.o
+ .text.os_dec   0x00000000       0x84 build/obj_files/comptest2.o
+ .text.os_hex4  0x00000000       0x34 build/obj_files/comptest2.o
+ .rodata.osd_fill.str1.4
+                0x00000000       0x45 build/obj_files/comptest2.o
+ .text.osd_fill
+                0x00000000      0x3f4 build/obj_files/comptest2.o
+ .rodata.dbg_quick.str1.4
+                0x00000000       0x56 build/obj_files/comptest2.o
+ .text.dbg_quick
+                0x00000000      0x278 build/obj_files/comptest2.o
+ .bss.g_l2      0x00000000       0x50 build/obj_files/comptest2.o
+ .bss.g_l1      0x00000000       0x50 build/obj_files/comptest2.o
+ .text          0x00000000        0x0 build/obj_files/start.o
+ .data          0x00000000        0x0 build/obj_files/start.o
+ .bss           0x00000000        0x0 build/obj_files/start.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .group         0x00000000        0xc build/obj_files/syscalls.o
+ .text          0x00000000        0x0 build/obj_files/syscalls.o
+ .data          0x00000000        0x0 build/obj_files/syscalls.o
+ .bss           0x00000000        0x0 build/obj_files/syscalls.o
+ .text._close   0x00000000       0x14 build/obj_files/syscalls.o
+ .text._isatty  0x00000000        0x8 build/obj_files/syscalls.o
+ .text._lseek   0x00000000       0x14 build/obj_files/syscalls.o
+ .text._read    0x00000000       0x14 build/obj_files/syscalls.o
+ .text._fstat   0x00000000       0x10 build/obj_files/syscalls.o
+ .text._write   0x00000000        0x8 build/obj_files/syscalls.o
+ .text._getpid  0x00000000        0x8 build/obj_files/syscalls.o
+ .text._kill    0x00000000       0x14 build/obj_files/syscalls.o
+ .debug_info    0x00000000      0x42b build/obj_files/syscalls.o
+ .debug_abbrev  0x00000000      0x117 build/obj_files/syscalls.o
+ .debug_loclists
+                0x00000000       0xbb build/obj_files/syscalls.o
+ .debug_aranges
+                0x00000000       0x58 build/obj_files/syscalls.o
+ .debug_rnglists
+                0x00000000       0x3d build/obj_files/syscalls.o
+ .debug_macro   0x00000000      0x1d2 build/obj_files/syscalls.o
+ .debug_macro   0x00000000      0x7c0 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x10 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x22 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x68 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x19 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x94 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x3b build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x34 build/obj_files/syscalls.o
+ .debug_macro   0x00000000      0x190 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x57 build/obj_files/syscalls.o
+ .debug_macro   0x00000000      0x370 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x16 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x4a build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x34 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x10 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x58 build/obj_files/syscalls.o
+ .debug_macro   0x00000000      0x1e5 build/obj_files/syscalls.o
+ .debug_macro   0x00000000      0x23c build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x10 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x3c build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x10 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x10 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x10 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x6a build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x1c build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x52 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x22 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x10 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x52 build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0xcf build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x1c build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x3d build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x35 build/obj_files/syscalls.o
+ .debug_macro   0x00000000      0x12c build/obj_files/syscalls.o
+ .debug_macro   0x00000000       0x16 build/obj_files/syscalls.o
+ .debug_macro   0x00000000      0x51a build/obj_files/syscalls.o
+ .debug_line    0x00000000      0x261 build/obj_files/syscalls.o
+ .debug_str     0x00000000     0x7fd5 build/obj_files/syscalls.o
+ .debug_line_str
+                0x00000000      0x3ab build/obj_files/syscalls.o
+ .comment       0x00000000       0x34 build/obj_files/syscalls.o
+ .debug_frame   0x00000000       0x90 build/obj_files/syscalls.o
+ .riscv.attributes
+                0x00000000       0x3f build/obj_files/syscalls.o
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o)
+ .text._reclaim_reent
+                0x00000000       0xfc C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o)
+ .sbss.errno    0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-reent.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-impure.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-impure.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-impure.o)
+ .sdata._impure_ptr
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-impure.o)
+ .data._impure_data
+                0x00000000      0x140 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-impure.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-impure.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-impure.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-init.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-init.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-init.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o)
+ .text._malloc_trim_r
+                0x00000000      0x15c C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o)
+ .text._free_r  0x00000000      0x31c C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-freer.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .text._malloc_r
+                0x00000000      0x810 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .bss.__malloc_current_mallinfo
+                0x00000000       0x28 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .sbss.__malloc_max_total_mem
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .sbss.__malloc_max_sbrked_mem
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .sdata.__malloc_sbrk_base
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .sbss.__malloc_top_pad
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .sdata.__malloc_trim_threshold
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .data.__malloc_av_
+                0x00000000      0x408 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mallocr.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mlock.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mlock.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mlock.o)
+ .text.__malloc_lock
+                0x00000000       0x10 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mlock.o)
+ .text.__malloc_unlock
+                0x00000000       0x10 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mlock.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mlock.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-mlock.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.stdio_exit_handler
+                0x00000000       0x20 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.cleanup_stdio
+                0x00000000       0x7c C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.__fp_lock
+                0x00000000       0x44 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.__fp_unlock
+                0x00000000       0x44 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.global_stdio_init.part.0
+                0x00000000      0x1a8 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.__sfp    0x00000000      0x178 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.__sinit  0x00000000       0x80 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.__sfp_lock_acquire
+                0x00000000       0x10 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.__sfp_lock_release
+                0x00000000       0x10 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.__fp_lock_all
+                0x00000000       0x3c C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text.__fp_unlock_all
+                0x00000000       0x3c C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .data.__sglue  0x00000000        0xc C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .bss.__sf      0x00000000      0x138 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .sbss.__stdio_exit_handler
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-findfp.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fwalk.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fwalk.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fwalk.o)
+ .text._fwalk_sglue
+                0x00000000       0xb4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fwalk.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fwalk.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fwalk.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .text.__sread  0x00000000       0x60 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .text.__seofread
+                0x00000000        0x8 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .text.__swrite
+                0x00000000       0x90 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .text.__sseek  0x00000000       0x7c C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .text.__sclose
+                0x00000000        0xc C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-stdio.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-closer.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-closer.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-closer.o)
+ .text._close_r
+                0x00000000       0x5c C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-closer.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-closer.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-closer.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lseekr.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lseekr.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lseekr.o)
+ .text._lseek_r
+                0x00000000       0x68 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lseekr.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lseekr.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lseekr.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-readr.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-readr.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-readr.o)
+ .text._read_r  0x00000000       0x68 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-readr.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-readr.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-readr.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-sbrkr.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-sbrkr.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-sbrkr.o)
+ .text._sbrk_r  0x00000000       0x5c C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-sbrkr.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-sbrkr.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-sbrkr.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-writer.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-writer.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-writer.o)
+ .text._write_r
+                0x00000000       0x68 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-writer.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-writer.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-writer.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_init
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_init_recursive
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_close
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_close_recursive
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_acquire
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_acquire_recursive
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_try_acquire
+                0x00000000        0x8 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_try_acquire_recursive
+                0x00000000        0x8 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_release
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text.__retarget_lock_release_recursive
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .sbss.__lock___arc4random_mutex
+                0x00000000        0x1 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .sbss.__lock___dd_hash_mutex
+                0x00000000        0x1 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .sbss.__lock___tz_mutex
+                0x00000000        0x1 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .sbss.__lock___env_recursive_mutex
+                0x00000000        0x1 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .sbss.__lock___malloc_recursive_mutex
+                0x00000000        0x1 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .sbss.__lock___at_quick_exit_mutex
+                0x00000000        0x1 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .sbss.__lock___atexit_recursive_mutex
+                0x00000000        0x1 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .sbss.__lock___sfp_recursive_mutex
+                0x00000000        0x1 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-lock.o)
+ .text          0x00000000       0xdc C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-memset.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-memset.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-memset.o)
+ .riscv.attributes
+                0x00000000       0x28 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-memset.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fclose.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fclose.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fclose.o)
+ .text._fclose_r
+                0x00000000      0x19c C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fclose.o)
+ .text.fclose   0x00000000       0x14 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fclose.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fclose.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fclose.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fflush.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fflush.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fflush.o)
+ .text.__sflush_r
+                0x00000000      0x250 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fflush.o)
+ .text._fflush_r
+                0x00000000       0xf4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fflush.o)
+ .text.fflush   0x00000000       0xe8 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fflush.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fflush.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-fflush.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+ .eh_frame      0x00000000       0x28 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+ .text          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libnosys.a(sbrk.o)
+ .data          0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libnosys.a(sbrk.o)
+ .bss           0x00000000        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libnosys.a(sbrk.o)
+ .text._sbrk    0x00000000       0x38 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libnosys.a(sbrk.o)
+ .sbss.heap_end.0
+                0x00000000        0x4 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libnosys.a(sbrk.o)
+ .comment       0x00000000       0x34 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libnosys.a(sbrk.o)
+ .riscv.attributes
+                0x00000000       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libnosys.a(sbrk.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ram              0x00001000         0x0001f000         axwl!r
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/obj_files/comptest2.o
+LOAD build/obj_files/start.o
+LOAD build/obj_files/syscalls.o
+LOAD C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a
+LOAD C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a
+                0x00001000                        __stack_size = DEFINED (__stack_size)?__stack_size:0x1000
+
+.init           0x00001000       0x70
+ *(SORT_NONE(.init))
+ .init          0x00001000       0x70 build/obj_files/start.o
+                0x00001000                _start
+                0x0000106c                _init
+
+.text           0x00001070     0x269c
+ *(.text.Proc_1)
+ *(.text.Proc_2)
+ *(.text.Proc_3)
+ *(.text.Proc_4)
+ *(.text.Proc_5)
+ *(.text.Proc_6)
+ *(.text.Proc_7)
+ *(.text.Proc_8)
+ *(.text.Func_1)
+ *(.text.Func_2)
+ *(.text.Func_3)
+ *(.text.strcpy)
+ *libc.a:*(.text .text.*)
+ .text.__libc_init_array
+                0x00001070       0x94 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-init.o)
+                0x00001070                __libc_init_array
+ *(.text.main)
+ .text.main     0x00001104      0xf98 build/obj_files/comptest2.o
+                0x00001104                main
+ *(.text.unlikely .text.unlikely.*)
+ *(.text.startup .text.startup.*)
+ *(.text .text.*)
+ .text.uart_writeAvailability
+                0x0000209c       0x10 build/obj_files/comptest2.o
+ .text.uart_write
+                0x000020ac       0x3c build/obj_files/comptest2.o
+ .text.uart_applyConfig
+                0x000020e8       0x30 build/obj_files/comptest2.o
+ .text.clint_getTime
+                0x00002118       0x30 build/obj_files/comptest2.o
+ .text._putchar
+                0x00002148       0x20 build/obj_files/comptest2.o
+ .text._putchar_s
+                0x00002168       0x34 build/obj_files/comptest2.o
+ .text.bsp_printHex
+                0x0000219c       0x54 build/obj_files/comptest2.o
+ .text.bsp_printHex_lower
+                0x000021f0       0x54 build/obj_files/comptest2.o
+ .text.bsp_printf_c
+                0x00002244       0x1c build/obj_files/comptest2.o
+ .text.bsp_printf_s
+                0x00002260       0x18 build/obj_files/comptest2.o
+ .text.bsp_printf_d
+                0x00002278       0x80 build/obj_files/comptest2.o
+ .text.bsp_printf_x
+                0x000022f8       0x40 build/obj_files/comptest2.o
+ .text.bsp_printf_X
+                0x00002338       0x40 build/obj_files/comptest2.o
+ .text.bsp_init
+                0x00002378       0x38 build/obj_files/comptest2.o
+ .text.tick     0x000023b0       0x1c build/obj_files/comptest2.o
+ .text.blt_wr   0x000023cc       0x10 build/obj_files/comptest2.o
+ .text.blt_rd   0x000023dc       0x10 build/obj_files/comptest2.o
+ .text.cache_evict
+                0x000023ec       0x30 build/obj_files/comptest2.o
+ .text.blt_emit
+                0x0000241c       0xd4 build/obj_files/comptest2.o
+ .text.blt_cnt  0x000024f0       0x1c build/obj_files/comptest2.o
+ .text.blt_stat
+                0x0000250c       0x1c build/obj_files/comptest2.o
+ .text.blt_idle
+                0x00002528       0x24 build/obj_files/comptest2.o
+ .text.blt_can_push
+                0x0000254c       0x1c build/obj_files/comptest2.o
+ .text.blt_init
+                0x00002568       0x44 build/obj_files/comptest2.o
+ .text.blt_copy_full
+                0x000025ac       0x3c build/obj_files/comptest2.o
+ .text.blt_fill
+                0x000025e8       0x3c build/obj_files/comptest2.o
+ .text.blt_alpha
+                0x00002624       0x3c build/obj_files/comptest2.o
+ .text.blt_key  0x00002660       0x3c build/obj_files/comptest2.o
+ .text.spr_color
+                0x0000269c       0x94 build/obj_files/comptest2.o
+ .text.build_atlas
+                0x00002730       0x78 build/obj_files/comptest2.o
+ .text.cpu_fill32
+                0x000027a8       0x94 build/obj_files/comptest2.o
+ .text.blend565
+                0x0000283c      0x108 build/obj_files/comptest2.o
+ .text.cpu_alpha_sprite
+                0x00002944       0xd4 build/obj_files/comptest2.o
+ .text.cpu_key_sprite
+                0x00002a18       0x94 build/obj_files/comptest2.o
+ .text.glyph_of
+                0x00002aac       0x68 build/obj_files/comptest2.o
+ .text.osd_text
+                0x00002b14      0x160 build/obj_files/comptest2.o
+ .text.app      0x00002c74       0x1c build/obj_files/comptest2.o
+ .text.appn     0x00002c90       0x8c build/obj_files/comptest2.o
+ .text.uart_status_raw
+                0x00002d1c        0xc build/obj_files/comptest2.o
+ .text.uart_poll_char
+                0x00002d28       0x34 build/obj_files/comptest2.o
+ .text.lcg      0x00002d5c       0x28 build/obj_files/comptest2.o
+ .text.scene_init
+                0x00002d84      0x24c build/obj_files/comptest2.o
+ .text.scene_snap
+                0x00002fd0       0x34 build/obj_files/comptest2.o
+ .text.scene_step
+                0x00003004       0xd0 build/obj_files/comptest2.o
+ .text.hw_y0    0x000030d4        0x8 build/obj_files/comptest2.o
+ .text.hw_h     0x000030dc       0x14 build/obj_files/comptest2.o
+ .text.cpu_y0   0x000030f0       0x14 build/obj_files/comptest2.o
+ .text.cpu_h    0x00003104       0x14 build/obj_files/comptest2.o
+ .text.vrg_h    0x00003118       0x14 build/obj_files/comptest2.o
+ .text.bsp_printf
+                0x0000312c      0x130 build/obj_files/comptest2.o
+ .text.__udivdi3
+                0x0000325c      0x4b0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+                0x0000325c                __udivdi3
+ *(.gnu.linkonce.t.*)
+ *(.note.gnu.build-id)
+
+.fini
+ *(SORT_NONE(.fini))
+                [!provide]                        PROVIDE (__etext = .)
+                [!provide]                        PROVIDE (_etext = .)
+                [!provide]                        PROVIDE (etext = .)
+                0x0000370c                        . = ALIGN (0x4)
+
+.preinit_array  0x0000370c        0x0
+                0x0000370c                        PROVIDE (__preinit_array_start = .)
+ *(.preinit_array)
+                0x0000370c                        PROVIDE (__preinit_array_end = .)
+
+.init_array     0x0000370c        0x0
+                0x0000370c                        PROVIDE (__init_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*))
+ *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
+                0x0000370c                        PROVIDE (__init_array_end = .)
+
+.fini_array     0x0000370c        0x0
+                [!provide]                        PROVIDE (__fini_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*))
+ *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
+                [!provide]                        PROVIDE (__fini_array_end = .)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+ *(SORT_BY_NAME(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+ *(SORT_BY_NAME(.dtors.*))
+ *(.dtors)
+
+.lalign         0x0000370c        0x0
+                0x0000370c                        PROVIDE (_data_lma = .)
+
+.dalign         0x0000370c        0x0
+                0x0000370c                        PROVIDE (_data = .)
+
+.data           0x0000370c      0x9d6
+ *(.rdata)
+ *(.rodata .rodata.*)
+ .rodata.bsp_printHex.str1.4
+                0x0000370c      0x540 build/obj_files/comptest2.o
+                                 0x11 (size before relaxing)
+ .rodata.bsp_printHex_lower.str1.4
+                0x00003c4c        0x0 build/obj_files/comptest2.o
+                                 0x11 (size before relaxing)
+ .rodata.bsp_printf.str1.4
+                0x00003c4c        0x0 build/obj_files/comptest2.o
+                                 0x49 (size before relaxing)
+ .rodata.bsp_printf
+                0x00003c4c       0x84 build/obj_files/comptest2.o
+ .rodata.main.str1.4
+                0x00003cd0        0x0 build/obj_files/comptest2.o
+                                0x4c8 (size before relaxing)
+ .rodata.main   0x00003cd0      0x1d0 build/obj_files/comptest2.o
+ .rodata.g_font
+                0x00003ea0      0x132 build/obj_files/comptest2.o
+ *fill*         0x00003fd2        0x2 
+ .rodata.__clz_tab
+                0x00003fd4      0x100 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+                0x00003fd4                __clz_tab
+ *(.gnu.linkonce.r.*)
+ *(.data .data.*)
+ *(.gnu.linkonce.d.*)
+                0x000040d8                        . = ALIGN (0x8)
+ *fill*         0x000040d4        0x4 
+                0x000048c8                        PROVIDE (__global_pointer$ = (. + 0x7f0))
+ *(.sdata .sdata.*)
+ *(.gnu.linkonce.s.*)
+                0x000040d8                        . = ALIGN (0x8)
+ *(.srodata.cst16)
+ *(.srodata.cst8)
+ *(.srodata.cst4)
+ *(.srodata.cst2)
+ *(.srodata .srodata.*)
+                0x000040e2                        . = (. + 0xa)
+ *fill*         0x000040d8        0xa 
+
+.rela.dyn       0x000040e4        0x0
+ .rela.init     0x000040e4        0x0 build/obj_files/comptest2.o
+ .rela.text.__libc_init_array
+                0x000040e4        0x0 build/obj_files/comptest2.o
+                0x000040e4                        . = ALIGN (0x4)
+                0x000040e4                        PROVIDE (_edata = .)
+                [!provide]                        PROVIDE (edata = .)
+                [!provide]                        PROVIDE (_fbss = .)
+                0x000040e4                        PROVIDE (__bss_start = .)
+
+.bss            0x000040e4     0x6d60
+ *(.sbss*)
+ *(.gnu.linkonce.sb.*)
+ *(.bss .bss.*)
+ .bss.g_sc      0x000040e4     0x6d60 build/obj_files/comptest2.o
+ *(.gnu.linkonce.b.*)
+ *(COMMON)
+                0x0000ae44                        . = ALIGN (0x4)
+                0x0000ae48                        . = ALIGN (0x8)
+                0x0000ae48                        PROVIDE (_end = .)
+                0x0000ae48                        PROVIDE (end = .)
+
+.stack          0x0000ae50     0x1000
+                [!provide]                        PROVIDE (_heap_end = .)
+                0x00001000                        . = __stack_size
+ *fill*         0x0000ae50     0x1000 
+                0x0000be50                        PROVIDE (_sp = .)
+                0x0000be50                        __freertos_irq_stack_top = .
+LOAD C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libm.a
+LOAD C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a
+START GROUP
+LOAD C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a
+END GROUP
+LOAD C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a
+START GROUP
+LOAD C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a
+LOAD C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a
+LOAD C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libnosys.a
+END GROUP
+OUTPUT(build/comptest2.elf elf32-littleriscv)
+
+.debug_info     0x00000000     0x3893
+ .debug_info    0x00000000     0x3022 build/obj_files/comptest2.o
+ .debug_info    0x00003022       0x24 build/obj_files/start.o
+ .debug_info    0x00003046      0x767 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+ .debug_info    0x000037ad       0xe6 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+
+.debug_abbrev   0x00000000      0x626
+ .debug_abbrev  0x00000000      0x409 build/obj_files/comptest2.o
+ .debug_abbrev  0x00000409       0x14 build/obj_files/start.o
+ .debug_abbrev  0x0000041d      0x199 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+ .debug_abbrev  0x000005b6       0x70 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+
+.debug_loclists
+                0x00000000     0x2ed4
+ .debug_loclists
+                0x00000000     0x2487 build/obj_files/comptest2.o
+ .debug_loclists
+                0x00002487      0xa4d C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+
+.debug_aranges  0x00000000      0x230
+ .debug_aranges
+                0x00000000      0x1d8 build/obj_files/comptest2.o
+ .debug_aranges
+                0x000001d8       0x20 build/obj_files/start.o
+ .debug_aranges
+                0x000001f8       0x20 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+ .debug_aranges
+                0x00000218       0x18 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+
+.debug_rnglists
+                0x00000000      0x3bc
+ .debug_rnglists
+                0x00000000      0x2a6 build/obj_files/comptest2.o
+ .debug_rnglists
+                0x000002a6      0x116 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+
+.debug_macro    0x00000000     0x2060
+ .debug_macro   0x00000000      0x34c build/obj_files/comptest2.o
+ .debug_macro   0x0000034c      0x7c0 build/obj_files/comptest2.o
+ .debug_macro   0x00000b0c       0x22 build/obj_files/comptest2.o
+ .debug_macro   0x00000b2e       0x8e build/obj_files/comptest2.o
+ .debug_macro   0x00000bbc       0x51 build/obj_files/comptest2.o
+ .debug_macro   0x00000c0d      0x103 build/obj_files/comptest2.o
+ .debug_macro   0x00000d10       0x6a build/obj_files/comptest2.o
+ .debug_macro   0x00000d7a      0x1df build/obj_files/comptest2.o
+ .debug_macro   0x00000f59      0x1a8 build/obj_files/comptest2.o
+ .debug_macro   0x00001101       0xc4 build/obj_files/comptest2.o
+ .debug_macro   0x000011c5       0x10 build/obj_files/comptest2.o
+ .debug_macro   0x000011d5       0x1c build/obj_files/comptest2.o
+ .debug_macro   0x000011f1       0x16 build/obj_files/comptest2.o
+ .debug_macro   0x00001207      0x1d7 build/obj_files/comptest2.o
+ .debug_macro   0x000013de       0x1c build/obj_files/comptest2.o
+ .debug_macro   0x000013fa       0x76 build/obj_files/comptest2.o
+ .debug_macro   0x00001470       0x58 build/obj_files/comptest2.o
+ .debug_macro   0x000014c8       0x19 build/obj_files/comptest2.o
+ .debug_macro   0x000014e1       0x6e build/obj_files/comptest2.o
+ .debug_macro   0x0000154f       0x3b build/obj_files/comptest2.o
+ .debug_macro   0x0000158a       0x34 build/obj_files/comptest2.o
+ .debug_macro   0x000015be       0x16 build/obj_files/comptest2.o
+ .debug_macro   0x000015d4      0x11c build/obj_files/comptest2.o
+ .debug_macro   0x000016f0       0x9b build/obj_files/comptest2.o
+ .debug_macro   0x0000178b      0x370 build/obj_files/comptest2.o
+ .debug_macro   0x00001afb       0x16 build/obj_files/comptest2.o
+ .debug_macro   0x00001b11       0x4a build/obj_files/comptest2.o
+ .debug_macro   0x00001b5b       0x34 build/obj_files/comptest2.o
+ .debug_macro   0x00001b8f       0x10 build/obj_files/comptest2.o
+ .debug_macro   0x00001b9f       0x58 build/obj_files/comptest2.o
+ .debug_macro   0x00001bf7      0x1e5 build/obj_files/comptest2.o
+ .debug_macro   0x00001ddc       0x16 build/obj_files/comptest2.o
+ .debug_macro   0x00001df2       0x29 build/obj_files/comptest2.o
+ .debug_macro   0x00001e1b      0x19b build/obj_files/comptest2.o
+ .debug_macro   0x00001fb6       0x16 build/obj_files/comptest2.o
+ .debug_macro   0x00001fcc       0x3c build/obj_files/comptest2.o
+ .debug_macro   0x00002008       0x58 build/obj_files/comptest2.o
+
+.debug_line     0x00000000     0x4b00
+ .debug_line    0x00000000     0x4020 build/obj_files/comptest2.o
+ .debug_line    0x00004020       0xc2 build/obj_files/start.o
+ .debug_line    0x000040e2      0x9df C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+ .debug_line    0x00004ac1       0x3f C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+
+.debug_str      0x00000000     0x9a02
+ .debug_str     0x00000000     0x9a02 build/obj_files/comptest2.o
+                               0x9957 (size before relaxing)
+ .debug_str     0x00009a02        0x0 build/obj_files/start.o
+                                 0xa3 (size before relaxing)
+ .debug_str     0x00009a02        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+                                0x27d (size before relaxing)
+ .debug_str     0x00009a02        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+                                0x1ca (size before relaxing)
+
+.debug_line_str
+                0x00000000      0x553
+ .debug_line_str
+                0x00000000      0x553 build/obj_files/comptest2.o
+                                0x3f4 (size before relaxing)
+ .debug_line_str
+                0x00000553        0x0 build/obj_files/start.o
+                                 0x97 (size before relaxing)
+ .debug_line_str
+                0x00000553        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+                                0x31a (size before relaxing)
+ .debug_line_str
+                0x00000553        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+                                0x31a (size before relaxing)
+
+.comment        0x00000000       0x33
+ .comment       0x00000000       0x33 build/obj_files/comptest2.o
+                                 0x34 (size before relaxing)
+ .comment       0x00000033        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-init.o)
+                                 0x34 (size before relaxing)
+ .comment       0x00000033        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+                                 0x34 (size before relaxing)
+ .comment       0x00000033        0x0 C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+                                 0x34 (size before relaxing)
+
+.riscv.attributes
+                0x00000000       0x3f
+ .riscv.attributes
+                0x00000000       0x3f build/obj_files/comptest2.o
+ .riscv.attributes
+                0x0000003f       0x3d build/obj_files/start.o
+ .riscv.attributes
+                0x0000007c       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/lib/rv32im/ilp32\libc.a(libc_a-init.o)
+ .riscv.attributes
+                0x000000a6       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_udivdi3.o)
+ .riscv.attributes
+                0x000000d0       0x2a C:/Efinity/efinity-riscv-ide-2026.1/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/rv32im/ilp32\libgcc.a(_clz.o)
+
+.debug_frame    0x00000000      0x620
+ .debug_frame   0x00000000      0x620 build/obj_files/comptest2.o

@@ -1,0 +1,26 @@
+﻿--- U1 FILL 32x16 @x=3 byte6 lane3 ---
+PASS: U1 FILL 32x16 @x=3 (lane 3)
+--- U2 FILL 32x8 @x=7 byte14 lane7 ---
+PASS: U2 FILL 32x8 @x=7 (lane 7)
+--- U3 FILL 32x8 @x=5 byte10 lane5 ---
+PASS: U3 FILL 32x8 @x=5 (lane 5)
+--- U4 FILL 1x64 @x=4 byte8 lane4 (degenerate column) ---
+PASS: U4 FILL 1x64 @x=4 lane4 (column)
+--- U5 FILL 200x1 @x=2 byte4 lane2 (degenerate row) ---
+PASS: U5 FILL 200x1 @x=2 lane2 (row)
+--- U6 KEY 16x8 @x=7 byte14 lane7 ---
+PASS: U6 KEY 16x8 @x=7 lane7 (1-lane)
+--- U7 KEY 16x8 @x=0 first-word all key ---
+PASS: U7 KEY 16x8 @x=0 all-key word
+--- U8 COPY 20x8 src@x=3 dst@x=13 byte26 lane5 ---
+PASS: U8 COPY 20x8 src x3 -> dst x13
+--- U9 COPY 13x9 src@x=7 dst@x=11 W=13 ---
+PASS: U9 COPY 13x9 unaligned W%8!=0
+--- U10 FILL 1x1 @x=7, @x=31 ---
+PASS: U10 FILL 1x1 pixel (lane 7)
+--- U11 COPY 8x1 aligned / unaligned ---
+PASS: U11 COPY 8x1 aligned/unaligned
+--- U12 KEY 32x4 @x=5 lane5 ---
+PASS: U12 KEY 32x4 @x=5 (lane 5)
+========== tb_blt_unalign ALL PASS ==========
+rtl/tb/tb_blt_unalign.v:378: $finish called at 38256000 (1ps)

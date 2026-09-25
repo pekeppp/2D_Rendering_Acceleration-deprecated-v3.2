@@ -1,0 +1,72 @@
+﻿AdDemo 主机自检（check.c + sections.h，源码段由 extract.ps1 从 AdDemo.c 原样摘出）
+运行时间：2026-09-16  针对：AdDemo.c 修复"字形图集跨度"+"fade/flash 毫秒被当拍数"两处上板 bug 之后
+结论：156 passed / 0 failed（上一版为 145，本次新增 L 组 11 项：字形图集寻址回读 + 时间基准）
+===================================================================================== AdDemo host self-check (sections extracted from AdDemo.c) =====
+
+== A) attr word encoding round-trip (blend x fmt x ga x flags) ==
+[A attr encoding          ] 66 checks
+
+== B) empty FIFO = hardware default word ==
+   ATTR_DEFAULT = 3fc0
+[B default word           ] 1 checks
+
+== C) known draws: attr word + 8 command words (real blt_* path) ==
+[C known draws / pairing  ] 12 checks
+
+== D) scanout LUT table math (fade/flash) ==
+   identity bad=0 | fade=0 black bad=0 | flash=255 white bad=0 | mono bad=0
+   fade=128: v=0->0 v=64->32 v=128->64 v=255->128 | flash=128: v=0->128 v=255->255
+[D LUT table math         ] 4 checks
+
+== E) atlas: RGB565 disc + ARGB4444 glow (3 sizes) ==
+   sz=16: disc corner=F81F centre=843F | glow corner=0000 centre=FFFF a4=15
+   sz=32: disc corner=F81F centre=841F | glow corner=0000 centre=FFFF a4=15
+   sz=64: disc corner=F81F centre=7C1F | glow corner=0000 centre=FFFF a4=15
+[E atlas                  ] 6 checks
+
+== F) scene bounds: 3 sizes x 4000 steps ==
+   sz=16: 512 particles x 4000 steps: initial out=0 in-step out=0
+   sz=32: 512 particles x 4000 steps: initial out=0 in-step out=0
+   sz=64: 512 particles x 4000 steps: initial out=0 in-step out=0
+[F scene bounds           ] 6 checks
+
+== G) info bar worst-case width (real fmt_stat) ==
+   worst: "FPS=99 N=6000 SZ=64 MPX=9999 SC4:LAYER A=255 B=100 FR F X Y Q"
+   len=61 chars = 488 px | text x=[8,496) label x=[896,960)
+[G info bar width         ] 4 checks
+
+== H) LUT 4-step publish sequence (both polarities) ==
+EV lut polarity: display=~write (confirmed by live test) disp=1->0 written=0
+
+EV lut polarity: display=write (confirmed by live test) disp=0->0 written=1
+
+EV lut polarity: display=~write (confirmed by live test) disp=1->0 written=0
+
+EV lut polarity: display=write (confirmed by live test) disp=0->0 written=1
+
+EV lut polarity: display=~write (confirmed by live test) disp=1->0 written=0
+
+EV lut WARN: polarity not confirmed (frame counter not moving); assuming display=~write
+
+[H LUT 4-step publish     ] 13 checks
+
+== I) info bar / HUD never clipped (plan rule + emit guard + readback) ==
+EV clip WARN: DECOR draw while scissor armed -> scissor disabled
+
+[I bar/HUD never clipped  ] 11 checks
+
+== J) per-draw local translation (wide strips + sprite positions) ==
+[J per-draw translation   ] 11 checks
+
+== K) bounded wait / ST_CLIP timeout path ==
+   dead-engine model: recovery reached after 20000001 ticks = 200 ms = 12 frames @60Hz
+[K ST_CLIP timeout path   ] 11 checks
+
+== L) font atlas addressing + fade/flash time base ==
+   font: 42 glyphs, glyph=128B row=16B region=262144B needed=5376B
+   fade: 0ms=255 600ms=128 1200ms=0 2000ms=106 2700ms=255 3600ms=255
+   duration: fade=180 frames (3.6s), flash=13 frames, rearm=3s
+[L font layout + fx timing] 11 checks
+
+===== AdDemo host self-check: 156 passed / 0 failed =====
+

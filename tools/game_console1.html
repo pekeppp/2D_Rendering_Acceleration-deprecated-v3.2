@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FPGA 2D 渲染加速器 · 弹幕游戏上位机 GameDemo（带敌弹显示模式切换）</title>
+<!-- =============================================================================
+     game_console1.html —— GameDemo（高负载互动弹幕游戏）的**单文件串口上位机 · 增强版**
+     -----------------------------------------------------------------------------
+     ★ 本文件是在 tools/game_console.html 基础上**新建**的副本（原文件一字未改）。
+       相对原版只多了「敌弹显示模式」这一块：
+         · 一个模式面板：按 5=FILL / 6=ALPHA / 7=ADD / 8=KEY，或 f 循环；
+         · 记分板多一格 OP=，显示**实际生效**的算子档名（固件回包里读出来的，不是本地猜的）；
+         · parseStatusLine() 多解析一个 OP= 字段；协议层多一张 BUL_MODES 表。
+       其余（键盘接管 / 虚拟手柄 / 日志 / 命令按钮 / 协议说明）与原版完全一致。
+
+     与 serial_console.html 同一套路：不依赖任何 CDN / 外部 JS / 外部 CSS / 外部字体，
+     断网可用；直接用浏览器的 Web Serial API，不用装串口助手。
+
+     它做的事只有两件（其余都是显示）：
+       ① 把**计算机键盘**的状态打包成 '@HH\n' 通过串口发给板子 —— 这就是游戏的操作输入，
+          **板载按键一个都不用**；
+       ② 解析板子回传的 EV/ST/LIMIT 行，做成记分板与日志。
+
+     协议（与固件 src/GameDemo.c 的 kp_feed() / serial_cmd() 逐位对应）：
+         PC -> 板   '@' + 两位十六进制 + '\n'
+           bit0 上(W/↑)  1 下(S/↓)  2 左(A/←)  3 右(D/→)
+           bit4 开火(J/空格) 5 慢速(K/Shift) 6 炸弹(L/X) 7 暂停(P/回车)
+         · 任一键状态变化立刻发一包；另外每 100ms 补发一包心跳；
+         · 固件有 500ms 看门狗：超时收不到包就把所有键视为松开
+           （所以标签页被切走、拔线都不会让自机一直往一个方向飞）。
+         PC -> 板   单字符命令：5/6/7/8 直选敌弹算子，f 循环；1/2/3/4 负载档；
+                   n/+/-/=N 调 N；c/h 切渲染路径；g 自动爬坡；b/p/r/d/?
+         板 -> PC   EV ...（命令回显，含 `EV bulm=FILL (requested; effective=FILL)`）
+                   ST ...（4Hz 记分板，末段带 `OP=<生效档名>`）
+                   LIMIT ...（自动爬坡结论）
+
+     自检：本文件里带 ==== PROTO_BEGIN/END ==== 标记的那一段是**纯函数**，
+     由 tools/game_console_selftest.js 原样取出来在 Node 里跑（不需要浏览器/串口）：
+         node tools/game_console_selftest.js tools/game_console1.html
+     它会额外跑 [7] 组，把 BUL_MODES 表与固件源码里的 BULM_* 枚举 / serial_cmd() 的
+     case 逐项对账（改一边忘另一边会当场红）。
+     ============================================================================= -->
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#121821; --panel2:#0e141c; --line:#1e2a38;
+    --fg:#d7e3f0; --dim:#7b8ea3; --acc:#39c0ff; --ok:#39d98a; --warn:#ffcc55; --err:#ff6b6b;
+    --key:#1b2532; --keyon:#1d5b7a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
+    font:14px/1.55 "Segoe UI","Microsoft YaHei",system-ui,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 16px 60px}
+  h1{font-size:20px;margin:0 0 4px}
+  h1 small{font-weight:400;color:var(--dim);font-size:13px;margin-left:8px}
+  h2{font-size:14px;margin:22px 0 8px;color:var(--acc);font-weight:600;
+     border-left:3px solid var(--acc);padding-left:8px}
+  h2 .hint{color:var(--dim);font-weight:400;font-size:12px;margin-left:8px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  button{background:#1b2634;color:var(--fg);border:1px solid #2b3a4d;border-radius:8px;
+    padding:8px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+  button:hover:not(:disabled){background:#233042;border-color:#3b506a}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  button.on{background:var(--keyon);border-color:var(--acc)}
+  button.big{min-width:96px;text-align:left}
+  button .c{display:block;color:var(--dim);font-size:11px;margin-top:2px}
+  select,input[type=text],input[type=number]{background:var(--panel2);color:var(--fg);
+    border:1px solid #2b3a4d;border-radius:8px;padding:8px;font-family:inherit;font-size:13px}
+  .led{width:10px;height:10px;border-radius:50%;background:#445;display:inline-block;
+    margin-right:6px;vertical-align:middle}
+  .led.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+  .led.err{background:var(--err);box-shadow:0 0 8px var(--err)}
+  .led.wait{background:var(--warn)}
+  table{border-collapse:collapse;width:100%;font-size:12.5px}
+  th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+  th{background:#16202b;color:var(--acc);font-weight:600}
+  code,kbd{background:#0a1017;border:1px solid #22303f;border-radius:4px;padding:1px 5px;
+    font-family:Consolas,"Courier New",monospace;font-size:12px}
+  .dim{color:var(--dim)}
+  /* ---- 记分板 ---- */
+  .score{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:10px}
+  .cell{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+  .cell .k{font-size:11px;color:var(--dim);letter-spacing:.5px}
+  .cell .v{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+  .cell.hl .v{color:var(--ok)}
+  .cell.sw .v{color:var(--warn)}
+  /* ---- 虚拟手柄 ---- */
+  .padwrap{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+  .dpad{display:grid;grid-template-columns:repeat(3,58px);grid-template-rows:repeat(3,58px);gap:6px}
+  .dpad button{width:58px;height:58px;font-size:18px;padding:0}
+  .abtn{display:grid;grid-template-columns:repeat(2,72px);gap:8px}
+  .abtn button{height:56px;font-size:13px}
+  .maskbox{font-family:Consolas,monospace;font-size:15px}
+  /* ---- 日志 ---- */
+  #log{height:290px;overflow:auto;background:#070c12;border:1px solid var(--line);
+    border-radius:8px;padding:8px;font-family:Consolas,"Courier New",monospace;font-size:12.5px;
+    white-space:pre-wrap;word-break:break-all}
+  #log .t{color:#4a6076}
+  #log .rx{color:#9fd3ff}
+  #log .tx{color:#ffd58a}
+  #log .sys{color:#8be0b0}
+  #log .err{color:var(--err)}
+  #log .st{color:#c9b6ff}
+  .logbar{display:flex;gap:14px;align-items:center;margin-bottom:8px;flex-wrap:wrap;font-size:12.5px}
+  .logbar label{color:var(--dim);cursor:pointer;user-select:none}
+  .foot{color:var(--dim);font-size:12px;margin-top:8px}
+  .warnbox{background:#3a2a12;border:1px solid #6b4d1d;color:#ffd58a;border-radius:8px;
+    padding:10px 12px;margin-bottom:14px;display:none}
+  .keys{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:6px 18px;font-size:12.5px}
+  .keys div{display:flex;justify-content:space-between;border-bottom:1px dotted #1e2a38;padding:3px 0}
+  .keys span:last-child{color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>弹幕游戏上位机 · GameDemo <small>计算机键盘 → 串口 → FPGA 2D 加速器（板载按键一个都不用）
+    · <b style="color:var(--acc)">增强版：带敌弹 FILL/ALPHA/ADD/KEY 显示模式切换</b></small></h1>
+
+  <div id="nowebserial" class="warnbox">
+    <b>当前环境不支持 Web Serial</b>（<code>navigator.serial</code> 不存在）。
+    请用桌面版 Chrome / Edge，并用 <code>file://</code> 双击打开本文件，或通过
+    <code>http://localhost:8000/…</code> 访问（<code>file://</code> 与 localhost 都属于安全上下文）。
+    本页面其余部分仍可查看，只是连不上串口。
+  </div>
+
+  <div class="panel">
+    <div class="bar">
+      <span><span id="led" class="led"></span><span id="stat">未连接</span></span>
+      <label class="dim">波特率
+        <select id="baud">
+          <option>9600</option><option>19200</option><option>38400</option>
+          <option>57600</option><option selected>115200</option><option>230400</option>
+        </select>
+      </label>
+      <button id="btnConnect">连接</button>
+      <button id="btnDisconnect" disabled>断开</button>
+      <label class="dim"><input type="checkbox" id="capKeys" checked> 键盘接管（本页有焦点时生效）</label>
+      <span class="dim">当前按键包：<b id="masknow" class="maskbox">@00</b></span>
+    </div>
+    <div class="foot" id="foot">未连接串口。连接后点击页面任意处取得焦点，然后用键盘操作。</div>
+  </div>
+
+  <h2>记分板 <span class="hint">由固件回传的 <code>ST ...</code> 行（4Hz）实时解析</span></h2>
+  <div class="panel">
+    <div class="score">
+      <div class="cell hl"><div class="k">FPS（当前路径）</div><div class="v" id="s_fps">–</div></div>
+      <div class="cell sw"><div class="k">分母：纯 CPU 帧率</div><div class="v" id="s_sw">–</div></div>
+      <div class="cell"><div class="k">N（弹幕上限）</div><div class="v" id="s_n">–</div></div>
+      <div class="cell"><div class="k">ON（同屏元素）</div><div class="v" id="s_on">–</div></div>
+      <div class="cell"><div class="k">SCORE</div><div class="v" id="s_sc">–</div></div>
+      <div class="cell"><div class="k">LEVEL</div><div class="v" id="s_lv">–</div></div>
+      <div class="cell"><div class="k">HP</div><div class="v" id="s_hp">–</div></div>
+      <div class="cell"><div class="k">BOMB</div><div class="v" id="s_bm">–</div></div>
+      <div class="cell"><div class="k">渲染路径</div><div class="v" id="s_md" style="font-size:16px">–</div></div>
+      <div class="cell hl"><div class="k">OP（敌弹算子）</div><div class="v" id="s_op" style="font-size:16px">–</div></div>
+    </div>
+    <div class="foot">
+      <b>HW</b> = 硬件加速路径实测帧率；<b>SW</b> = 纯 CPU 渲染实测帧率（两个数都留在屏幕上，
+      按 <code>c</code> / <code>h</code> 来回切就能在显示器上做同场景对比）。
+      <code>LIMIT</code> 行是自动爬坡（<code>g</code>）找到的 60FPS 极限 N。
+    </div>
+  </div>
+
+  <h2>虚拟手柄 <span class="hint">鼠标/触屏也能玩；按下的键会与键盘状态合并</span></h2>
+  <div class="panel">
+    <div class="padwrap">
+      <div>
+        <div class="dpad">
+          <span></span><button data-bit="0">▲</button><span></span>
+          <button data-bit="2">◀</button><span></span><button data-bit="3">▶</button>
+          <span></span><button data-bit="1">▼</button><span></span>
+        </div>
+        <div class="dim" style="text-align:center;margin-top:6px">W A S D / 方向键</div>
+      </div>
+      <div>
+        <div class="abtn">
+          <button data-bit="4">开火 J / 空格</button>
+          <button data-bit="5">慢速 K / Shift</button>
+          <button data-bit="6">炸弹 L / X</button>
+          <button data-bit="7">暂停 P / 回车</button>
+        </div>
+        <div class="dim" style="margin-top:6px">按下的按钮会一直保持，直到再点一次松开</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>敌弹显示模式 <span class="hint">切换敌机子弹的画法：FILL / ALPHA / ADD / KEY（本页新增）</span></h2>
+  <div class="panel">
+    <div class="bar" id="bulmBar" style="margin-bottom:10px">
+      <button class="big" data-bulm="FILL">5 · FILL<span class="c">纯色方块 · 容量最大</span></button>
+      <button class="big" data-bulm="ALPHA">6 · ALPHA<span class="c">半透明混合 · 四角会压暗背景</span></button>
+      <button class="big" data-bulm="ADD">7 · ADD<span class="c">加算辉光 · 默认档</span></button>
+      <button class="big" data-bulm="KEY">8 · KEY<span class="c">Color Key 抠图</span></button>
+      <button class="big" data-bulm="CYCLE">f · 循环<span class="c">按 FILL→ALPHA→ADD→KEY 轮转</span></button>
+    </div>
+    <div class="foot" id="bulmHint">
+      只作用于**敌机放出的弹**（同屏元素的主体）；自机弹与火花固定用加算辉光，
+      所以切档时只有弹幕这一种元素的画法在变，观感与帧率的差别一眼就能对上号。
+    </div>
+    <table style="margin-top:10px">
+      <tr><th style="width:74px">档</th><th style="width:176px">引擎算子</th><th>观感 / 代价</th></tr>
+      <tr><td><b>FILL</b></td><td>op=1（FILL）</td>
+          <td>纯色方块。**没有源、没有键色、没有 alpha** ⇒ 最省（16×16 @70% 帧预算约 <b>2269</b> 颗/帧，单 lane 板测口径）。会盖住底下的东西。</td></tr>
+      <tr><td><b>ALPHA</b></td><td>op=2（ALPHA）+ 命令字 α=160</td>
+          <td>经典半透明 <code>out=(fg·α+bg·(255−α)+127)&gt;&gt;8</code>。图集是矩形、四角纯黑 ⇒ 半透明把背景在方框范围内压暗，每颗弹外面套一个暗方块。**这不是 bug，正是 Color Key 存在的理由**。容量约 <b>1362</b> 颗/帧。</td></tr>
+      <tr><td><b>ADD</b></td><td>op=2（ALPHA）+ 属性字 <code>blend=ADD</code></td>
+          <td>加算辉光：黑像素加 0 ⇒ 天然透明，彩色像素把光加上去。默认档。位流没有属性侧口时**自动降级成 KEY**（记分板 OP 会显示实际生效的那一档）。</td></tr>
+      <tr><td><b>KEY</b></td><td>op=3（KEY），色键 0x0000</td>
+          <td>硬边抠图，块与块之间没有 z 序问题。容量约 <b>1622</b> 颗/帧。</td></tr>
+    </table>
+    <div class="foot" style="margin-top:8px">
+      ★ <b>怎么用这一页量极限</b>：先按 <code>4</code> 把 N 拉到 2400，再按 <code>g</code> 打开自动爬坡；
+      分别在四个档各跑一次，比较串口的 <code>LIMIT N=… fps=… ON=…</code> 与屏上 <code>OP=</code>、<code>ON=</code> ——
+      同一份弹幕在 FILL 档能顶住的同屏数量明显高于 ALPHA 档，这就是"算子选择"对 60FPS 极限的直接影响。
+    </div>
+  </div>
+
+  <h2>固件命令 <span class="hint">与 src/GameDemo.c 的 serial_cmd() 一致</span></h2>
+  <div class="panel">
+    <div class="bar" style="margin-bottom:10px">
+      <button class="big" data-cmd="1">1 · 低负载<span class="c">发 '1'，N=256</span></button>
+      <button class="big" data-cmd="2">2 · 中负载<span class="c">发 '2'，N=640</span></button>
+      <button class="big" data-cmd="3">3 · 高负载<span class="c">发 '3'，N=1280</span></button>
+      <button class="big" data-cmd="4">4 · 满负载<span class="c">发 '4'，N=2400</span></button>
+      <button class="big" data-cmd="g">g · 自动爬坡<span class="c">逐秒抬 N 直到掉帧，找 60FPS 极限</span></button>
+    </div>
+    <div class="bar" style="margin-bottom:10px">
+      <button class="big" data-cmd="c">c · 纯 CPU<span class="c">切到软件渲染对照</span></button>
+      <button class="big" data-cmd="h">h · 硬件加速<span class="c">切回引擎渲染（默认）</span></button>
+      <button class="big" data-cmd="b">b · 星空<span class="c">背景装饰开关</span></button>
+      <button class="big" data-cmd="p">p · 暂停<span class="c">等价于按键 bit7</span></button>
+      <button class="big" data-cmd="r">r · 重开<span class="c">重置一局（换种子）</span></button>
+      <button class="big" data-cmd="d">d · 诊断<span class="c">打一行寄存器现场</span></button>
+      <button class="big" data-cmd="?">? · 帮助<span class="c">固件打印完整命令表</span></button>
+    </div>
+    <div class="bar">
+      <button data-cmd="n">n · N +64</button>
+      <button data-cmd="-">- · N −64</button>
+      <label class="dim">=N 精确设置（64–2400）
+        <input type="number" id="nval" min="64" max="2400" step="64" value="640" style="width:96px">
+      </label>
+      <button id="btnApplyN">应用 =N</button>
+      <span class="dim">行命令，固件会回 <code>EV N=…</code>（发 <code>=9999</code> 会被钳到 2400）</span>
+    </div>
+  </div>
+
+  <h2>日志 <span class="hint">时间戳 HH:MM:SS.mmm · 行缓冲</span>
+    <button id="btnClear" style="float:right;padding:3px 9px;font-size:12px">清空</button></h2>
+  <div class="panel">
+    <div class="logbar">
+      <label><input type="checkbox" id="autoscroll" checked> 自动滚动</label>
+      <label><input type="checkbox" id="showtx" checked> 显示发送</label>
+      <button id="btnSave" style="padding:3px 9px;font-size:12px">保存为 txt</button>
+      <span class="dim" id="logfoot"></span>
+    </div>
+    <div id="log"></div>
+    <div class="bar" style="margin-top:10px">
+      <input type="text" id="raw" placeholder="原始发送：回车 = 发送，Esc = 清空" style="flex:1;min-width:260px">
+      <label class="dim"><input type="checkbox" id="appendNl"> 自动追加换行</label>
+      <button id="btnSend">发送</button>
+    </div>
+  </div>
+
+  <h2>协议与按键对照 <span class="hint">不需要回头翻文档</span></h2>
+  <div class="panel">
+    <table>
+      <tr><th style="width:190px">计算机按键</th><th style="width:70px">位</th><th>作用</th></tr>
+      <tr><td><kbd>W</kbd> / <kbd>↑</kbd></td><td>bit0</td><td>上移</td></tr>
+      <tr><td><kbd>S</kbd> / <kbd>↓</kbd></td><td>bit1</td><td>下移</td></tr>
+      <tr><td><kbd>A</kbd> / <kbd>←</kbd></td><td>bit2</td><td>左移</td></tr>
+      <tr><td><kbd>D</kbd> / <kbd>→</kbd></td><td>bit3</td><td>右移</td></tr>
+      <tr><td><kbd>J</kbd> / <kbd>空格</kbd></td><td>bit4</td><td>开火（标题/结束页按它开始或重开）</td></tr>
+      <tr><td><kbd>K</kbd> / <kbd>Shift</kbd></td><td>bit5</td><td>慢速（精确走位）</td></tr>
+      <tr><td><kbd>L</kbd> / <kbd>X</kbd></td><td>bit6</td><td>炸弹（清屏，按**上升沿**触发一次）</td></tr>
+      <tr><td><kbd>P</kbd> / <kbd>回车</kbd></td><td>bit7</td><td>暂停 / 继续（上升沿）</td></tr>
+    </table>
+    <table style="margin-top:12px">
+      <tr><th style="width:150px">命令</th><th>作用</th></tr>
+      <tr><td><code>5</code> / <code>6</code> / <code>7</code> / <code>8</code></td>
+          <td><b>敌弹显示模式</b>直选：FILL / ALPHA / ADD / KEY（本页新增面板）</td></tr>
+      <tr><td><code>f</code></td><td>敌弹显示模式循环：FILL → ALPHA → ADD → KEY → FILL</td></tr>
+      <tr><td><code>1</code> <code>2</code> <code>3</code> <code>4</code></td><td>负载预设：N = 256 / 640 / 1280 / 2400</td></tr>
+      <tr><td><code>n</code> / <code>+</code> / <code>-</code> / <code>=N</code></td><td>N 调整（<code>=N</code> 是行命令，要带换行）</td></tr>
+      <tr><td><code>c</code> / <code>h</code></td><td>渲染路径：纯 CPU 对照 / 硬件加速</td></tr>
+      <tr><td><code>g</code></td><td>自动爬坡：逐秒抬 N 直到掉帧，给出 <code>LIMIT</code> 行</td></tr>
+      <tr><td><code>b</code> <code>p</code> <code>r</code> <code>d</code> <code>?</code></td>
+          <td>星空开关 / 暂停 / 重开 / 诊断行 / 帮助</td></tr>
+    </table>
+    <div class="foot" style="margin-top:10px">
+      发送格式：<code>'@' + 两位十六进制 + '\n'</code>，例如同时按住「右 + 开火」= <code>@18</code>。<br>
+      固件侧 500ms 收不到包就认为全部松开（看门狗）；本页每次松手/按下都会立刻发一包，另外每 100ms 补一包心跳。<br>
+      板子回包：上电横幅、<code>EV …</code>（命令回显）、<code>ST fps=.. n=.. on=.. sc=.. lv=.. hp=.. bm=.. md=HW|SW</code>（4Hz）、
+      <code>LIMIT N=.. fps=.. ON=.. path=..</code>（自动爬坡结论）。
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ==== PROTO_BEGIN ==== */
+/* 纯函数协议层（tools/game_console_selftest.js 按**整行标记**把这一段原样抽出去在 Node 里跑）。
+   这一段**不许**碰 DOM / navigator / 串口 —— 只做「按键 → 数据包」和「回包 → 记分板」。 */
+
+/* 物理键 → 位。用 event.code 为主（不受输入法与大小写影响），event.key 兜底。 */
+var KEYMAP_CODE = {
+  KeyW: 0, ArrowUp: 0,
+  KeyS: 1, ArrowDown: 1,
+  KeyA: 2, ArrowLeft: 2,
+  KeyD: 3, ArrowRight: 3,
+  KeyJ: 4, Space: 4,
+  KeyK: 5, ShiftLeft: 5, ShiftRight: 5,
+  KeyL: 6, KeyX: 6,
+  KeyP: 7, Enter: 7, NumpadEnter: 7, Escape: 7
+};
+var KEYMAP_KEY = {
+  w: 0, W: 0, ArrowUp: 0,
+  s: 1, S: 1, ArrowDown: 1,
+  a: 2, A: 2, ArrowLeft: 2,
+  d: 3, D: 3, ArrowRight: 3,
+  j: 4, J: 4, ' ': 4,
+  k: 5, K: 5, Shift: 5,
+  l: 6, L: 6, x: 6, X: 6,
+  p: 7, P: 7, Enter: 7, Escape: 7
+};
+
+/* 返回 0..7，或 -1 表示这个键不参与游戏 */
+function bitOfKey(code, key) {
+  if (code && Object.prototype.hasOwnProperty.call(KEYMAP_CODE, code)) return KEYMAP_CODE[code];
+  if (key && Object.prototype.hasOwnProperty.call(KEYMAP_KEY, key)) return KEYMAP_KEY[key];
+  return -1;
+}
+/* 这个键是否需要 preventDefault（方向键/空格会滚页面） */
+function shouldPreventDefault(code) {
+  return code === 'ArrowUp' || code === 'ArrowDown' || code === 'ArrowLeft' ||
+         code === 'ArrowRight' || code === 'Space' || code === 'Enter' ||
+         code === 'Tab' || code === 'F5';
+}
+function hex2(n) { n = (n & 0xFF) >>> 0; return (n < 16 ? '0' : '') + n.toString(16); }
+/* 按键位图 → 串口包（固件 kp_feed 要求的形态：'@'+2位十六进制+'\n'） */
+function encodeKeyPacket(mask) { return '@' + hex2(mask) + '\n'; }
+
+/* ============================== ★ 敌弹显示模式（本页新增功能） ==============================
+ * 顺序 / 命令字必须与固件 src/GameDemo.c 的 BULM_* 枚举与 serial_cmd() 的 case 一致：
+ *   BULM_FILL=0 '5' | BULM_ALPHA=1 '6' | BULM_ADD=2 '7' | BULM_KEY=3 '8' ，'f' = 循环。
+ * （self-test 的 [7] 组会从固件源码里把这两张表读出来对账，改一边忘另一边会当场红。） */
+var BUL_MODES = [
+  { cmd: '5', name: 'FILL',  short: 'FIL',
+    desc: '引擎算子 1 —— 纯色方块。没有源/键色/alpha，**同屏容量最大**（16x16 @70% 预算约 2269 颗/帧），代价是实心方块会盖住底下的东西。' },
+  { cmd: '6', name: 'ALPHA', short: 'ALP',
+    desc: '引擎算子 2 + 命令字 alpha=160 —— 经典半透明 out=(fg·α+bg·(255−α)+127)>>8。注意图集是**矩形**的，四角纯黑会被半透明压暗 ⇒ 每颗弹外面套一个暗方块，**这正是 Color Key 存在的理由**。' },
+  { cmd: '7', name: 'ADD',   short: 'ADD',
+    desc: '引擎算子 2 + 属性字 blend=ADD —— 加算辉光（本 Demo 默认档，观感最好）。位流没有属性侧口时固件会**自动降级成 KEY**，记分板的 OP 会显示实际生效的那一档。' },
+  { cmd: '8', name: 'KEY',   short: 'KEY',
+    desc: '引擎算子 3 —— 色键 0x0000 整像素丢弃 ⇒ 硬边抠图，块与块之间没有 z 序问题。' }
+];
+function bulModeByName(name) {
+  if (typeof name !== 'string') return null;
+  var u = name.trim().toUpperCase();
+  for (var i = 0; i < BUL_MODES.length; i++) if (BUL_MODES[i].name === u) return BUL_MODES[i];
+  return null;
+}
+function bulModeByIndex(i) { return (i >= 0 && i < BUL_MODES.length) ? BUL_MODES[i] : null; }
+/* 档名 → 要发的单字符命令（认不出来返回 null；建议调用方直接发 'f' 循环） */
+function encodeBulMode(name) { var m = bulModeByName(name); return m ? m.cmd : null; }
+function encodeBulCycle() { return 'f'; }
+/* 固件回包 'ST fps=.. n=.. on=.. sc=.. lv=.. hp=.. bm=.. md=HW OP=FILL' → 对象 */
+function parseStatusLine(line) {
+  if (typeof line !== 'string') return null;
+  var s = line.trim();
+  if (s.indexOf('ST ') !== 0) return null;
+  var out = { fps: null, n: null, on: null, sc: null, lv: null, hp: null, bm: null,
+              md: null, op: null };
+  var m = s.match(/\bfps=(-?\d+)/); if (m) out.fps = parseInt(m[1], 10);
+  m = s.match(/\bn=(\d+)/);         if (m) out.n   = parseInt(m[1], 10);
+  m = s.match(/\bon=(\d+)/);        if (m) out.on  = parseInt(m[1], 10);
+  m = s.match(/\bsc=(\d+)/);        if (m) out.sc  = parseInt(m[1], 10);
+  m = s.match(/\blv=(\d+)/);        if (m) out.lv  = parseInt(m[1], 10);
+  m = s.match(/\bhp=(-?\d+)/);      if (m) out.hp  = parseInt(m[1], 10);
+  m = s.match(/\bbm=(\d+)/);        if (m) out.bm  = parseInt(m[1], 10);
+  m = s.match(/\bmd=(HW|SW)\b/);    if (m) out.md  = m[1];
+  /* ★ 新增：敌弹实际生效的算子档名（FILL / ALPHA / ADD / KEY） */
+  m = s.match(/\bOP=(FILL|ALPHA|ADD|KEY)\b/); if (m) out.op = m[1];
+  return out;
+}
+/* 自动爬坡的结论行：LIMIT N=1375 fps=60 ON=1412 path=HW ACCEL (max stable at 60fps) */
+function parseLimitLine(line) {
+  if (typeof line !== 'string') return null;
+  var s = line.trim();
+  if (s.indexOf('LIMIT ') !== 0) return null;
+  var out = { n: null, fps: null, on: null, path: null };
+  var m = s.match(/\bN=(\d+)/);   if (m) out.n   = parseInt(m[1], 10);
+  m = s.match(/\bfps=(\d+)/);     if (m) out.fps = parseInt(m[1], 10);
+  m = s.match(/\bON=(\d+)/);      if (m) out.on  = parseInt(m[1], 10);
+  m = s.match(/path=([A-Z ]+?)\s*(\(|$)/); if (m) out.path = m[1].trim();
+  return out;
+}
+/* '=N' 行命令（钳位与固件一致：只钳不拒） */
+function encodeSetN(v, nmin, nmax) {
+  var n = parseInt(v, 10);
+  if (isNaN(n)) return null;
+  if (n < nmin) n = nmin;
+  if (n > nmax) n = nmax;
+  return '=' + n + '\n';
+}
+/* ==== PROTO_END ==== */
+
+/* ============================== DOM / 串口 ============================== */
+var el = {};
+['nowebserial','led','stat','baud','btnConnect','btnDisconnect','capKeys','masknow','foot',
+ 's_fps','s_sw','s_n','s_on','s_sc','s_lv','s_hp','s_bm','s_md','s_op',
+ 'bulmBar','bulmHint',
+ 'nval','btnApplyN','log','autoscroll','showtx','btnSave','btnClear','logfoot',
+ 'raw','appendNl','btnSend'].forEach(function(id){ el[id] = document.getElementById(id); });
+
+var port = null, writer = null, reader = null, readLoopRunning = false;
+var keyMask = 0;          /* 键盘实际按下的位 */
+var padMask = 0;          /* 虚拟手柄按下的位（与键盘合并） */
+var beatTimer = null;
+var rawLog = [];
+
+function pad(n, w) { var s = String(n); while (s.length < w) s = '0' + s; return s; }
+function stamp() { var d = new Date(); return pad(d.getHours(),2)+':'+pad(d.getMinutes(),2)+':'+
+  pad(d.getSeconds(),2)+'.'+pad(d.getMilliseconds(),3); }
+
+function append(kind, text) {
+  var line = '[' + stamp() + '] ';
+  rawLog.push(line + text);
+  var atBottom = el.log.scrollTop + el.log.clientHeight >= el.log.scrollHeight - 4;
+  var span = document.createElement('span');
+  span.className = kind;
+  span.textContent = line + text + '\n';
+  el.log.appendChild(span);
+  if (el.autoscroll.checked && atBottom) el.log.scrollTop = el.log.scrollHeight;
+  if (el.log.childNodes.length > 4000) el.log.removeChild(el.log.firstChild);
+  el.logfoot.textContent = rawLog.length + ' 行';
+}
+function sysLog(t){ append('sys', t); }
+function errLog(t){ append('err', t); }
+function txLog(t){ if (el.showtx.checked) append('tx', '→ ' + t.replace(/\n/g,'\\n')); }
+
+/* ---- 状态灯 ---- */
+function setStatus(kind, text){
+  el.led.className = 'led' + (kind ? ' ' + kind : '');
+  el.stat.textContent = text;
+}
+function uiConnected(on){
+  el.btnConnect.disabled = on;
+  el.btnDisconnect.disabled = !on;
+}
+
+/* ---- 按键 → 串口 ---- */
+function mergedMask(){ return (keyMask | padMask) & 0xFF; }
+function renderMask(){
+  el.masknow.textContent = '@' + hex2(mergedMask());
+  var btns = document.querySelectorAll('[data-bit]');
+  for (var i = 0; i < btns.length; i++){
+    var b = parseInt(btns[i].getAttribute('data-bit'), 10);
+    if (padMask & (1 << b)) btns[i].classList.add('on'); else btns[i].classList.remove('on');
+  }
+}
+function sendMask(){
+  var pkt = encodeKeyPacket(mergedMask());
+  writeStr(pkt);
+  txLog(pkt);
+  renderMask();
+}
+function startBeat(){
+  stopBeat();
+  beatTimer = setInterval(function(){ if (port) { writeStr(encodeKeyPacket(mergedMask())); renderMask(); } }, 100);
+}
+function stopBeat(){ if (beatTimer) { clearInterval(beatTimer); beatTimer = null; } }
+
+document.addEventListener('keydown', function(e){
+  if (!el.capKeys.checked) return;
+  if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' ||
+                   e.target.tagName === 'TEXTAREA')) return;   /* 输入框里正常打字 */
+  var b = bitOfKey(e.code, e.key);
+  if (b < 0) return;
+  if (shouldPreventDefault(e.code)) e.preventDefault();
+  if (e.repeat) return;
+  if (!(keyMask & (1 << b))) { keyMask |= (1 << b); sendMask(); }
+}, false);
+
+document.addEventListener('keyup', function(e){
+  if (!el.capKeys.checked) return;
+  if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' ||
+                   e.target.tagName === 'TEXTAREA')) return;
+  var b = bitOfKey(e.code, e.key);
+  if (b < 0) return;
+  if (shouldPreventDefault(e.code)) e.preventDefault();
+  if (keyMask & (1 << b)) { keyMask &= ~(1 << b); sendMask(); }
+}, false);
+
+/* 焦点丢走时把键盘位全松开（否则自机会一直朝一个方向飞） */
+window.addEventListener('blur', function(){
+  if (keyMask !== 0) { keyMask = 0; sendMask(); }
+});
+
+/* ---- 虚拟手柄：点一下切换按住/松开 ---- */
+document.querySelectorAll('[data-bit]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var b = parseInt(btn.getAttribute('data-bit'), 10);
+    padMask ^= (1 << b);
+    padMask &= 0xFF;
+    sendMask();
+  });
+});
+
+/* ---- 串口 ---- */
+async function connect(){
+  if (!('serial' in navigator)) { errLog('本环境没有 navigator.serial。'); return; }
+  try {
+    port = await navigator.serial.requestPort();
+    await port.open({ baudRate: parseInt(el.baud.value, 10) || 115200,
+                      dataBits: 8, stopBits: 1, parity: 'none', flowControl: 'none' });
+    writer = port.writable.getWriter();
+    setStatus('ok', '已连接 · 波特率 ' + (parseInt(el.baud.value,10)||115200) + ' · 8N1');
+    uiConnected(true);
+    sysLog('串口已打开（' + (parseInt(el.baud.value,10)||115200) + ' 8N1）。');
+    el.foot.textContent = '已连接。请点击页面任意处取得焦点，然后用键盘操作（或在虚拟手柄上点按）。';
+    keyMask = 0; padMask = 0; renderMask();
+    startBeat();
+    readLoopRunning = true;
+    readLoop();
+  } catch (err) {
+    setStatus('err', '打开串口失败');
+    errLog('打开串口失败：' + (err && err.message ? err.message : err) +
+           '（串口被别的软件占用？或 USB 线只供电不传数据？）');
+  }
+}
+async function readLoop(){
+  var decoder = new TextDecoder();
+  var buf = '';
+  try {
+    while (port && port.readable && readLoopRunning) {
+      reader = port.readable.getReader();
+      try {
+        for (;;) {
+          var res = await reader.read();
+          if (res.done) break;
+          buf += decoder.decode(res.value, { stream: true });
+          /* 行缓冲：\r\n 与裸 \r 都当换行 */
+          for (;;) {
+            var idx = buf.search(/[\r\n]/);
+            if (idx < 0) break;
+            var line = buf.slice(0, idx);
+            buf = buf.slice(idx + 1).replace(/^[\r\n]+/, '');
+            if (line.length) emitLine(line);
+          }
+          if (buf.length > 4096) { emitLine(buf + ' ⋯'); buf = ''; }
+        }
+      } catch (e) {
+        if (readLoopRunning) errLog('读取中断：' + (e && e.message ? e.message : e));
+      } finally {
+        if (reader) { try { reader.releaseLock(); } catch(e){} reader = null; }
+      }
+    }
+  } finally {
+    if (readLoopRunning) teardown('串口设备已被拔出', true);
+  }
+}
+function emitLine(line){
+  var st = parseStatusLine(line);
+  if (st) {
+    append('st', line);
+    if (st.fps !== null) el.s_fps.textContent = st.fps;
+    if (st.n   !== null) el.s_n.textContent   = st.n;
+    if (st.on  !== null) el.s_on.textContent  = st.on;
+    if (st.sc  !== null) el.s_sc.textContent  = st.sc;
+    if (st.lv  !== null) el.s_lv.textContent  = st.lv;
+    if (st.hp  !== null) el.s_hp.textContent  = st.hp;
+    if (st.bm  !== null) el.s_bm.textContent  = st.bm;
+    if (st.md  !== null) el.s_md.textContent  = st.md;
+    /* ★ 新增：敌弹算子档名 —— 同时把对应按钮点亮，一眼看出当前在哪个档 */
+    if (st.op  !== null) { el.s_op.textContent = st.op; highlightBulm(st.op); }
+    /* md=SW 时 fps 那一格显示的其实是软件帧率 ⇒ 顺手把它也搬到 SW 格 */
+    if (st.md === 'SW' && st.fps !== null) el.s_sw.textContent = st.fps;
+    return;
+  }
+  var lim = parseLimitLine(line);
+  if (lim) {
+    append('sys', line);
+    if (lim.fps !== null) el.s_fps.textContent = lim.fps;
+    if (lim.n   !== null) el.s_n.textContent   = lim.n;
+    if (lim.on  !== null) el.s_on.textContent  = lim.on;
+    setStatus('wait', '极限 N=' + lim.n + ' @ ' + lim.fps + 'fps');
+    return;
+  }
+  append('rx', line);
+}
+async function teardown(reason, isErr){
+  readLoopRunning = false;
+  stopBeat();
+  keyMask = 0; padMask = 0; renderMask();
+  try { if (reader) { await reader.cancel(); } } catch(e){}
+  try { if (writer) { writer.releaseLock(); } } catch(e){}
+  try { if (port) { await port.close(); } } catch(e){}
+  writer = null; reader = null; port = null;
+  uiConnected(false);
+  setStatus(isErr ? 'err' : '', isErr ? ('错误 / ' + reason) : '未连接');
+  if (isErr) errLog(reason); else sysLog('已断开。');
+  el.foot.textContent = '未连接串口。重新插上后直接再点「连接」即可，不用刷新页面。';
+}
+function disconnect(){ teardown('用户断开', false); }
+
+async function writeStr(s){
+  if (!writer) { sysLog('尚未连接串口：' + JSON.stringify(s) + ' 未发送'); return; }
+  try { await writer.write(new TextEncoder().encode(s)); }
+  catch (e) { errLog('写串口失败：' + (e && e.message ? e.message : e)); }
+}
+
+/* ---- 命令按钮 ---- */
+document.querySelectorAll('[data-cmd]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var c = btn.getAttribute('data-cmd');
+    writeStr(c); txLog(c);
+  });
+});
+
+/* ---- ★ 敌弹显示模式按钮（本页新增） ----------------------------------------
+ * 发的是单字符命令（'5'/'6'/'7'/'8'/'f'），与其它按钮同一条通路。
+ * 按钮的点亮状态**不靠本地猜测**，而是等固件下一条 ST 行的 OP= 字段回来再标
+ * —— 这样"点了没生效"（比如位流不支持、或串口没连）会当场看得出来。 */
+function highlightBulm(name) {
+  var btns = document.querySelectorAll('[data-bulm]');
+  for (var i = 0; i < btns.length; i++) {
+    var k = btns[i].getAttribute('data-bulm');
+    if (k === name) btns[i].classList.add('on'); else btns[i].classList.remove('on');
+  }
+}
+document.querySelectorAll('[data-bulm]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var k = btn.getAttribute('data-bulm');
+    var c = (k === 'CYCLE') ? encodeBulCycle() : encodeBulMode(k);
+    if (!c) { errLog('未知档名：' + k); return; }
+    writeStr(c); txLog(c);
+    var m = bulModeByName(k);
+    el.bulmHint.textContent = (k === 'CYCLE')
+      ? '已发 f：按 FILL → ALPHA → ADD → KEY 轮转（等 ST 行的 OP= 回来确认）。'
+      : ('已请求 ' + k + '：' + (m ? m.desc : ''));
+  });
+});
+el.btnApplyN.addEventListener('click', function(){
+  var s = encodeSetN(el.nval.value, 64, 2400);
+  if (!s) { errLog('=N 需要一个十进制数字。'); return; }
+  writeStr(s); txLog(s);
+  el.nval.value = s.slice(1).trim();
+});
+el.btnSend.addEventListener('click', function(){
+  var s = el.raw.value;
+  if (!s) return;
+  if (el.appendNl.checked && !/\n$/.test(s)) s += '\n';
+  writeStr(s); txLog(s);
+  el.raw.value = '';
+});
+el.raw.addEventListener('keydown', function(e){
+  if (e.key === 'Enter') { e.preventDefault(); el.btnSend.click(); }
+  if (e.key === 'Escape') { e.preventDefault(); el.raw.value = ''; }
+});
+el.btnClear.addEventListener('click', function(){ el.log.textContent = ''; rawLog = []; el.logfoot.textContent = '0 行'; });
+el.btnSave.addEventListener('click', function(){
+  var blob = new Blob([rawLog.join('\n') + '\n'], { type: 'text/plain;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'gamedemo_log_' + new Date().toISOString().replace(/[:.]/g,'-') + '.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+});
+el.btnConnect.addEventListener('click', connect);
+el.btnDisconnect.addEventListener('click', disconnect);
+el.capKeys.addEventListener('change', function(){
+  if (!el.capKeys.checked && keyMask !== 0) { keyMask = 0; sendMask(); }
+});
+
+/* ---- 初始化 ---- */
+if (!('serial' in navigator)) {
+  el.nowebserial.style.display = 'block';
+  el.btnConnect.disabled = true;
+  setStatus('err', '当前环境不支持 Web Serial');
+}
+renderMask();
+sysLog('弹幕游戏上位机就绪。协议：PC→板 "@HH\\n"；板→PC "EV/ST/LIMIT ..."。');
+sysLog('用法：连接 → 点页面任意处取得焦点 → 用 W/A/S/D 或方向键走位，J/空格开火。');
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+title=AdDemo · FPGA 2D 加速器（纯硬件渲染）串口上位机
+h1=AdDemo · 2D 加速器纯硬件渲染上位机
+slider min=16 max=6000 step=16 default=320
+number min=16 max=6000 step=16 default=320
+preset buttons=19  quick buttons=6  table rows=19
+notice hidden=true
+navigator.serial is the injected fake=false  (via defineProperty getter -> true)
+layout: doc scroll=743x2919 viewport=743 (horizontal overflow=false)
+layout: body bg=rgba(0, 0, 0, 0) h1 colour=rgb(231, 236, 243) font=system-ui, -apple-system, "Segoe UI", "Microso
+layout: topbar rect=0,0,743,135  h1 rect=18,12,630,24
+layout: N slider rect=221,205,491,30  log panel rect=19,1076,705,326
+layout: preset buttons with zero size=0 (0 = every button laid out)
+layout: sections(5)=N 精确设置 滑块 16–6 | 预设命令按钮 点一下即发送， | 日志面板 时间戳 HH:MM | 原始发送 回车 = 发送 · | 命令对照表 与固件 AdDe
+layout: log placeholder removed after first log line=true
+--- preset -> bytes actually written to the fake serial port ---
+data-cmd="1"  ->  "1"   OK
+data-cmd="2"  ->  "2"   OK
+data-cmd="3"  ->  "3"   OK
+data-cmd="4"  ->  "4"   OK
+data-cmd="5"  ->  "5"   OK
+data-cmd="n"  ->  "n"   OK
+data-cmd="-"  ->  "-"   OK
+data-cmd="+"  ->  "+"   OK
+data-cmd="q"  ->  "q"   OK
+data-cmd="k"  ->  "k"   OK
+data-cmd="a"  ->  "a"   OK
+data-cmd="A"  ->  "A"   OK
+data-cmd="f"  ->  "f"   OK
+data-cmd="b"  ->  "b"   OK
+data-cmd="x"  ->  "x"   OK
+data-cmd="y"  ->  "y"   OK
+data-cmd="t"  ->  "t"   OK
+data-cmd="r"  ->  "r"   OK
+data-cmd="?"  ->  "?"   OK
+APPLY =N  ->  "=1500\n"   (expect "=1500\n")
+nPending==1500  nLast==1500（等待 EV N=1500）
+logfoot=已发送 =1500 + 换行
+statusText=已连接
+log tail=串口（默认 115200 8N1）。22:40:16.781SYS正在打开串口选择框…22:40:16.781SYS已连接：波特率 115200，8 数据位 / 无校验 / 1 停止位。22:40:17.081TX122:40:17.121TX222:40:17.161TX322:40:17.201TX422:40:17.241TX522:40:17.281TXn22:40:17.321TX-22:40:17.361TX+22:40:17.401TXq22:40:17.441TXk22:40:17.481TXa22:40:17.521TXA22:40:17.561TXf22:40:17.601TXb22:40:17.641TXx22:40:17.681TXy22:40:17.721TXt22:40:17.761TXr22:40:17.801TX?22:40:17.841TX=1500⟨A⟩
+END

@@ -1,0 +1,22 @@
+﻿# 被检文件：tools\game_console.html
+[1] 按键映射
+[2] 数据包编码 @HH\n
+[3] ST 状态行解析
+[4] LIMIT 行解析
+[5] =N 行命令编码
+[6] 与固件常量的一致性
+
+===== game_console protocol self-test: 34 passed / 0 failed =====
+
+# 被检文件：tools\game_console1.html
+[1] 按键映射
+[2] 数据包编码 @HH\n
+[3] ST 状态行解析
+[4] LIMIT 行解析
+[5] =N 行命令编码
+[6] 与固件常量的一致性
+[7] 敌弹显示模式（增强版新增）
+
+===== game_console protocol self-test: 53 passed / 0 failed =====
+
+

@@ -1,0 +1,33 @@
+/danmaku
+/simulator
+/sim_scan.log
+/sim_scan.vvp
+/software
+/port_analysis
+/opencode_share_download
+
+# 工具状态锁文件（PDS/Eclipse 等），运行时被独占锁定且无法被 git 读取
+*.lock
+
+# =============================================================================
+# 以下是发布到 GitHub 时新增的排除项（2026-09-25）
+# 目的：把仓库从 1.16 GB 压到 ~60 MB —— 排除的全是**可重新生成的构建产物/仿真产物**，
+#       源码、文档、工具、以及"别人要烧板子需要的固件"都保留。
+# 想改回全量：删掉这一段，然后 `git add -f <路径>`（或直接删 .gitignore 重新 init）。
+# =============================================================================
+
+# Efinity 综合/布局布线输出（735 MB）：outflow 下的 .hex/.rpt/.map.v/.dbg 等全是 P&R 产物。
+# 保留的是 firmware/ 下那几份"确实要烧的位流与镜像"。
+ARC_2DRA/par/ddr_demo_ti60/outflow/
+
+# iverilog 仿真可执行文件（每颗 7 MB × 78 + 顶层几十颗，合计 130 MB+）。
+# 重新生成：cd doc/logs && pwsh -File ..\..\rtl\tb\run_regress.ps1
+*.vvp
+doc/logs/vvp/
+
+# C 工程的编译中间产物（.o）；各 demo 的 build/*.hex|.elf|.map|.bin 保留
+**/build/obj_files/
+*.o
+
+# DSH 视觉路由器的截图/运行产物（本机工具产生，与工程无关）
+.dsh-vision-router/

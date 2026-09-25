@@ -1,0 +1,23 @@
+﻿tb_blt_top         ========== tb_blt_top ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_blt_apb         ========== tb_blt_apb ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_cmd_fifo        ========== tb_cmd_fifo ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_regs_axi_lite   ========== tb_regs_axi_lite ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_blt_unalign     ========== tb_blt_unalign ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_fifo_full       ========== tb_fifo_full ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_blt_burst       ========== tb_blt_burst ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_alpha           ========== tb_alpha ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_blt_unalign_off ========== tb_blt_unalign ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_alpha_off       ========== tb_alpha ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_arb_deadlock    ========== tb_arb_deadlock ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_fb_scanout      ========== tb_fb_scanout ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_scanout_scale   ========== tb_scanout_scale ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_scanout_wd      ========== tb_scanout_wd ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_axi_rd_arb      ========== tb_axi_rd_arb ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_rd_arb_leak     ========== tb_rd_arb_leak ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_wr_order        ========== tb_wr_order ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_wr_order_off    A/B OK: 灞忛殰 OFF 鈫?========== tb_wr_order FAILED: 4 ==========
+tb_scanout_flip    ========== tb_scanout_flip ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_scanout_flip_off A/B OK: 灞忛殰 OFF 鈫?========== tb_scanout_flip FAILED (9 项) ==========
+tb_clear_engine    ========== tb_clear_engine ALL PASS ==========   (FAIL 琛屾暟=0)
+tb_clear_engine_off A/B OK: 灞忛殰 OFF 鈫?========== tb_clear_engine FAILED (13 项) ==========
+==== regress failures: 0 ====

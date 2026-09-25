@@ -1,0 +1,125 @@
+﻿
+===== GameDemo host self-check (QEMU riscv32, 真实固件源码 + 假引擎) =====
+firmware: src/GameDemo.c 原样 #include；基址覆盖 DDR=0x81000000 BLT=0x82000000 UART=0x82100000
+N_MAX=2400 BUL_TOTAL=2432 DRAW_MAX=2592 S_N=8 ATLAS_BYTES=7168
+bulm modes: FILL/ALPHA/ADD/KEY  (keys f cycle, 5/6/7/8 direct)
+
+[A] 属性字 / 定点混合 / 帧预算模型
+   A6 观测：worst="HW=999 SW=999 N=2400 ON=9999 SC=999999 LV=99 HP=9 OP=ALPHA S G"  len=62 limit=64
+
+[B] 串口协议（按键包 '@HH' + '=N' 行命令）
+
+[C] 游戏逻辑（纯函数 + 长跑）
+   C6 观测：maxalive=216 score=1880 level=2
+
+[E] 敌弹显示模式 FILL / ALPHA / ADD / KEY
+   E5 观测：16x16 @70% 预算 FILL=2269 KEY=1622 ALPHA=1362
+
+[D] 启动固件主循环（跑 600 帧后自动收尾）...
+
+===== GameDemo: high-load interactive danmaku, serial-controlled =====
+FB=0x81300000 BACK=0x81500000 BUF2=0x81700000 ATLAS=0x81200000 bytes=7168
+playfield: x 0..960  y 16..540 (info bar y<16 is CPU text)
+publish: FLIP x3 (no full-screen COPY) + concurrent clear engine
+default: N=512 path=HW stars=64 sprites 16x16 glow + 32x32 keyed
+input: PC keyboard over UART 115200 -> '@'+2 hex digits+'\n'
+       bit0 up 1 down 2 left 3 right 4 fire 5 focus 6 bomb 7 pause
+cmd: 1/2/3/4 presets, n/+/-/=N, c=CPU h=HW, g=auto-ramp, b, p, r, d, ?
+     f=cycle enemy-bullet op FILL/ALPHA/ADD/KEY (also 5/6/7/8)
+feat: clip=1 lut=1 attr=1 (attr=>glow ADD, else KEY fallback)
+bulm: default=ADD  (f cycles, 5=FILL 6=ALPHA 7=ADD 8=KEY)
+publish: FLIPx3 (disp=0 draw=1 clr=2)
+aligncheck 0xF800 0x7E0 (expect f800 07e0)
+clampcheck x=0 y=524 vx=-8 (expect 0 524 neg)
+selfcheck: STATUS=0x0 COUNT=0 SCAN=0x0 DL_VER=0x0
+selfcheck attr: decode_err=0 default=0x3FC0 match=1
+selfcheck mix: blend=0x780F (exp 780F) add=0xF81F (exp F81F) addblack=0x1234 (exp 1234)
+selfcheck atlas: corner_err=0 bytes=7168
+selfcheck osd: len=62 px=496 limit=512 gap=400 missing_glyph=0
+selfcheck bulm: cur=ADD eff=ADD names_glyph_missing=0 (keys f cycle, 5=FILL 6=ALPHA 7=ADD 8=KEY)
+cap model 16x16 70pct budget: FILL=2269 ALPHA=1362 KEY=1622 (single-lane board cal)
+cap model 16x16 70pct budget: ... dual-lane estimate FILL=3046 ALPHA=1767 KEY=2090
+
+EV start
+ST fps=0 n=512 on=68 sc=1 lv=1 hp=3 bm=3 md=HW
+ST fps=0 n=512 on=78 sc=3 lv=1 hp=3 bm=3 md=HW
+ST fps=0 n=512 on=112 sc=4 lv=1 hp=3 bm=3 md=HW
+ST fps=59 n=512 on=131 sc=6 lv=1 hp=3 bm=3 md=HW
+ST fps=59 n=512 on=147 sc=7 lv=1 hp=3 bm=3 md=HW
+ST fps=59 n=512 on=164 sc=9 lv=1 hp=3 bm=3 md=HW
+ST fps=59 n=512 on=174 sc=11 lv=1 hp=3 bm=3 md=HW
+ST fps=59 n=512 on=174 sc=12 lv=1 hp=3 bm=3 md=HW
+ST fps=59 n=512 on=194 sc=114 lv=1 hp=3 bm=3 md=HW
+ST fps=59 n=512 on=201 sc=315 lv=1 hp=3 bm=3 md=HW
+
+EV bomb left=2
+ST fps=59 n=512 on=133 sc=417 lv=1 hp=3 bm=2 md=HW
+ST fps=59 n=512 on=116 sc=419 lv=1 hp=3 bm=2 md=HW
+
+EV N=1280 (preset high)
+ST fps=59 n=1280 on=145 sc=620 lv=1 hp=3 bm=2 md=HW
+ST fps=59 n=1280 on=155 sc=822 lv=1 hp=3 bm=2 md=HW
+ST fps=59 n=1280 on=184 sc=923 lv=1 hp=3 bm=2 md=HW
+ST fps=59 n=2400 on=256 sc=1025 lv=1 hp=3 bm=2 md=HW
+
+EV auto=1 (ramp N while fps>=58; LIMIT line on stop)
+ST fps=59 n=2400 on=286 sc=1127 lv=1 hp=3 bm=2 md=HW
+ST fps=59 n=2400 on=314 sc=1228 lv=1 hp=3 bm=2 md=HW
+
+EV auto=0 (ramp N while fps>=58; LIMIT line on stop)
+ST fps=59 n=2400 on=365 sc=1230 lv=1 hp=3 bm=2 md=HW
+
+EV hit hp=2
+ST fps=59 n=2400 on=417 sc=1231 lv=1 hp=2 bm=2 md=HW
+
+EV bulm=FILL (requested; effective=FILL)
+     FILL: solid 16x16 squares, no src/key/alpha -> cheapest op
+ST fps=59 n=2400 on=469 sc=1333 lv=1 hp=2 bm=2 md=HW
+
+EV bulm=ALPHA (requested; effective=ALPHA)
+     ALPHA: rect sprite + alpha 160 -> corners darken the bg (that is why KEY exists)
+ST fps=59 n=2400 on=482 sc=1335 lv=1 hp=2 bm=2 md=HW
+
+EV bulm=ADD (requested; effective=ADD)
+ST fps=59 n=2400 on=572 sc=1336 lv=1 hp=2 bm=2 md=HW
+
+EV bulm=KEY (requested; effective=KEY)
+ST fps=59 n=2400 on=624 sc=1438 lv=1 hp=2 bm=2 md=HW
+ST fps=59 n=2400 on=581 sc=1539 lv=1 hp=2 bm=2 md=HW
+
+EV bulm=FILL (requested; effective=FILL)
+     FILL: solid 16x16 squares, no src/key/alpha -> cheapest op
+ST fps=59 n=2400 on=656 sc=1541 lv=1 hp=2 bm=2 md=HW
+
+EV path=SW pure CPU (same scene, honest per-pixel blit)
+ST fps=0 n=2400 on=719 sc=1543 lv=1 hp=2 bm=2 md=SW
+ST fps=0 n=2400 on=673 sc=1544 lv=1 hp=2 bm=2 md=SW
+
+EV path=HW accel
+
+EV hit hp=1
+ST fps=0 n=2400 on=737 sc=1646 lv=1 hp=1 bm=2 md=HW
+
+EV diag: N=2400 ON=763 HW=0 SW=0 SC=1647 LV=1 HP=1 BOMB=2
+     STATUS=0xA COUNT=0 SCAN=0x0 FBSTAT=0x1D50001 DRAW=0x2 CLR=0x3E clip=0x0 lut=0x0
+     flipto=0 clr fb=67 to=0 err=0 stto=0 attr=1 glow=1 clipdrop=74
+     bulm=FILL (req) FILL (eff) alpha=160 | 16x16 70pct cap: FILL=2269 ALPHA=1362 KEY=1622
+     cap16 glow 70pct budget: single-lane 1362, dual-lane 1767 sprites/frame
+ST fps=0 n=2400 on=771 sc=1647 lv=1 hp=1 bm=2 md=HW
+ST fps=0 n=2400 on=708 sc=1849 lv=1 hp=1 bm=2 md=HW
+ST fps=60 n=2400 on=779 sc=1951 lv=1 hp=1 bm=2 md=HW
+ST fps=60 n=2400 on=767 sc=2052 lv=1 hp=1 bm=2 md=HW
+
+EV reset
+ST fps=60 n=2400 on=66 sc=0 lv=1 hp=3 bm=3 md=HW
+ST fps=60 n=2400 on=74 sc=1 lv=1 hp=3 bm=3 md=HW
+ST fps=59 n=2400 on=82 sc=3 lv=1 hp=3 bm=3 md=HW
+ST fps=59 n=2400 on=118 sc=5 lv=1 hp=3 bm=3 md=HW
+
+[D] 主循环仿真（真实状态机，600 个上屏帧）
+   D 观测：敌弹各档渲染帧数 FILL=65 ALPHA=7 ADD=525 KEY=2 未知=0
+   D 观测：presented=600 vnow=1000001536 (约 10.0 s 虚拟时间)  fps_x10=600
+   D 观测：自机 x ∈ [380, 680]  N=2400 ON_max=792 score=6 level=1 attr=1 glow=1 start_sel=2
+
+===== GameDemo host self-check: 74 passed / 0 failed =====
+

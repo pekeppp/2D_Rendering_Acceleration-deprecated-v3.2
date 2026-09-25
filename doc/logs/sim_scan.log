@@ -1,0 +1,87 @@
+DBG win: vcnt=1 hcnt=3 row=4 col=94
+DBG win: vcnt=1 hcnt=4 row=x col=x
+DBG win: vcnt=1 hcnt=5 row=4 col=64
+DBG win: vcnt=1 hcnt=6 row=4 col=65
+DBG win: vcnt=1 hcnt=7 row=4 col=66
+DBG win: vcnt=1 hcnt=8 row=4 col=67
+DBG win: vcnt=1 hcnt=9 row=4 col=68
+DBG win: vcnt=1 hcnt=10 row=4 col=69
+DBG win: vcnt=1 hcnt=11 row=4 col=70
+DBG win: vcnt=1 hcnt=12 row=4 col=71
+DBG win: vcnt=1 hcnt=13 row=4 col=72
+DBG win: vcnt=1 hcnt=14 row=4 col=73
+DBG win: vcnt=1 hcnt=15 row=4 col=74
+DBG win: vcnt=1 hcnt=16 row=4 col=75
+DBG win: vcnt=1 hcnt=17 row=4 col=76
+DBG win: vcnt=1 hcnt=18 row=4 col=77
+DBG win: vcnt=1 hcnt=19 row=4 col=78
+DBG win: vcnt=1 hcnt=20 row=4 col=79
+DBG win: vcnt=1 hcnt=21 row=4 col=80
+DBG win: vcnt=1 hcnt=22 row=4 col=81
+DBG win: vcnt=1 hcnt=23 row=4 col=82
+DBG win: vcnt=1 hcnt=24 row=4 col=83
+DBG win: vcnt=1 hcnt=25 row=4 col=84
+DBG win: vcnt=1 hcnt=26 row=4 col=85
+DBG win: vcnt=1 hcnt=27 row=4 col=86
+DBG win: vcnt=1 hcnt=28 row=4 col=87
+DBG win: vcnt=1 hcnt=29 row=4 col=88
+DBG win: vcnt=1 hcnt=30 row=4 col=89
+DBG win: vcnt=1 hcnt=31 row=4 col=90
+DBG win: vcnt=1 hcnt=32 row=4 col=91
+DBG win: vcnt=1 hcnt=33 row=4 col=92
+DBG win: vcnt=1 hcnt=34 row=4 col=93
+DBG win: vcnt=2 hcnt=3 row=0 col=30
+DBG win: vcnt=2 hcnt=4 row=x col=x
+DBG win: vcnt=2 hcnt=5 row=0 col=0
+DBG win: vcnt=2 hcnt=6 row=0 col=1
+DBG win: vcnt=2 hcnt=7 row=0 col=2
+DBG win: vcnt=2 hcnt=8 row=0 col=3
+DBG win: vcnt=2 hcnt=9 row=0 col=4
+DBG win: vcnt=2 hcnt=10 row=0 col=5
+DBG win: vcnt=2 hcnt=11 row=0 col=6
+DBG win: vcnt=2 hcnt=12 row=0 col=7
+DBG win: vcnt=2 hcnt=13 row=0 col=8
+DBG win: vcnt=2 hcnt=14 row=0 col=9
+DBG win: vcnt=2 hcnt=15 row=0 col=10
+DBG win: vcnt=2 hcnt=16 row=0 col=11
+DBG win: vcnt=2 hcnt=17 row=0 col=12
+DBG win: vcnt=2 hcnt=18 row=0 col=13
+DBG win: vcnt=2 hcnt=19 row=0 col=14
+DBG win: vcnt=2 hcnt=20 row=0 col=15
+DBG win: vcnt=2 hcnt=21 row=0 col=16
+DBG win: vcnt=2 hcnt=22 row=0 col=17
+DBG win: vcnt=2 hcnt=23 row=0 col=18
+DBG win: vcnt=2 hcnt=24 row=0 col=19
+DBG win: vcnt=2 hcnt=25 row=0 col=20
+DBG win: vcnt=2 hcnt=26 row=0 col=21
+DBG win: vcnt=2 hcnt=27 row=0 col=22
+DBG win: vcnt=2 hcnt=28 row=0 col=23
+DBG win: vcnt=2 hcnt=29 row=0 col=24
+DBG win: vcnt=2 hcnt=30 row=0 col=25
+DBG win: vcnt=2 hcnt=31 row=0 col=26
+DBG win: vcnt=2 hcnt=32 row=0 col=27
+DBG win: vcnt=2 hcnt=33 row=0 col=28
+DBG win: vcnt=2 hcnt=34 row=0 col=29
+DBG win: vcnt=3 hcnt=3 row=4 col=94
+DBG win: vcnt=3 hcnt=4 row=x col=x
+DBG win: vcnt=3 hcnt=5 row=4 col=64
+DBG win: vcnt=3 hcnt=6 row=4 col=65
+DBG win: vcnt=3 hcnt=7 row=4 col=66
+DBG win: vcnt=3 hcnt=8 row=4 col=67
+DUMP mem[0]=0x0000  buf0[0]=0xxxxx  buf1[0]=0xxxxx
+DUMP mem[1]=0x0001  buf0[1]=0x0800  buf1[1]=0x0900
+DUMP mem[2]=0x0002  buf0[2]=0x0801  buf1[2]=0x0901
+DUMP mem[3]=0x0003  buf0[3]=0x0802  buf1[3]=0x0902
+DUMP mem[4]=0x0004  buf0[4]=0x0803  buf1[4]=0x0903
+DUMP mem[5]=0x0005  buf0[5]=0x0804  buf1[5]=0x0904
+DUMP mem[30]=0x001e  buf0[30]=0x081d  buf1[30]=0x071d
+DUMP mem[31]=0x001f  buf0[31]=0x081e  buf1[31]=0x071e
+DUMP mem[32]=0x0100  buf0[32]=0x081f  buf1[32]=0x071f
+DUMP mem[33]=0x0101  buf0[33]=0xxxxx  buf1[33]=0xxxxx
+DUMP mem[34]=0x0102  buf0[34]=0xxxxx  buf1[34]=0xxxxx
+DUMP mem[35]=0x0103  buf0[35]=0xxxxx  buf1[35]=0xxxxx
+DUMP DUT: st=2 next_y=9 fetch_y=9 buf_ready=01 par_s1=0
+检查结果: 显示行数=175, 出现过的 FB 行掩码=0x1111, 错误=0
+FAIL: 只出现了部分 FB 行（掩码 0x1111）→ 取数死锁/未推进
+========== tb_fb_scanout FAILED ==========
+ARC_2DRA\rtl\video\tb\tb_fb_scanout.v:224: $finish called at 400040000 (1ps)

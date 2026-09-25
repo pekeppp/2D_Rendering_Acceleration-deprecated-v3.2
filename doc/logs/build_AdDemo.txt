@@ -1,0 +1,56 @@
+make: Entering directory 'C:/Users/13227/Documents/2026_qrs/2D_Rendering_Acceleration/ARC_2DRA/par/ddr_demo_ti60/embedded_sw/soc/software/standalone/AdDemo'
+CC src/AdDemo.c
+In file included from ../../../bsp/efinix/EfxSapphireSoc/include/bsp.h:11,
+                 from src/AdDemo.c:80:
+../../../bsp/efinix/EfxSapphireSoc/include/semihosting.h:10:1: warning: "/*" within comment [-Wcomment]
+   10 | /**
+      |  
+In file included from ../../../bsp/efinix/EfxSapphireSoc/include/bsp.h:102:
+../../../bsp/efinix/EfxSapphireSoc/include/print.h: In function 'bsp_printf_x':
+../../../bsp/efinix/EfxSapphireSoc/include/print.h:307:15: warning: variable 'digi' set but not used [-Wunused-but-set-variable]
+  307 |         int i,digi=2;
+      |               ^~~~
+../../../bsp/efinix/EfxSapphireSoc/include/print.h: In function 'bsp_printf_X':
+../../../bsp/efinix/EfxSapphireSoc/include/print.h:334:19: warning: variable 'digi' set but not used [-Wunused-but-set-variable]
+  334 |             int i,digi=2;
+      |                   ^~~~
+../../../bsp/efinix/EfxSapphireSoc/include/semihosting.h: At top level:
+../../../bsp/efinix/EfxSapphireSoc/include/semihosting.h:157:13: warning: 'sh_readc' defined but not used [-Wunused-function]
+  157 | static char sh_readc(void)
+      |             ^~~~~~~~
+../../../bsp/efinix/EfxSapphireSoc/include/semihosting.h:139:13: warning: 'sh_writec' defined but not used [-Wunused-function]
+  139 | static void sh_writec(char c)
+      |             ^~~~~~~~~
+../../../bsp/efinix/EfxSapphireSoc/include/semihosting.h:121:13: warning: 'sh_write0' defined but not used [-Wunused-function]
+  121 | static void sh_write0(char* buf)
+      |             ^~~~~~~~~
+In file included from ../../../bsp/efinix/EfxSapphireSoc/include/bsp.h:10:
+../driver/clint.h:132:17: warning: 'clint_uDelay' defined but not used [-Wunused-function]
+  132 |     static void clint_uDelay(u32 usec, u32 hz, u32 reg){
+      |                 ^~~~~~~~~~~~
+../driver/clint.h:101:16: warning: 'clint_getTime' defined but not used [-Wunused-function]
+  101 |     static u64 clint_getTime(u32 p){
+      |                ^~~~~~~~~~~~~
+../driver/clint.h:80:17: warning: 'clint_setCmp' defined but not used [-Wunused-function]
+   80 |     static void clint_setCmp(u32 p, u64 cmp, u32 hart_id) {
+      |                 ^~~~~~~~~~~~
+In file included from ../../../bsp/efinix/EfxSapphireSoc/include/bsp.h:9:
+../driver/uart.h:259:17: warning: 'uart_RX_NotemptyInterruptEna' defined but not used [-Wunused-function]
+  259 |     static void uart_RX_NotemptyInterruptEna(u32 reg, char Ena){
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../driver/uart.h:240:17: warning: 'uart_TX_emptyInterruptEna' defined but not used [-Wunused-function]
+  240 |     static void uart_TX_emptyInterruptEna(u32 reg, char Ena){
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+../driver/uart.h:185:17: warning: 'uart_writeHex' defined but not used [-Wunused-function]
+  185 |     static void uart_writeHex(u32 reg, int value){
+      |                 ^~~~~~~~~~~~~
+../driver/uart.h:143:17: warning: 'uart_read' defined but not used [-Wunused-function]
+  143 |     static char uart_read(u32 reg){
+      |                 ^~~~~~~~~
+../driver/uart.h:125:17: warning: 'uart_writeStr' defined but not used [-Wunused-function]
+  125 |     static void uart_writeStr(u32 reg, const char* str){
+      |                 ^~~~~~~~~~~~~
+LD AdDemo
+Memory region         Used Size  Region Size  %age Used
+             ram:      109040 B         1 MB     10.40%
+make: Leaving directory 'C:/Users/13227/Documents/2026_qrs/2D_Rendering_Acceleration/ARC_2DRA/par/ddr_demo_ti60/embedded_sw/soc/software/standalone/AdDemo'

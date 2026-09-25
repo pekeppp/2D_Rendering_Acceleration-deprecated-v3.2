@@ -1,0 +1,321 @@
+﻿PROBE ==== T1 960x540 FILL (whole screen) ====
+PROBE OP T1_960x540_FILL op=1 960x540 | perf=261407 wall=261424 active=261407 idle_gap=17 hist_sum=261407 delta=0
+PROBE OPSUM T1_960x540_FILL | px_cons=259200 px_written=518400 words16B=64800 AW_top=4050 AW_wr=4050 Wbeats=64800 B=4050 rows=540
+PROBE OPRATE T1_960x540_FILL | cyc/px=0.504257 px/cyc=1.983114 | max_px_run=480 px_run_cyc=259200 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=7 burst_max=16 burst_avg=16.000000 | row_cyc_min=483 avg=483.000000 max=483
+PROBE OPDATA T1_960x540_FILL | stall_fg_fifo=0 stall_fg_reload=0 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=4078 buf=172279 AW=4050 W=64800 B=16200
+PROBE TABLE T1_960x540_FILL | 261407 | 518400 | 0.504257 | 64800 | 4050
+PROBE HIST-BEGIN T1_960x540_FILL  active=261407 hist_sum=261407
+PROBE HIST T1_960x540_FILL | PIX_KEEP |   259200 |  99.16%
+PROBE HIST T1_960x540_FILL | ENG_POP_8WORDS |       15 |   0.01%
+PROBE HIST T1_960x540_FILL | ENG_DEC |        1 |   0.00%
+PROBE HIST T1_960x540_FILL | ENG_EXEC_INIT |        1 |   0.00%
+PROBE HIST T1_960x540_FILL | ENG_ROW_GAP |     1620 |   0.62%
+PROBE HIST T1_960x540_FILL | ENG_DRAIN |      540 |   0.21%
+PROBE HIST T1_960x540_FILL | ENG_WDWAIT |       30 |   0.01%
+PROBE HIST-END T1_960x540_FILL  sum_delta_vs_active=0
+PROBE SANITY T1_first_px @00004000 exp=f800 got=f800 OK
+PROBE SANITY T1_last_stored_px(0x7FFE) @00007ffe exp=f800 got=f800 OK
+PROBE ==== T2 960x540 COPY (whole screen) ====
+PROBE OP T2_960x540_COPY op=0 960x540 | perf=262035 wall=262052 active=262035 idle_gap=17 hist_sum=262035 delta=0
+PROBE OPSUM T2_960x540_COPY | px_cons=259200 px_written=518400 words16B=64800 AW_top=4050 AW_wr=4050 Wbeats=64800 B=4050 rows=540
+PROBE OPRATE T2_960x540_COPY | cyc/px=0.505469 px/cyc=1.978362 | max_px_run=480 px_run_cyc=259740 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=7 burst_max=16 burst_avg=16.000000 | row_cyc_min=484 avg=484.000000 max=484
+PROBE OPDATA T2_960x540_COPY | stall_fg_fifo=0 stall_fg_reload=540 stall_fg_nordbusy=1 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=4167 buf=172818 AW=4050 W=64800 B=16200
+PROBE TABLE T2_960x540_COPY | 262035 | 518400 | 0.505469 | 64800 | 4050
+PROBE HIST-BEGIN T2_960x540_COPY  active=262035 hist_sum=262035
+PROBE HIST T2_960x540_COPY | PIX_KEEP |   259200 |  98.92%
+PROBE HIST T2_960x540_COPY | STALL_FG_NOPIXEL |      540 |   0.21%
+PROBE HIST T2_960x540_COPY | ENG_POP_8WORDS |       15 |   0.01%
+PROBE HIST T2_960x540_COPY | ENG_DEC |        1 |   0.00%
+PROBE HIST T2_960x540_COPY | ENG_EXEC_INIT |        1 |   0.00%
+PROBE HIST T2_960x540_COPY | ENG_WAIT_ROW0 |       26 |   0.01%
+PROBE HIST T2_960x540_COPY | ENG_ROW_GAP |     1682 |   0.64%
+PROBE HIST T2_960x540_COPY | ENG_DRAIN |      540 |   0.21%
+PROBE HIST T2_960x540_COPY | ENG_WDWAIT |       30 |   0.01%
+PROBE HIST-END T2_960x540_COPY  sum_delta_vs_active=0
+PROBE ==== T3 32x32 FILL isolated (tight stride 64) ====
+PROBE OP T3_32x32_FILL op=1 32x32 | perf=687 wall=704 active=687 idle_gap=17 hist_sum=687 delta=0
+PROBE OPSUM T3_32x32_FILL | px_cons=512 px_written=1024 words16B=128 AW_top=8 AW_wr=8 Wbeats=128 B=8 rows=32
+PROBE OPRATE T3_32x32_FILL | cyc/px=0.670898 px/cyc=1.490539 | max_px_run=16 px_run_cyc=512 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=6 burst_max=16 burst_avg=16.000000 | row_cyc_min=19 avg=19.000000 max=19
+PROBE OPDATA T3_32x32_FILL | stall_fg_fifo=0 stall_fg_reload=0 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=36 buf=483 AW=8 W=128 B=32
+PROBE TABLE T3_32x32_FILL | 687 | 1024 | 0.670898 | 128 | 8
+PROBE HIST-BEGIN T3_32x32_FILL  active=687 hist_sum=687
+PROBE HIST T3_32x32_FILL | PIX_KEEP |      512 |  74.53%
+PROBE HIST T3_32x32_FILL | ENG_POP_8WORDS |       15 |   2.18%
+PROBE HIST T3_32x32_FILL | ENG_DEC |        1 |   0.15%
+PROBE HIST T3_32x32_FILL | ENG_EXEC_INIT |        1 |   0.15%
+PROBE HIST T3_32x32_FILL | ENG_ROW_GAP |       96 |  13.97%
+PROBE HIST T3_32x32_FILL | ENG_DRAIN |       32 |   4.66%
+PROBE HIST T3_32x32_FILL | ENG_WDWAIT |       30 |   4.37%
+PROBE HIST-END T3_32x32_FILL  sum_delta_vs_active=0
+PROBE SANITY T3_first_px @00006800 exp=07e0 got=07e0 OK
+PROBE SANITY T3_last_px @00006ffe exp=07e0 got=07e0 OK
+PROBE SANITY T3_outside_untouched pre=3130 post=3130 OK
+PROBE ==== T4 32x32 COPY isolated ====
+PROBE OP T4_32x32_COPY op=0 32x32 | perf=804 wall=822 active=804 idle_gap=18 hist_sum=804 delta=0
+PROBE OPSUM T4_32x32_COPY | px_cons=512 px_written=1024 words16B=128 AW_top=8 AW_wr=8 Wbeats=128 B=8 rows=32
+PROBE OPRATE T4_32x32_COPY | cyc/px=0.785156 px/cyc=1.273632 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=6 burst_max=16 burst_avg=16.000000 | row_cyc_min=20 avg=21.935484 max=24
+PROBE OPDATA T4_32x32_COPY | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=1 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=62 buf=574 AW=8 W=128 B=32
+PROBE TABLE T4_32x32_COPY | 804 | 1024 | 0.785156 | 128 | 8
+PROBE HIST-BEGIN T4_32x32_COPY  active=804 hist_sum=804
+PROBE HIST T4_32x32_COPY | PIX_KEEP |      512 |  63.68%
+PROBE HIST T4_32x32_COPY | STALL_FG_NOPIXEL |       32 |   3.98%
+PROBE HIST T4_32x32_COPY | ENG_POP_8WORDS |       15 |   1.87%
+PROBE HIST T4_32x32_COPY | ENG_DEC |        1 |   0.12%
+PROBE HIST T4_32x32_COPY | ENG_EXEC_INIT |        1 |   0.12%
+PROBE HIST T4_32x32_COPY | ENG_WAIT_ROW0 |      116 |  14.43%
+PROBE HIST T4_32x32_COPY | ENG_ROW_GAP |       65 |   8.08%
+PROBE HIST T4_32x32_COPY | ENG_DRAIN |       32 |   3.98%
+PROBE HIST T4_32x32_COPY | ENG_WDWAIT |       30 |   3.73%
+PROBE HIST-END T4_32x32_COPY  sum_delta_vs_active=0
+PROBE SANITY T4_copy_row1_px1 @00006842 exp=f801 got=f801 OK
+PROBE ==== T5 32x32 ALPHA isolated ====
+PROBE OP T5_32x32_ALPHA op=2 32x32 | perf=868 wall=886 active=868 idle_gap=18 hist_sum=868 delta=0
+PROBE OPSUM T5_32x32_ALPHA | px_cons=512 px_written=1024 words16B=128 AW_top=8 AW_wr=8 Wbeats=128 B=8 rows=32
+PROBE OPRATE T5_32x32_ALPHA | cyc/px=0.847656 px/cyc=1.179724 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=6 burst_max=16 burst_avg=16.000000 | row_cyc_min=20 avg=23.870968 max=28
+PROBE OPDATA T5_32x32_ALPHA | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=66 buf=634 AW=8 W=128 B=32
+PROBE TABLE T5_32x32_ALPHA | 868 | 1024 | 0.847656 | 128 | 8
+PROBE HIST-BEGIN T5_32x32_ALPHA  active=868 hist_sum=868
+PROBE HIST T5_32x32_ALPHA | PIX_KEEP |      512 |  58.99%
+PROBE HIST T5_32x32_ALPHA | STALL_FG_BG_NOPIXEL |       32 |   3.69%
+PROBE HIST T5_32x32_ALPHA | ENG_POP_8WORDS |       15 |   1.73%
+PROBE HIST T5_32x32_ALPHA | ENG_DEC |        1 |   0.12%
+PROBE HIST T5_32x32_ALPHA | ENG_EXEC_INIT |        1 |   0.12%
+PROBE HIST T5_32x32_ALPHA | ENG_WAIT_ROW0 |      180 |  20.74%
+PROBE HIST T5_32x32_ALPHA | ENG_ROW_GAP |       65 |   7.49%
+PROBE HIST T5_32x32_ALPHA | ENG_DRAIN |       32 |   3.69%
+PROBE HIST T5_32x32_ALPHA | ENG_WDWAIT |       30 |   3.46%
+PROBE HIST-END T5_32x32_ALPHA  sum_delta_vs_active=0
+PROBE ==== T6 32x32 KEY isolated ====
+PROBE OP T6_32x32_KEY op=3 32x32 | perf=800 wall=818 active=800 idle_gap=18 hist_sum=800 delta=0
+PROBE OPSUM T6_32x32_KEY | px_cons=512 px_written=713 words16B=124 AW_top=8 AW_wr=8 Wbeats=124 B=8 rows=32
+PROBE OPRATE T6_32x32_KEY | cyc/px=1.122020 px/cyc=0.891250 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=5 burst_max=16 burst_avg=15.500000 | row_cyc_min=20 avg=21.935484 max=24
+PROBE OPDATA T6_32x32_KEY | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=1 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=83 buf=553 AW=8 W=124 B=32
+PROBE TABLE T6_32x32_KEY | 800 | 713 | 1.122020 | 124 | 8
+PROBE HIST-BEGIN T6_32x32_KEY  active=800 hist_sum=800
+PROBE HIST T6_32x32_KEY | PIX_KEEP |      248 |  31.00%
+PROBE HIST T6_32x32_KEY | PIX_SKIP_KEY |      264 |  33.00%
+PROBE HIST T6_32x32_KEY | STALL_FG_NOPIXEL |       32 |   4.00%
+PROBE HIST T6_32x32_KEY | ENG_POP_8WORDS |       15 |   1.88%
+PROBE HIST T6_32x32_KEY | ENG_DEC |        1 |   0.12%
+PROBE HIST T6_32x32_KEY | ENG_EXEC_INIT |        1 |   0.12%
+PROBE HIST T6_32x32_KEY | ENG_WAIT_ROW0 |      116 |  14.50%
+PROBE HIST T6_32x32_KEY | ENG_ROW_GAP |       65 |   8.12%
+PROBE HIST T6_32x32_KEY | ENG_DRAIN |       32 |   4.00%
+PROBE HIST T6_32x32_KEY | ENG_WDWAIT |       26 |   3.25%
+PROBE HIST-END T6_32x32_KEY  sum_delta_vs_active=0
+PROBE KEYCHK words=124 (expect 124: 128-4 all-key words) px_written=713 px_skipped=264 (expect 311: 280 key + 31 accidental 0xF81F at cc=31)
+PROBE ==== T7 32x32 FILL isolated @ framebuffer stride 1920 ====
+PROBE OP T7_32x32_FILL_FBstride op=1 32x32 | perf=681 wall=698 active=681 idle_gap=17 hist_sum=681 delta=0
+PROBE OPSUM T7_32x32_FILL_FBstride | px_cons=512 px_written=1024 words16B=128 AW_top=32 AW_wr=32 Wbeats=128 B=32 rows=32
+PROBE OPRATE T7_32x32_FILL_FBstride | cyc/px=0.665039 px/cyc=1.503671 | max_px_run=16 px_run_cyc=512 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=4 burst_max=4 burst_avg=4.000000 | row_cyc_min=19 avg=19.000000 max=19
+PROBE OPDATA T7_32x32_FILL_FBstride | stall_fg_fifo=0 stall_fg_reload=0 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=60 buf=333 AW=32 W=128 B=128
+PROBE TABLE T7_32x32_FILL_FBstride | 681 | 1024 | 0.665039 | 128 | 32
+PROBE HIST-BEGIN T7_32x32_FILL_FBstride  active=681 hist_sum=681
+PROBE HIST T7_32x32_FILL_FBstride | PIX_KEEP |      512 |  75.18%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_POP_8WORDS |       15 |   2.20%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_DEC |        1 |   0.15%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_EXEC_INIT |        1 |   0.15%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_ROW_GAP |       96 |  14.10%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_DRAIN |       32 |   4.70%
+PROBE HIST T7_32x32_FILL_FBstride | ENG_WDWAIT |       24 |   3.52%
+PROBE HIST-END T7_32x32_FILL_FBstride  sum_delta_vs_active=0
+PROBE ==== T8 64x back-to-back 32x32 FILL (tight) ====
+PROBE B2B T8_B2B64_32x32_FILL op=1 32x32 x64 | wall=44048 active(hist_sum)=43968 sumPERF=687 idle_gap=80 eng_window=44031 inter_gap=63
+PROBE B2BSUM T8_B2B64_32x32_FILL | px_written_total=65536 px_per_blk=1024.000000 words=8192 AW_top=512 AW/blk=8.000000
+PROBE TABLE_B2B T8_B2B64_32x32_FILL | 687 | 1024 | 0.670898 | 128 | 8
+PROBE HIST-BEGIN T8_B2B64_32x32_FILL  active=43968 hist_sum=43968
+PROBE HIST T8_B2B64_32x32_FILL | PIX_KEEP |    32768 |  74.53%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_POP_8WORDS |      960 |   2.18%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_DEC |       64 |   0.15%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_EXEC_INIT |       64 |   0.15%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_ROW_GAP |     6144 |  13.97%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_DRAIN |     2048 |   4.66%
+PROBE HIST T8_B2B64_32x32_FILL | ENG_WDWAIT |     1920 |   4.37%
+PROBE HIST-END T8_B2B64_32x32_FILL  sum_delta_vs_active=0
+PROBE ==== T9 32x back-to-back 32x32 FILL @ FB stride ====
+PROBE B2B T9_B2B32_32x32_FILL_FB op=1 32x32 x32 | wall=21840 active(hist_sum)=21792 sumPERF=681 idle_gap=48 eng_window=21823 inter_gap=31
+PROBE B2BSUM T9_B2B32_32x32_FILL_FB | px_written_total=32768 px_per_blk=1024.000000 words=4096 AW_top=1024 AW/blk=32.000000
+PROBE TABLE_B2B T9_B2B32_32x32_FILL_FB | 681 | 1024 | 0.665039 | 128 | 32
+PROBE HIST-BEGIN T9_B2B32_32x32_FILL_FB  active=21792 hist_sum=21792
+PROBE HIST T9_B2B32_32x32_FILL_FB | PIX_KEEP |    16384 |  75.18%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_POP_8WORDS |      480 |   2.20%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_DEC |       32 |   0.15%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_EXEC_INIT |       32 |   0.15%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_ROW_GAP |     3072 |  14.10%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_DRAIN |     1024 |   4.70%
+PROBE HIST T9_B2B32_32x32_FILL_FB | ENG_WDWAIT |      768 |   3.52%
+PROBE HIST-END T9_B2B32_32x32_FILL_FB  sum_delta_vs_active=0
+PROBE ==== T10 16x back-to-back 32x32 ALPHA (tight) ====
+PROBE B2B T10_B2B16_32x32_ALPHA op=2 32x32 x16 | wall=13920 active(hist_sum)=13888 sumPERF=868 idle_gap=32 eng_window=13903 inter_gap=15
+PROBE B2BSUM T10_B2B16_32x32_ALPHA | px_written_total=16384 px_per_blk=1024.000000 words=2048 AW_top=128 AW/blk=8.000000
+PROBE TABLE_B2B T10_B2B16_32x32_ALPHA | 868 | 1024 | 0.847656 | 128 | 8
+PROBE HIST-BEGIN T10_B2B16_32x32_ALPHA  active=13888 hist_sum=13888
+PROBE HIST T10_B2B16_32x32_ALPHA | PIX_KEEP |     8192 |  58.99%
+PROBE HIST T10_B2B16_32x32_ALPHA | STALL_FG_BG_NOPIXEL |      512 |   3.69%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_POP_8WORDS |      240 |   1.73%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_DEC |       16 |   0.12%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_EXEC_INIT |       16 |   0.12%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_WAIT_ROW0 |     2880 |  20.74%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_ROW_GAP |     1040 |   7.49%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_DRAIN |      512 |   3.69%
+PROBE HIST T10_B2B16_32x32_ALPHA | ENG_WDWAIT |      480 |   3.46%
+PROBE HIST-END T10_B2B16_32x32_ALPHA  sum_delta_vs_active=0
+PROBE ==== T11 16x16 FILL isolated (demo sprite size) ====
+PROBE OP T11_16x16_FILL op=1 16x16 | perf=239 wall=256 active=239 idle_gap=17 hist_sum=239 delta=0
+PROBE OPSUM T11_16x16_FILL | px_cons=128 px_written=256 words16B=32 AW_top=2 AW_wr=2 Wbeats=32 B=2 rows=16
+PROBE OPRATE T11_16x16_FILL | cyc/px=0.933594 px/cyc=1.071130 | max_px_run=8 px_run_cyc=128 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=5 burst_max=16 burst_avg=16.000000 | row_cyc_min=11 avg=11.000000 max=11
+PROBE OPDATA T11_16x16_FILL | stall_fg_fifo=0 stall_fg_reload=0 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=30 buf=167 AW=2 W=32 B=8
+PROBE TABLE T11_16x16_FILL | 239 | 256 | 0.933594 | 32 | 2
+PROBE HIST-BEGIN T11_16x16_FILL  active=239 hist_sum=239
+PROBE HIST T11_16x16_FILL | PIX_KEEP |      128 |  53.56%
+PROBE HIST T11_16x16_FILL | ENG_POP_8WORDS |       15 |   6.28%
+PROBE HIST T11_16x16_FILL | ENG_DEC |        1 |   0.42%
+PROBE HIST T11_16x16_FILL | ENG_EXEC_INIT |        1 |   0.42%
+PROBE HIST T11_16x16_FILL | ENG_ROW_GAP |       48 |  20.08%
+PROBE HIST T11_16x16_FILL | ENG_DRAIN |       16 |   6.69%
+PROBE HIST T11_16x16_FILL | ENG_WDWAIT |       30 |  12.55%
+PROBE HIST-END T11_16x16_FILL  sum_delta_vs_active=0
+PROBE ==== T12a CPU 纯下发 32 条（GO=0，FIFO 吃下，引擎不跑） ====
+PROBE PUSH T12a_PUSHONLY_32 | wall=512 push=512 | per_cmd=16.000000 (纯 CPU 侧，1 读 COUNT + 8 写 DATA)
+PROBE ==== T12b 32 条背靠背（下发与执行重叠） ====
+PROBE B2B T12b_B2B32_16x16_FILL op=1 16x16 x32 | wall=7696 active(hist_sum)=7648 sumPERF=239 idle_gap=48 eng_window=7679 inter_gap=31
+PROBE B2BSUM T12b_B2B32_16x16_FILL | px_written_total=8192 px_per_blk=256.000000 words=1024 AW_top=64 AW/blk=2.000000
+PROBE TABLE_B2B T12b_B2B32_16x16_FILL | 239 | 256 | 0.933594 | 32 | 2
+PROBE HIST-BEGIN T12b_B2B32_16x16_FILL  active=7648 hist_sum=7648
+PROBE HIST T12b_B2B32_16x16_FILL | PIX_KEEP |     4096 |  53.56%
+PROBE HIST T12b_B2B32_16x16_FILL | ENG_POP_8WORDS |      480 |   6.28%
+PROBE HIST T12b_B2B32_16x16_FILL | ENG_DEC |       32 |   0.42%
+PROBE HIST T12b_B2B32_16x16_FILL | ENG_EXEC_INIT |       32 |   0.42%
+PROBE HIST T12b_B2B32_16x16_FILL | ENG_ROW_GAP |     1536 |  20.08%
+PROBE HIST T12b_B2B32_16x16_FILL | ENG_DRAIN |      512 |   6.69%
+PROBE HIST T12b_B2B32_16x16_FILL | ENG_WDWAIT |      960 |  12.55%
+PROBE HIST-END T12b_B2B32_16x16_FILL  sum_delta_vs_active=0
+PROBE ==== T12c 32 条串行（push 一条等一条，CPU 延迟全额暴露） ====
+PROBE PUSH T12c_SERIAL_32 | wall=8192 push=512 | per_cmd_wall=256.000000
+PROBE HIST-BEGIN T12c_SERIAL_32  active=7648 hist_sum=7648
+PROBE HIST T12c_SERIAL_32 | PIX_KEEP |     4096 |  53.56%
+PROBE HIST T12c_SERIAL_32 | ENG_POP_8WORDS |      480 |   6.28%
+PROBE HIST T12c_SERIAL_32 | ENG_DEC |       32 |   0.42%
+PROBE HIST T12c_SERIAL_32 | ENG_EXEC_INIT |       32 |   0.42%
+PROBE HIST T12c_SERIAL_32 | ENG_ROW_GAP |     1536 |  20.08%
+PROBE HIST T12c_SERIAL_32 | ENG_DRAIN |      512 |   6.69%
+PROBE HIST T12c_SERIAL_32 | ENG_WDWAIT |      960 |  12.55%
+PROBE HIST-END T12c_SERIAL_32  sum_delta_vs_active=0
+PROBE ==== T13 S3 KEY/ALPHA/FILL 掩码 A/B ====
+PROBE ---- T13a 16x16 demo 球（键色 61/256，四角小块都不满一整块）----
+S3 SHAPE T13a_KEY_16_demo 16x16 key_px=61 mask=0x0000
+PROBE OP T13a_KEY_16_demo op=3 16x16 | perf=355 wall=372 active=355 idle_gap=17 hist_sum=355 delta=0
+PROBE OPSUM T13a_KEY_16_demo | px_cons=128 px_written=195 words16B=31 AW_top=16 AW_wr=16 Wbeats=31 B=16 rows=16
+PROBE OPRATE T13a_KEY_16_demo | cyc/px=1.820513 px/cyc=0.549296 | max_px_run=8 px_run_cyc=144 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=2 burst_max=2 burst_avg=1.937500 | row_cyc_min=12 avg=17.600000 max=24
+PROBE OPDATA T13a_KEY_16_demo | stall_fg_fifo=0 stall_fg_reload=16 stall_fg_nordbusy=2 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=70 buf=174 AW=16 W=31 B=64
+PROBE TABLE T13a_KEY_16_demo | 355 | 195 | 1.820513 | 31 | 16
+PROBE OP T13a_KEY_16_demo_MASK op=3 16x16 | perf=355 wall=372 active=355 idle_gap=17 hist_sum=355 delta=0
+PROBE OPSUM T13a_KEY_16_demo_MASK | px_cons=128 px_written=195 words16B=31 AW_top=16 AW_wr=16 Wbeats=31 B=16 rows=16
+PROBE OPRATE T13a_KEY_16_demo_MASK | cyc/px=1.820513 px/cyc=0.549296 | max_px_run=8 px_run_cyc=144 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=2 burst_max=2 burst_avg=1.937500 | row_cyc_min=12 avg=17.600000 max=24
+PROBE OPDATA T13a_KEY_16_demo_MASK | stall_fg_fifo=0 stall_fg_reload=16 stall_fg_nordbusy=2 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=70 buf=174 AW=16 W=31 B=64
+PROBE TABLE T13a_KEY_16_demo_MASK | 355 | 195 | 1.820513 | 31 | 16
+S3 SHAPE T13b_ALPHA_16_demo 16x16 key_px=61 mask=0x0000
+PROBE OP T13b_ALPHA_16_demo op=2 16x16 | perf=374 wall=392 active=374 idle_gap=18 hist_sum=374 delta=0
+PROBE OPSUM T13b_ALPHA_16_demo | px_cons=128 px_written=256 words16B=32 AW_top=16 AW_wr=16 Wbeats=32 B=16 rows=16
+PROBE OPRATE T13b_ALPHA_16_demo | cyc/px=1.460938 px/cyc=0.684492 | max_px_run=8 px_run_cyc=144 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=2 burst_max=2 burst_avg=2.000000 | row_cyc_min=12 avg=18.533333 max=26
+PROBE OPDATA T13b_ALPHA_16_demo | stall_fg_fifo=0 stall_fg_reload=16 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=72 buf=190 AW=16 W=32 B=64
+PROBE TABLE T13b_ALPHA_16_demo | 374 | 256 | 1.460938 | 32 | 16
+PROBE OP T13b_ALPHA_16_demo_MASK op=2 16x16 | perf=374 wall=392 active=374 idle_gap=18 hist_sum=374 delta=0
+PROBE OPSUM T13b_ALPHA_16_demo_MASK | px_cons=128 px_written=256 words16B=32 AW_top=16 AW_wr=16 Wbeats=32 B=16 rows=16
+PROBE OPRATE T13b_ALPHA_16_demo_MASK | cyc/px=1.460938 px/cyc=0.684492 | max_px_run=8 px_run_cyc=144 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=2 burst_max=2 burst_avg=2.000000 | row_cyc_min=12 avg=18.533333 max=26
+PROBE OPDATA T13b_ALPHA_16_demo_MASK | stall_fg_fifo=0 stall_fg_reload=16 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=72 buf=190 AW=16 W=32 B=64
+PROBE TABLE T13b_ALPHA_16_demo_MASK | 374 | 256 | 1.460938 | 32 | 16
+S3 SHAPE T13c_FILL_16_demo 16x16 key_px=61 mask=0x0000
+PROBE OP T13c_FILL_16_demo op=1 16x16 | perf=233 wall=250 active=233 idle_gap=17 hist_sum=233 delta=0
+PROBE OPSUM T13c_FILL_16_demo | px_cons=128 px_written=256 words16B=32 AW_top=16 AW_wr=16 Wbeats=32 B=16 rows=16
+PROBE OPRATE T13c_FILL_16_demo | cyc/px=0.910156 px/cyc=1.098712 | max_px_run=8 px_run_cyc=128 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=3 burst_max=2 burst_avg=2.000000 | row_cyc_min=11 avg=11.000000 max=11
+PROBE OPDATA T13c_FILL_16_demo | stall_fg_fifo=0 stall_fg_reload=0 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=44 buf=77 AW=16 W=32 B=64
+PROBE TABLE T13c_FILL_16_demo | 233 | 256 | 0.910156 | 32 | 16
+PROBE OP T13c_FILL_16_demo_MASK op=1 16x16 | perf=233 wall=250 active=233 idle_gap=17 hist_sum=233 delta=0
+PROBE OPSUM T13c_FILL_16_demo_MASK | px_cons=128 px_written=256 words16B=32 AW_top=16 AW_wr=16 Wbeats=32 B=16 rows=16
+PROBE OPRATE T13c_FILL_16_demo_MASK | cyc/px=0.910156 px/cyc=1.098712 | max_px_run=8 px_run_cyc=128 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=3 burst_max=2 burst_avg=2.000000 | row_cyc_min=11 avg=11.000000 max=11
+PROBE OPDATA T13c_FILL_16_demo_MASK | stall_fg_fifo=0 stall_fg_reload=0 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=44 buf=77 AW=16 W=32 B=64
+PROBE TABLE T13c_FILL_16_demo_MASK | 233 | 256 | 0.910156 | 32 | 16
+PROBE ---- T14a 32x32 demo 球（键色 229/1024）----
+S3 SHAPE T14a_KEY_32_demo 32x32 key_px=229 mask=0x0000
+PROBE OP T14a_KEY_32_demo op=3 32x32 | perf=795 wall=812 active=795 idle_gap=17 hist_sum=795 delta=0
+PROBE OPSUM T14a_KEY_32_demo | px_cons=512 px_written=795 words16B=117 AW_top=13 AW_wr=13 Wbeats=117 B=13 rows=32
+PROBE OPRATE T14a_KEY_32_demo | cyc/px=1.000000 px/cyc=1.000000 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=6 burst_max=16 burst_avg=9.000000 | row_cyc_min=20 avg=21.935484 max=24
+PROBE OPDATA T14a_KEY_32_demo | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=1 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=71 buf=542 AW=13 W=117 B=52
+PROBE TABLE T14a_KEY_32_demo | 795 | 795 | 1.000000 | 117 | 13
+PROBE OP T14a_KEY_32_demo_MASK op=3 32x32 | perf=795 wall=812 active=795 idle_gap=17 hist_sum=795 delta=0
+PROBE OPSUM T14a_KEY_32_demo_MASK | px_cons=512 px_written=795 words16B=117 AW_top=13 AW_wr=13 Wbeats=117 B=13 rows=32
+PROBE OPRATE T14a_KEY_32_demo_MASK | cyc/px=1.000000 px/cyc=1.000000 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=6 burst_max=16 burst_avg=9.000000 | row_cyc_min=20 avg=21.935484 max=24
+PROBE OPDATA T14a_KEY_32_demo_MASK | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=1 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=71 buf=542 AW=13 W=117 B=52
+PROBE TABLE T14a_KEY_32_demo_MASK | 795 | 795 | 1.000000 | 117 | 13
+S3 SHAPE T14b_ALPHA_32_demo 32x32 key_px=229 mask=0x0000
+PROBE OP T14b_ALPHA_32_demo op=2 32x32 | perf=868 wall=886 active=868 idle_gap=18 hist_sum=868 delta=0
+PROBE OPSUM T14b_ALPHA_32_demo | px_cons=512 px_written=1024 words16B=128 AW_top=8 AW_wr=8 Wbeats=128 B=8 rows=32
+PROBE OPRATE T14b_ALPHA_32_demo | cyc/px=0.847656 px/cyc=1.179724 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=6 burst_max=16 burst_avg=16.000000 | row_cyc_min=20 avg=23.870968 max=28
+PROBE OPDATA T14b_ALPHA_32_demo | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=66 buf=634 AW=8 W=128 B=32
+PROBE TABLE T14b_ALPHA_32_demo | 868 | 1024 | 0.847656 | 128 | 8
+PROBE OP T14b_ALPHA_32_demo_MASK op=2 32x32 | perf=868 wall=886 active=868 idle_gap=18 hist_sum=868 delta=0
+PROBE OPSUM T14b_ALPHA_32_demo_MASK | px_cons=512 px_written=1024 words16B=128 AW_top=8 AW_wr=8 Wbeats=128 B=8 rows=32
+PROBE OPRATE T14b_ALPHA_32_demo_MASK | cyc/px=0.847656 px/cyc=1.179724 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=6 burst_max=16 burst_avg=16.000000 | row_cyc_min=20 avg=23.870968 max=28
+PROBE OPDATA T14b_ALPHA_32_demo_MASK | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=66 buf=634 AW=8 W=128 B=32
+PROBE TABLE T14b_ALPHA_32_demo_MASK | 868 | 1024 | 0.847656 | 128 | 8
+PROBE ---- T15a 16x16 典型弹幕弹（键色 143/256）----
+S3 SHAPE T15a_KEY_16_bullet 16x16 key_px=143 mask=0x9008
+PROBE OP T15a_KEY_16_bullet op=3 16x16 | perf=346 wall=364 active=346 idle_gap=18 hist_sum=346 delta=0
+PROBE OPSUM T15a_KEY_16_bullet | px_cons=128 px_written=113 words16B=24 AW_top=13 AW_wr=13 Wbeats=24 B=13 rows=16
+PROBE OPRATE T15a_KEY_16_bullet | cyc/px=3.061947 px/cyc=0.326590 | max_px_run=8 px_run_cyc=144 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=2 burst_max=2 burst_avg=1.846154 | row_cyc_min=12 avg=17.600000 max=24
+PROBE OPDATA T15a_KEY_16_bullet | stall_fg_fifo=0 stall_fg_reload=16 stall_fg_nordbusy=2 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=81 buf=176 AW=13 W=24 B=52
+PROBE TABLE T15a_KEY_16_bullet | 346 | 113 | 3.061947 | 24 | 13
+PROBE OP T15a_KEY_16_bullet_MASK op=3 16x16 | perf=338 wall=356 active=338 idle_gap=18 hist_sum=338 delta=0
+PROBE OPSUM T15a_KEY_16_bullet_MASK | px_cons=104 px_written=113 words16B=24 AW_top=13 AW_wr=13 Wbeats=24 B=13 rows=16
+PROBE OPRATE T15a_KEY_16_bullet_MASK | cyc/px=2.991150 px/cyc=0.334320 | max_px_run=8 px_run_cyc=120 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=2 burst_max=2 burst_avg=1.846154 | row_cyc_min=12 avg=17.133333 max=25
+PROBE OPDATA T15a_KEY_16_bullet_MASK | stall_fg_fifo=0 stall_fg_reload=16 stall_fg_nordbusy=2 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=80 buf=169 AW=13 W=24 B=52
+PROBE TABLE T15a_KEY_16_bullet_MASK | 338 | 113 | 2.991150 | 24 | 13
+S3 SHAPE T15b_ALPHA_16_bullet 16x16 key_px=143 mask=0x9008
+PROBE OP T15b_ALPHA_16_bullet op=2 16x16 | perf=374 wall=392 active=374 idle_gap=18 hist_sum=374 delta=0
+PROBE OPSUM T15b_ALPHA_16_bullet | px_cons=128 px_written=256 words16B=32 AW_top=16 AW_wr=16 Wbeats=32 B=16 rows=16
+PROBE OPRATE T15b_ALPHA_16_bullet | cyc/px=1.460938 px/cyc=0.684492 | max_px_run=8 px_run_cyc=144 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=2 burst_max=2 burst_avg=2.000000 | row_cyc_min=12 avg=18.533333 max=26
+PROBE OPDATA T15b_ALPHA_16_bullet | stall_fg_fifo=0 stall_fg_reload=16 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=72 buf=190 AW=16 W=32 B=64
+PROBE TABLE T15b_ALPHA_16_bullet | 374 | 256 | 1.460938 | 32 | 16
+PROBE OP T15b_ALPHA_16_bullet_MASK op=2 16x16 | perf=374 wall=392 active=374 idle_gap=18 hist_sum=374 delta=0
+PROBE OPSUM T15b_ALPHA_16_bullet_MASK | px_cons=128 px_written=256 words16B=32 AW_top=16 AW_wr=16 Wbeats=32 B=16 rows=16
+PROBE OPRATE T15b_ALPHA_16_bullet_MASK | cyc/px=1.460938 px/cyc=0.684492 | max_px_run=8 px_run_cyc=144 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=2 burst_max=2 burst_avg=2.000000 | row_cyc_min=12 avg=18.533333 max=26
+PROBE OPDATA T15b_ALPHA_16_bullet_MASK | stall_fg_fifo=0 stall_fg_reload=16 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=72 buf=190 AW=16 W=32 B=64
+PROBE TABLE T15b_ALPHA_16_bullet_MASK | 374 | 256 | 1.460938 | 32 | 16
+PROBE ---- T16a 32x32 典型弹幕弹（键色 647/1024）----
+S3 SHAPE T16a_KEY_32_bullet 32x32 key_px=647 mask=0x9009
+PROBE OP T16a_KEY_32_bullet op=3 32x32 | perf=775 wall=792 active=775 idle_gap=17 hist_sum=775 delta=0
+PROBE OPSUM T16a_KEY_32_bullet | px_cons=512 px_written=377 words16B=72 AW_top=14 AW_wr=14 Wbeats=72 B=14 rows=32
+PROBE OPRATE T16a_KEY_32_bullet | cyc/px=2.055703 px/cyc=0.486452 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=5 burst_max=16 burst_avg=5.142857 | row_cyc_min=20 avg=21.935484 max=24
+PROBE OPDATA T16a_KEY_32_bullet | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=1 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=236 buf=397 AW=14 W=72 B=56
+PROBE TABLE T16a_KEY_32_bullet | 775 | 377 | 2.055703 | 72 | 14
+PROBE OP T16a_KEY_32_bullet_MASK op=3 32x32 | perf=711 wall=728 active=711 idle_gap=17 hist_sum=711 delta=0
+PROBE OPSUM T16a_KEY_32_bullet_MASK | px_cons=384 px_written=377 words16B=72 AW_top=13 AW_wr=13 Wbeats=72 B=13 rows=32
+PROBE OPRATE T16a_KEY_32_bullet_MASK | cyc/px=1.885942 px/cyc=0.530239 | max_px_run=16 px_run_cyc=416 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=5 burst_max=16 burst_avg=5.538462 | row_cyc_min=12 avg=20.129032 max=32
+PROBE OPDATA T16a_KEY_32_bullet_MASK | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=2 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=195 buf=379 AW=13 W=72 B=52
+PROBE TABLE T16a_KEY_32_bullet_MASK | 711 | 377 | 1.885942 | 72 | 13
+PROBE ---- T17a 32x32 小弹（键色 875/1024，上下整带透明）----
+S3 SHAPE T17a_KEY_32_small 32x32 key_px=875 mask=0xf99f
+PROBE OP T17a_KEY_32_small op=3 32x32 | perf=775 wall=792 active=775 idle_gap=17 hist_sum=775 delta=0
+PROBE OPSUM T17a_KEY_32_small | px_cons=512 px_written=149 words16B=28 AW_top=16 AW_wr=16 Wbeats=28 B=16 rows=32
+PROBE OPRATE T17a_KEY_32_small | cyc/px=5.201342 px/cyc=0.192258 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=3 burst_max=2 burst_avg=1.750000 | row_cyc_min=20 avg=21.935484 max=24
+PROBE OPDATA T17a_KEY_32_small | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=1 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=422 buf=245 AW=16 W=28 B=64
+PROBE TABLE T17a_KEY_32_small | 775 | 149 | 5.201342 | 28 | 16
+PROBE OP T17a_KEY_32_small_MASK op=3 32x32 | perf=363 wall=380 active=363 idle_gap=17 hist_sum=363 delta=0
+PROBE OPSUM T17a_KEY_32_small_MASK | px_cons=128 px_written=149 words16B=28 AW_top=15 AW_wr=15 Wbeats=28 B=15 rows=16
+PROBE OPRATE T17a_KEY_32_small_MASK | cyc/px=2.436242 px/cyc=0.410468 | max_px_run=8 px_run_cyc=144 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=2 burst_max=2 burst_avg=1.866667 | row_cyc_min=12 avg=17.600000 max=24
+PROBE OPDATA T17a_KEY_32_small_MASK | stall_fg_fifo=0 stall_fg_reload=16 stall_fg_nordbusy=2 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=77 buf=183 AW=15 W=28 B=60
+PROBE TABLE T17a_KEY_32_small_MASK | 363 | 149 | 2.436242 | 28 | 15
+S3 SHAPE T17b_ALPHA_32_small 32x32 key_px=875 mask=0xf99f
+PROBE OP T17b_ALPHA_32_small op=2 32x32 | perf=868 wall=886 active=868 idle_gap=18 hist_sum=868 delta=0
+PROBE OPSUM T17b_ALPHA_32_small | px_cons=512 px_written=1024 words16B=128 AW_top=8 AW_wr=8 Wbeats=128 B=8 rows=32
+PROBE OPRATE T17b_ALPHA_32_small | cyc/px=0.847656 px/cyc=1.179724 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=6 burst_max=16 burst_avg=16.000000 | row_cyc_min=20 avg=23.870968 max=28
+PROBE OPDATA T17b_ALPHA_32_small | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=66 buf=634 AW=8 W=128 B=32
+PROBE TABLE T17b_ALPHA_32_small | 868 | 1024 | 0.847656 | 128 | 8
+PROBE OP T17b_ALPHA_32_small_MASK op=2 32x32 | perf=868 wall=886 active=868 idle_gap=18 hist_sum=868 delta=0
+PROBE OPSUM T17b_ALPHA_32_small_MASK | px_cons=512 px_written=1024 words16B=128 AW_top=8 AW_wr=8 Wbeats=128 B=8 rows=32
+PROBE OPRATE T17b_ALPHA_32_small_MASK | cyc/px=0.847656 px/cyc=1.179724 | max_px_run=16 px_run_cyc=544 flush_word=0 flush_hole=0 flush_wdful=0 | wd_full_cyc=0 wd_peak=6 burst_max=16 burst_avg=16.000000 | row_cyc_min=20 avg=23.870968 max=28
+PROBE OPDATA T17b_ALPHA_32_small_MASK | stall_fg_fifo=0 stall_fg_reload=32 stall_fg_nordbusy=0 stall_bg_fifo=0 stall_bg_reload=0 | wrst_idle=66 buf=634 AW=8 W=128 B=32
+PROBE TABLE T17b_ALPHA_32_small_MASK | 868 | 1024 | 0.847656 | 128 | 8
+PROBE ==== DONE ====
+rtl/tb/tb_perf_probe.v:827: $finish called at 6430216000 (1ps)
